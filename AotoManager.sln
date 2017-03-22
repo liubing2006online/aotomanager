@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AotoManager", "AotoManager\AotoManager.csproj", "{2255BC70-C31B-4D7E-BC7C-C08811BA4DA7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GetRealTimeInfo", "GetRealTimeInfo\GetRealTimeInfo.csproj", "{5651A24C-2A1F-4786-A26E-E0FF9486B36E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestProject1", "UnitTestProject1\UnitTestProject1.csproj", "{27B841B5-8C8E-437B-B17C-54F2E60338D1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2255BC70-C31B-4D7E-BC7C-C08811BA4DA7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2255BC70-C31B-4D7E-BC7C-C08811BA4DA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2255BC70-C31B-4D7E-BC7C-C08811BA4DA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2255BC70-C31B-4D7E-BC7C-C08811BA4DA7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5651A24C-2A1F-4786-A26E-E0FF9486B36E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5651A24C-2A1F-4786-A26E-E0FF9486B36E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5651A24C-2A1F-4786-A26E-E0FF9486B36E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5651A24C-2A1F-4786-A26E-E0FF9486B36E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27B841B5-8C8E-437B-B17C-54F2E60338D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27B841B5-8C8E-437B-B17C-54F2E60338D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27B841B5-8C8E-437B-B17C-54F2E60338D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27B841B5-8C8E-437B-B17C-54F2E60338D1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
