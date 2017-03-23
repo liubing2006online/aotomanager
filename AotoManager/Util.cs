@@ -41,7 +41,7 @@ namespace AotoManager
         //        return "";
         //    }
         //}
-
+       
 
         /// <summary>
         /// 通过 WebRequest/WebResponse 类访问远程地址
@@ -78,41 +78,6 @@ namespace AotoManager
             }
         }
 
-        /// <summary>
-        /// 通过 WebRequest/WebResponse 类访问远程地址并返回结果，加入认证
-        /// 调用端自己处理异常
-        /// </summary>
-        /// <param name="uri"></param>
-        /// <param name="timeout">访问超时时间，单位毫秒；如果不设置超时时间，传入0</param>
-        /// <param name="encoding">如果不知道具体的编码，传入null</param>
-        /// <param name="MAC">认证信息</param>
-        /// <returns></returns>
-        public static string Request_WebRequest(string uri, int timeout, Encoding encoding, Mac mac)
-        {
-            string result = string.Empty;
-
-            WebRequest request = WebRequest.Create(new Uri(uri));
-
-            //if (!string.IsNullOrEmpty(storeName) && !string.IsNullOrEmpty(fileName))
-            //{
-                //request.Credentials = GetCredentialCache(uri, storeName, fileName);
-                request.Headers.Add("Authorization", GetToken(uri,mac));
-            //}
-
-            if (timeout > 0)
-                request.Timeout = timeout;
-
-            WebResponse response = request.GetResponse();
-            Stream stream = response.GetResponseStream();
-            StreamReader sr = encoding == null ? new StreamReader(stream) : new StreamReader(stream, encoding);
-
-            result = sr.ReadToEnd();
-
-            sr.Close();
-            stream.Close();
-
-            return result;
-        }
 
         #region # 生成 Http Basic 访问凭证 #
 
@@ -133,17 +98,7 @@ namespace AotoManager
             return "QBox " + Convert.ToBase64String(new ASCIIEncoding().GetBytes(authorization));
         }
 
-        public static string GetBase64(string username, string password)
-        {
-            string authorization = string.Format("{0}:{1}", username, password);
 
-            return Convert.ToBase64String(new ASCIIEncoding().GetBytes(authorization));
-        }
-
-        public static string GetToken(string url,Mac mac)
-        {
-           return Auth.createManageToken(url, null, mac);
-        }
 
         /// <summary>
         /// unix时间戳转换成日期

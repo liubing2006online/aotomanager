@@ -15,26 +15,28 @@ using Qiniu.Storage.Model;
 using AotoManager.Model;
 using System.Collections;
 using GetRealTimeInfo;
+using GetRealTimeInfo.Model;
+
 namespace AotoManager
 {
     public partial class Main : Form
     {
-        string bucket = "aoto";
-        string FileNameAoto = "aoto.txt";
+        string bucket =Utils.bucket;
+        string FileNameAoto = Utils.FileNameAoto;
         string AK;
         string SK;
-        string Uri;
+        public string Uri;
         Mac mac;
         public static bool SaveFileFlag = false;
         public static bool DelFileFlag = false;
-        public string Path = "http://omy714q6d.bkt.clouddn.com/aoto.txt";
+        public string Path = Utils.Path;
         public Main()
         {
             InitializeComponent();
             AK = Common.AK;
             SK = Common.SK; ;
+            Uri = Utils.Uri;
             
-            Uri = "http://rs.qiniu.com/stat/";
             mac = new Mac(AK, SK);
             txtAK.Text = AK;
             txtSK.Text = SK;
@@ -267,11 +269,8 @@ namespace AotoManager
             return false;
         }
 
-        private void btnGetInfo_Click(object sender, EventArgs e)
-        {
-           string base64 = Util.GetBase64(bucket, FileNameAoto);
-           string info= Util.Request_WebRequest(string.Format("{0}{1}",Uri,base64),0,null,mac);
-        }
+
+
 
         private void dataGrid_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
