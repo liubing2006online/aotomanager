@@ -165,6 +165,9 @@ namespace AotoManager
 
         private void BindData(StockConfigModel configModel)
         {
+            foreach (StockList ll in configModel.StockList)
+                ll.CurrentPrice = GetInfo.Get(ll.StockCode).CurrentPrice;
+
             dataGrid.DataSource = configModel.StockList;
             txtBalance.Text = configModel.AvailableBalance.ToString();
             chkLimitTime.Checked = configModel.LimitTime;
@@ -204,9 +207,9 @@ namespace AotoManager
                 for (int i = 0; i < dataGrid.Rows.Count; i++)
                 {
 
-                    decimal price = Convert.ToDecimal(dataGrid.Rows[i].Cells[2].Value);
+                    decimal price = Convert.ToDecimal(dataGrid.Rows[i].Cells["BuyPrice"].Value);
 
-                    dataGrid.Rows[i].Cells[3].Value = GetStoreHouse(everyBalance, price);
+                    dataGrid.Rows[i].Cells["BuyAmount"].Value = GetStoreHouse(everyBalance, price);
                 }
             }
         }
@@ -243,7 +246,7 @@ namespace AotoManager
                     List<StockList> list = new List<StockList>();
                     for (int i = 0; i < dataGrid.Rows.Count; i++)
                     {
-                        list.Add(new StockList { StockCode = dataGrid.Rows[i].Cells[0].Value.ToString(), StockName = dataGrid.Rows[i].Cells[1].Value.ToString(), BuyPrice = Convert.ToDecimal(dataGrid.Rows[i].Cells[2].Value), BuyAmount = Convert.ToInt32(dataGrid.Rows[i].Cells[3].Value) });
+                        list.Add(new StockList { StockCode = dataGrid.Rows[i].Cells["StockCode"].Value.ToString(), StockName = dataGrid.Rows[i].Cells["StockName"].Value.ToString(), BuyPrice = Convert.ToDecimal(dataGrid.Rows[i].Cells["BuyPrice"].Value), BuyAmount = Convert.ToInt32(dataGrid.Rows[i].Cells["BuyAmount"].Value) });
                     }
                     model.StockList = list;
 
@@ -269,8 +272,8 @@ namespace AotoManager
            StockModel model=  GetInfo.Get(code);
            if (model != null)
            {
-                dataGrid.Rows[e.RowIndex].Cells[1].Value = model.Name;
-                dataGrid.Rows[e.RowIndex].Cells[2].Value = model.CurrentPrice;
+                dataGrid.Rows[e.RowIndex].Cells["StockName"].Value = model.Name;
+                dataGrid.Rows[e.RowIndex].Cells["CurrentPrice"].Value = model.CurrentPrice;
             }
            else
              MessageBox.Show("获取信息失败！", "失败", MessageBoxButtons.OK, MessageBoxIcon.Error);

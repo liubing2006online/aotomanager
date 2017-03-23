@@ -38,10 +38,6 @@
             this.lblBalance = new System.Windows.Forms.Label();
             this.txtBalance = new System.Windows.Forms.TextBox();
             this.dataGrid = new System.Windows.Forms.DataGridView();
-            this.StockCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.StockName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.BuyPrice = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.BuyAmount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.btnAverage = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
             this.chkLimitTime = new System.Windows.Forms.CheckBox();
@@ -50,6 +46,11 @@
             this.dtBeginTime = new System.Windows.Forms.DateTimePicker();
             this.dtEndTime = new System.Windows.Forms.DateTimePicker();
             this.button1 = new System.Windows.Forms.Button();
+            this.StockCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.StockName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.BuyPrice = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.BuyAmount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CurrentPrice = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGrid)).BeginInit();
             this.SuspendLayout();
             // 
@@ -137,42 +138,14 @@
             this.StockCode,
             this.StockName,
             this.BuyPrice,
-            this.BuyAmount});
+            this.BuyAmount,
+            this.CurrentPrice});
             this.dataGrid.Location = new System.Drawing.Point(12, 165);
             this.dataGrid.Name = "dataGrid";
-            this.dataGrid.ReadOnly = true;
             this.dataGrid.RowTemplate.Height = 23;
             this.dataGrid.Size = new System.Drawing.Size(907, 288);
             this.dataGrid.TabIndex = 7;
             this.dataGrid.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGrid_CellEndEdit);
-            // 
-            // StockCode
-            // 
-            this.StockCode.DataPropertyName = "StockCode";
-            this.StockCode.HeaderText = "证券代码";
-            this.StockCode.MaxInputLength = 6;
-            this.StockCode.Name = "StockCode";
-            // 
-            // StockName
-            // 
-            this.StockName.DataPropertyName = "StockName";
-            this.StockName.HeaderText = "证券名称";
-            this.StockName.Name = "StockName";
-            this.StockName.ReadOnly = true;
-            // 
-            // BuyPrice
-            // 
-            this.BuyPrice.DataPropertyName = "BuyPrice";
-            this.BuyPrice.HeaderText = "买入价格";
-            this.BuyPrice.Name = "BuyPrice";
-            // 
-            // BuyAmount
-            // 
-            this.BuyAmount.DataPropertyName = "BuyAmount";
-            this.BuyAmount.HeaderText = "买入数量";
-            this.BuyAmount.Name = "BuyAmount";
-            this.BuyAmount.ReadOnly = true;
-            this.BuyAmount.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             // 
             // btnAverage
             // 
@@ -251,6 +224,42 @@
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 0;
             // 
+            // StockCode
+            // 
+            this.StockCode.DataPropertyName = "StockCode";
+            this.StockCode.HeaderText = "证券代码";
+            this.StockCode.MaxInputLength = 6;
+            this.StockCode.Name = "StockCode";
+            // 
+            // StockName
+            // 
+            this.StockName.DataPropertyName = "StockName";
+            this.StockName.HeaderText = "证券名称";
+            this.StockName.Name = "StockName";
+            this.StockName.ReadOnly = true;
+            // 
+            // BuyPrice
+            // 
+            this.BuyPrice.DataPropertyName = "BuyPrice";
+            this.BuyPrice.HeaderText = "买入价格";
+            this.BuyPrice.Name = "BuyPrice";
+            // 
+            // BuyAmount
+            // 
+            this.BuyAmount.DataPropertyName = "BuyAmount";
+            this.BuyAmount.HeaderText = "买入数量";
+            this.BuyAmount.Name = "BuyAmount";
+            this.BuyAmount.ReadOnly = true;
+            this.BuyAmount.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            // 
+            // CurrentPrice
+            // 
+            this.CurrentPrice.DataPropertyName = "CurrentPrice";
+            this.CurrentPrice.HeaderText = "当前价格";
+            this.CurrentPrice.Name = "CurrentPrice";
+            this.CurrentPrice.ReadOnly = true;
+            this.CurrentPrice.Visible = false;
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -304,6 +313,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn StockName;
         private System.Windows.Forms.DataGridViewTextBoxColumn BuyPrice;
         private System.Windows.Forms.DataGridViewTextBoxColumn BuyAmount;
+        private System.Windows.Forms.DataGridViewTextBoxColumn CurrentPrice;
     }
 }
 

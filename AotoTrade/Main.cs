@@ -27,7 +27,7 @@ namespace AotoTrade
                 while (true)
                 {
                 CanDownload(Utils.FileNameAoto, mac);
-                System.Threading.Thread.Sleep(10000);
+                System.Threading.Thread.Sleep(5600);
                 }
             });
             
@@ -60,7 +60,9 @@ namespace AotoTrade
 
                 if(configModel!=null)
                 {
-                    lblMessage.Text = "下载文件转换成功,"+DateTime.Now.ToShortDateString()+" "+DateTime.Now.ToShortTimeString();
+                    lblMessage.Text = "下载文件转换成功,"+DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
+                    lblMessage.ForeColor = Color.OrangeRed;
+                    System.Threading.Thread.Sleep(1000);
                     lblMessage.ForeColor = System.Drawing.SystemColors.HotTrack;
                 }
                 else
