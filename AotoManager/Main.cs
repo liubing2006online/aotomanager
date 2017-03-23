@@ -12,7 +12,6 @@ using Qiniu.Util;
 using Qiniu.Storage;
 using Qiniu.Http;
 using Qiniu.Storage.Model;
-using AotoManager.Model;
 using System.Collections;
 using GetRealTimeInfo;
 using GetRealTimeInfo.Model;
@@ -147,19 +146,11 @@ namespace AotoManager
         }
 
 
-        /// <summary>
-        /// 下载可公开访问的文件
-        /// </summary>
-        public string DownloadFile(string DestPath)
-        {
-            string text= Util.Request_WebRequest(string.Format("{0}?{1}", Path, DateTime.Now.Ticks), 0,null);
-            File.WriteAllText(DestPath, text);
-            return DestPath;
-        }
+ 
 
         private void btnDownLoad_Click(object sender, EventArgs e)
         {
-            string filepath = DownloadFile(FileNameAoto);
+            string filepath =Utils.DownloadFile(FileNameAoto);
             if (filepath != "")
             {
             string json = File.ReadAllText(filepath);

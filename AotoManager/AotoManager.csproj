@@ -60,9 +60,6 @@
     <Compile Include="Main.Designer.cs">
       <DependentUpon>Main.cs</DependentUpon>
     </Compile>
-    <Compile Include="Model\BuySaleTypeEnum.cs" />
-    <Compile Include="Model\StockConfigModel.cs" />
-    <Compile Include="Model\StockList.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Util.cs" />

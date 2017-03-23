@@ -31,6 +31,15 @@ namespace GetRealTimeInfo
             }
         }
 
+        /// <summary>
+        /// 下载可公开访问的文件
+        /// </summary>
+        public static string DownloadFile(string DestPath)
+        {
+            string text = Utils.Request_WebRequest(string.Format("{0}?{1}", Path, DateTime.Now.Ticks), 0, null);
+            File.WriteAllText(DestPath, text);
+            return DestPath;
+        }
 
         /// <summary>
         /// 通过 WebRequest/WebResponse 类访问远程地址

@@ -4,14 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AotoManager.Model
+namespace GetRealTimeInfo.Model
 {
     public class StockList
     {
         public string StockCode { get; set; }
 
         public string StockName { get; set; }
-
+        public decimal CurrentPrice { get; set; }
         //public decimal SalePrice { get; set; }
         /// <summary>
         /// 卖出数量
