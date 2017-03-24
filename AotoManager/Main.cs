@@ -166,13 +166,26 @@ namespace AotoManager
         private void BindData(StockConfigModel configModel)
         {
             foreach (StockList ll in configModel.StockList)
-                ll.CurrentPrice = GetInfo.Get(ll.StockCode).CurrentPrice;
-
+            {
+                StockModel infoModel= GetInfo.Get(ll.StockCode);
+                if (infoModel != null)
+                    ll.CurrentPrice = infoModel.CurrentPrice;
+                else
+                    ll.CurrentPrice = 0;
+            }
+                
+            configModel.StockList.Add(new StockList { StockCode = "", StockName = "", BuyPrice = 0, BuyAmount = 0, CurrentPrice = 0 });
             dataGrid.DataSource = configModel.StockList;
             txtBalance.Text = configModel.AvailableBalance.ToString();
             chkLimitTime.Checked = configModel.LimitTime;
             dtBeginTime.Value = configModel.BuyBeginTime;
             dtEndTime.Value = configModel.BuyEndTime;
+            btnStop.Visible = true;
+            lblMonitor.Visible = true;
+            btnStop.Text = configModel.Monitoring ? "停止监控" : "开始监控";
+            lblMonitor.Text = configModel.Monitoring ? "正在监控..." : "监控已停止...";
+
+
         }
 
 
@@ -203,13 +216,23 @@ namespace AotoManager
             if (GetTrueCondition())
             {
                 int balance = Convert.ToInt32(txtBalance.Text);
-                decimal everyBalance = Convert.ToDecimal(balance / dataGrid.Rows.Count);
+                int Cnt=0;
                 for (int i = 0; i < dataGrid.Rows.Count; i++)
                 {
+                    if (dataGrid.Rows[i].Cells["BuyPrice"].Value.ToString() != "0" && dataGrid.Rows[i].Cells["StockName"].Value.ToString() != "")
+                        Cnt++;
+                }
 
-                    decimal price = Convert.ToDecimal(dataGrid.Rows[i].Cells["BuyPrice"].Value);
+                
 
-                    dataGrid.Rows[i].Cells["BuyAmount"].Value = GetStoreHouse(everyBalance, price);
+                decimal everyBalance = Convert.ToDecimal(balance / Cnt);
+                for (int i = 0; i < Cnt; i++)
+                {
+                    decimal price;
+                    if(decimal.TryParse(dataGrid.Rows[i].Cells["BuyPrice"].Value.ToString(),out price))
+                    { 
+                      dataGrid.Rows[i].Cells["BuyAmount"].Value = GetStoreHouse(everyBalance, price);
+                    }
                 }
             }
         }
@@ -238,17 +261,7 @@ namespace AotoManager
             {
                 try
                 {
-                    StockConfigModel model = new StockConfigModel();
-                    model.AvailableBalance = Convert.ToInt32(txtBalance.Text);
-                    model.LimitTime = chkLimitTime.Checked;
-                    model.BuyBeginTime = dtBeginTime.Value;
-                    model.BuyEndTime = dtEndTime.Value;
-                    List<StockList> list = new List<StockList>();
-                    for (int i = 0; i < dataGrid.Rows.Count; i++)
-                    {
-                        list.Add(new StockList { StockCode = dataGrid.Rows[i].Cells["StockCode"].Value.ToString(), StockName = dataGrid.Rows[i].Cells["StockName"].Value.ToString(), BuyPrice = Convert.ToDecimal(dataGrid.Rows[i].Cells["BuyPrice"].Value), BuyAmount = Convert.ToInt32(dataGrid.Rows[i].Cells["BuyAmount"].Value) });
-                    }
-                    model.StockList = list;
+                    StockConfigModel model= GetModelFromDataContainer();
 
                     string json = Newtonsoft.Json.JsonConvert.SerializeObject(model);
 
@@ -263,20 +276,104 @@ namespace AotoManager
             return false;
         }
 
+        private StockConfigModel GetModelFromDataContainer()
+        {
+            StockConfigModel model = new StockConfigModel();
+            model.AvailableBalance = Convert.ToInt32(txtBalance.Text);
+            model.LimitTime = chkLimitTime.Checked;
+            model.BuyBeginTime = dtBeginTime.Value;
+            model.BuyEndTime = dtEndTime.Value;
+            model.Monitoring = btnStop.Text == "开始监控" ? false : true;
+            List<StockList> list = new List<StockList>();
+            for (int i = 0; i < dataGrid.Rows.Count; i++)
+            {
+                DataGridViewCellCollection cells = dataGrid.Rows[i].Cells;
+                if (cells["StockCode"].Value!=null &&cells["StockName"].Value!=null)
+                {
+                    if (cells["StockCode"].Value.ToString() != "" && cells["StockName"].Value.ToString() != "")
+                        list.Add(new StockList { StockCode = dataGrid.Rows[i].Cells["StockCode"].Value.ToString(), StockName = dataGrid.Rows[i].Cells["StockName"].Value.ToString(), BuyPrice = Convert.ToDecimal(dataGrid.Rows[i].Cells["BuyPrice"].Value), BuyAmount = Convert.ToInt32(dataGrid.Rows[i].Cells["BuyAmount"].Value) });
+                }
+            }
+            model.StockList = list;
+            return model;
+        }
+
 
 
 
         private void dataGrid_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
-           string code = dataGrid.Rows[e.RowIndex].Cells[0].Value.ToString();
-           StockModel model=  GetInfo.Get(code);
-           if (model != null)
-           {
-                dataGrid.Rows[e.RowIndex].Cells["StockName"].Value = model.Name;
-                dataGrid.Rows[e.RowIndex].Cells["CurrentPrice"].Value = model.CurrentPrice;
+           var cell = dataGrid.Rows[e.RowIndex].Cells[0].Value;
+            
+            if (cell == null)
+                return;
+            string code = cell.ToString();
+           if (code.Length==6)
+            { 
+               StockModel model=  GetInfo.Get(code);
+               if (model != null)
+               {
+                    for (int j = 0; j < dataGrid.Rows.Count; j++)
+                    {
+                        if (j != e.RowIndex)
+                        {
+                            if (dataGrid.Rows[j].Cells["StockCode"].Value.ToString() == dataGrid.Rows[e.RowIndex].Cells["StockCode"].Value.ToString())
+                            { 
+                                MessageBox.Show("证券信息重复！", "注意", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                dataGrid.Rows[e.RowIndex].Cells["StockCode"].Value = "";
+                                dataGrid.Rows[e.RowIndex].Cells["StockName"].Value = "";
+                                dataGrid.Rows[e.RowIndex].Cells["BuyPrice"].Value = 0M;
+                                dataGrid.Rows[e.RowIndex].Cells["BuyAmount"].Value = 0M;
+                            }
+                            else
+                            {
+                                dataGrid.Rows[e.RowIndex].Cells["StockName"].Value = model.Name;
+                                dataGrid.Rows[e.RowIndex].Cells["BuyPrice"].Value = model.CurrentPrice;
+                            }
+                        }
+                    }
+                }
+               else
+                 MessageBox.Show("获取信息失败！", "失败", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-           else
-             MessageBox.Show("获取信息失败！", "失败", MessageBoxButtons.OK, MessageBoxIcon.Error);
+             if (e.RowIndex == dataGrid.Rows.Count - 1)
+            {
+                DataGridViewCellCollection cells= dataGrid.Rows[e.RowIndex].Cells;
+                if (cells["StockCode"].Value.ToString() != ""&& cells["StockName"].Value.ToString() != "")
+                {
+                    StockConfigModel model= GetModelFromDataContainer();
+                    BindData(model);
+                }
+
+            }
+        }
+
+        private void dataGrid_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Delete)
+            {
+                StockConfigModel model = GetModelFromDataContainer();
+                if(dataGrid.CurrentRow.Index!= dataGrid.Rows.Count-1)
+                { 
+                model.StockList.RemoveAt(dataGrid.CurrentRow.Index);
+                BindData(model);
+                }
+            }
+            
+        }
+
+        private void dataGrid_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            dataGrid.Rows[e.RowIndex].Selected = true;
+        }
+
+        private void btnStop_Click(object sender, EventArgs e)
+        {
+            btnStop.Text=( btnStop.Text == "停止监控") ? "开始监控" : "停止监控";
+
+            lblMonitor.Text = (btnStop.Text == "停止监控") ? "正在监控..." : "监控已停止...";
+            StockConfigModel model = GetModelFromDataContainer();
+            BindData(model);
         }
     }
 }

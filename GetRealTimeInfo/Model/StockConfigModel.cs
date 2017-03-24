@@ -29,6 +29,8 @@ namespace GetRealTimeInfo.Model
 
         public DateTime CloseComputerTime { get; set; }
 
+        public Boolean Monitoring { get; set; }
+
         public List<StockList> StockList { get; set; }
 
     }
