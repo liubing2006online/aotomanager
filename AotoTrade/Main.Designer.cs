@@ -37,12 +37,15 @@
             this.txtBalance = new System.Windows.Forms.TextBox();
             this.lblBalance = new System.Windows.Forms.Label();
             this.dataGrid = new System.Windows.Forms.DataGridView();
-            this.lblMessage = new System.Windows.Forms.Label();
             this.StockCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.StockName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CurrentPrice = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.BuyPrice = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.BuyAmount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Monitor = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.lblMessage = new System.Windows.Forms.Label();
+            this.lblMonitor = new System.Windows.Forms.Label();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             ((System.ComponentModel.ISupportInitialize)(this.dataGrid)).BeginInit();
             this.SuspendLayout();
             // 
@@ -110,6 +113,7 @@
             this.txtBalance.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.txtBalance.Location = new System.Drawing.Point(107, 69);
             this.txtBalance.Name = "txtBalance";
+            this.txtBalance.ReadOnly = true;
             this.txtBalance.Size = new System.Drawing.Size(116, 26);
             this.txtBalance.TabIndex = 20;
             // 
@@ -133,23 +137,14 @@
             this.StockName,
             this.CurrentPrice,
             this.BuyPrice,
-            this.BuyAmount});
+            this.BuyAmount,
+            this.Monitor});
             this.dataGrid.Location = new System.Drawing.Point(-7, 118);
             this.dataGrid.Name = "dataGrid";
             this.dataGrid.ReadOnly = true;
             this.dataGrid.RowTemplate.Height = 23;
             this.dataGrid.Size = new System.Drawing.Size(907, 288);
             this.dataGrid.TabIndex = 18;
-            // 
-            // lblMessage
-            // 
-            this.lblMessage.AutoSize = true;
-            this.lblMessage.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lblMessage.ForeColor = System.Drawing.SystemColors.HotTrack;
-            this.lblMessage.Location = new System.Drawing.Point(315, 72);
-            this.lblMessage.Name = "lblMessage";
-            this.lblMessage.Size = new System.Drawing.Size(0, 16);
-            this.lblMessage.TabIndex = 26;
             // 
             // StockCode
             // 
@@ -188,11 +183,46 @@
             this.BuyAmount.ReadOnly = true;
             this.BuyAmount.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             // 
+            // Monitor
+            // 
+            this.Monitor.DataPropertyName = "Monitor";
+            this.Monitor.HeaderText = "监控状态";
+            this.Monitor.Name = "Monitor";
+            this.Monitor.ReadOnly = true;
+            // 
+            // lblMessage
+            // 
+            this.lblMessage.AutoSize = true;
+            this.lblMessage.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lblMessage.ForeColor = System.Drawing.SystemColors.HotTrack;
+            this.lblMessage.Location = new System.Drawing.Point(315, 72);
+            this.lblMessage.Name = "lblMessage";
+            this.lblMessage.Size = new System.Drawing.Size(0, 16);
+            this.lblMessage.TabIndex = 26;
+            // 
+            // lblMonitor
+            // 
+            this.lblMonitor.AutoSize = true;
+            this.lblMonitor.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lblMonitor.ForeColor = System.Drawing.Color.ForestGreen;
+            this.lblMonitor.Location = new System.Drawing.Point(374, 468);
+            this.lblMonitor.Name = "lblMonitor";
+            this.lblMonitor.Size = new System.Drawing.Size(96, 16);
+            this.lblMonitor.TabIndex = 27;
+            this.lblMonitor.Text = "正在监控...";
+            this.lblMonitor.Visible = false;
+            // 
+            // backgroundWorker1
+            // 
+            this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
+            this.backgroundWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker1_RunWorkerCompleted);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(892, 518);
+            this.Controls.Add(this.lblMonitor);
             this.Controls.Add(this.lblMessage);
             this.Controls.Add(this.dtEndTime);
             this.Controls.Add(this.dtBeginTime);
@@ -223,11 +253,14 @@
         private System.Windows.Forms.Label lblBalance;
         private System.Windows.Forms.DataGridView dataGrid;
         private System.Windows.Forms.Label lblMessage;
+        private System.Windows.Forms.Label lblMonitor;
         private System.Windows.Forms.DataGridViewTextBoxColumn StockCode;
         private System.Windows.Forms.DataGridViewTextBoxColumn StockName;
         private System.Windows.Forms.DataGridViewTextBoxColumn CurrentPrice;
         private System.Windows.Forms.DataGridViewTextBoxColumn BuyPrice;
         private System.Windows.Forms.DataGridViewTextBoxColumn BuyAmount;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Monitor;
+        private System.ComponentModel.BackgroundWorker backgroundWorker1;
     }
 }
 

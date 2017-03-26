@@ -59,48 +59,53 @@ namespace AotoManager
         private void btnUpload_Click(object sender, EventArgs e)
         {
             if(GetTrueCondition())
-            { 
-                try
-                {
-                    SaveFileFlag = SaveAsDefaultFile(FileNameAoto);
-                    // 本地文件
-                    string localFile = FileNameAoto;
-                    // 上传策略
-                    PutPolicy putPolicy = new PutPolicy();
-                    // 设置要上传的目标空间
-                    putPolicy.Scope = bucket;
-                    // 上传策略的过期时间(单位:秒)
-                    putPolicy.SetExpires(3600);
-                    // 文件上传完毕后，在多少天后自动被删除
-                    putPolicy.DeleteAfterDays = 1;
-                    // 请注意这里的Zone设置(如果不设置，就默认为华东机房)
-                    var zoneId = Qiniu.Common.AutoZone.Query(AK, bucket);
-                    Qiniu.Common.Config.ConfigZone(zoneId);
-                    //Mac mac = new Mac(AK, SK); // Use AK & SK here
-                    // 生成上传凭证
-                    string uploadToken = Auth.createUploadToken(putPolicy, mac);
-                    UploadOptions uploadOptions = null;
+            {
+              UploadFile(GetModelFromDataContainer());
+            }
+        }
 
-                    // 上传完毕事件处理
-                    UpCompletionHandler uploadCompleted = new UpCompletionHandler(OnUploadCompleted);
-                    // 方式1：使用UploadManager
-                    //默认设置 Qiniu.Common.Config.PUT_THRESHOLD = 512*1024;
-                    //可以适当修改,UploadManager会根据这个阈值自动选择是否使用分片(Resumable)上传    
-                    UploadManager um = new UploadManager();
+        private void UploadFile(StockConfigModel model)
+        {
+            try
+            {
+                SaveFileFlag = SaveAsDefaultFile(FileNameAoto, model);
+                // 本地文件
+                string localFile = FileNameAoto;
+                // 上传策略
+                PutPolicy putPolicy = new PutPolicy();
+                // 设置要上传的目标空间
+                putPolicy.Scope = bucket;
+                // 上传策略的过期时间(单位:秒)
+                putPolicy.SetExpires(3600);
+                // 文件上传完毕后，在多少天后自动被删除
+                putPolicy.DeleteAfterDays = 1;
+                // 请注意这里的Zone设置(如果不设置，就默认为华东机房)
+                var zoneId = Qiniu.Common.AutoZone.Query(AK, bucket);
+                Qiniu.Common.Config.ConfigZone(zoneId);
+                //Mac mac = new Mac(AK, SK); // Use AK & SK here
+                // 生成上传凭证
+                string uploadToken = Auth.createUploadToken(putPolicy, mac);
+                UploadOptions uploadOptions = null;
 
-                    DelFileFlag = DelFile(FileNameAoto);
+                // 上传完毕事件处理
+                UpCompletionHandler uploadCompleted = new UpCompletionHandler(OnUploadCompleted);
+                // 方式1：使用UploadManager
+                //默认设置 Qiniu.Common.Config.PUT_THRESHOLD = 512*1024;
+                //可以适当修改,UploadManager会根据这个阈值自动选择是否使用分片(Resumable)上传    
+                UploadManager um = new UploadManager();
 
-                    um.uploadFile(localFile, FileNameAoto, uploadToken, uploadOptions, uploadCompleted);
-                    // 方式2：使用FormManager
-                    //FormUploader fm = new FormUploader();
-                    //fm.uploadFile(localFile, saveKey, token, uploadOptions, uploadCompleted);
+                DelFileFlag = DelFile(FileNameAoto);
+
+                um.uploadFile(localFile, FileNameAoto, uploadToken, uploadOptions, uploadCompleted);
+                // 方式2：使用FormManager
+                //FormUploader fm = new FormUploader();
+                //fm.uploadFile(localFile, saveKey, token, uploadOptions, uploadCompleted);
 
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show("出现错误" + ex.Message, "注意", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-            }
         }
 
 
@@ -110,21 +115,27 @@ namespace AotoManager
         /// <param name="key"></param>
         /// <param name="respInfo"></param>
         /// <param name="respJson"></param>
-        private static void OnUploadCompleted(string key, ResponseInfo respInfo, string respJson)
+        private void OnUploadCompleted(string key, ResponseInfo respInfo, string respJson)
         {
             // respInfo.StatusCode
             // respJson是返回的json消息，示例: { "key":"FILE","hash":"HASH","fsize":FILE_SIZE }
             if (respInfo.StatusCode == 200)
-                MessageBox.Show("上传成功！", "成功", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            {
+                lblMessage.Text = "上传成功," + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
+                lblMessage.ForeColor = (lblMessage.ForeColor == Color.OrangeRed) ? System.Drawing.SystemColors.HotTrack : Color.OrangeRed;
+            }
             else
-                MessageBox.Show("上传失败！", "失败", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                lblMessage.Text = "上传失败";
         }
-
+        /// <summary>
+        /// 删除远端文件
+        /// </summary>
+        /// <param name="filename">按文件名前缀保留搜索结果</param>
+        /// <returns></returns>
         private Boolean DelFile(string filename)
         {
             BucketManager bm = new BucketManager(mac);
             string marker = ""; // 首次请求时marker必须为空
-            string prefix = null; // 按文件名前缀保留搜索结果
             string delimiter = null; // 目录分割字符(比如"/")
             int limit = 100; // 最大值1000
                              // 返回结果存储在items中
@@ -165,6 +176,7 @@ namespace AotoManager
 
         private void BindData(StockConfigModel configModel)
         {
+            int Cnt = 0;
             foreach (StockList ll in configModel.StockList)
             {
                 StockModel infoModel= GetInfo.Get(ll.StockCode);
@@ -172,9 +184,12 @@ namespace AotoManager
                     ll.CurrentPrice = infoModel.CurrentPrice;
                 else
                     ll.CurrentPrice = 0;
+
+                if (ll.Monitor == "监控中")
+                    Cnt++;
             }
                 
-            configModel.StockList.Add(new StockList { StockCode = "", StockName = "", BuyPrice = 0, BuyAmount = 0, CurrentPrice = 0 });
+            configModel.StockList.Add(new StockList { StockCode = "", StockName = "", BuyPrice = 0, BuyAmount = 0, CurrentPrice = 0, Monitor = "" });
             dataGrid.DataSource = configModel.StockList;
             txtBalance.Text = configModel.AvailableBalance.ToString();
             chkLimitTime.Checked = configModel.LimitTime;
@@ -182,9 +197,9 @@ namespace AotoManager
             dtEndTime.Value = configModel.BuyEndTime;
             btnStop.Visible = true;
             lblMonitor.Visible = true;
-            btnStop.Text = configModel.Monitoring ? "停止监控" : "开始监控";
-            lblMonitor.Text = configModel.Monitoring ? "正在监控..." : "监控已停止...";
 
+            btnStop.Text = Cnt>0 ? "停止监控" : "开始监控";
+            lblMonitor.Text = Cnt > 0 ? "正在监控..." : "监控已停止...";
 
         }
 
@@ -248,32 +263,29 @@ namespace AotoManager
         {
             if(GetTrueCondition())
             { 
-            if (SaveAsDefaultFile(FileNameAoto))
+            if (SaveAsDefaultFile(FileNameAoto,GetModelFromDataContainer()))
                 MessageBox.Show("保存文件到本地成功！", "成功", MessageBoxButtons.OK, MessageBoxIcon.Information);
             else
                 MessageBox.Show("保存文件到本地失败！", "失败", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        private Boolean SaveAsDefaultFile(string filename)
+        private Boolean SaveAsDefaultFile(string filename,StockConfigModel model)
         {
-            if (GetTrueCondition())
+            //if (GetTrueCondition())
+            //{
+            try
             {
-                try
-                {
-                    StockConfigModel model= GetModelFromDataContainer();
+                string json = Newtonsoft.Json.JsonConvert.SerializeObject(model);
 
-                    string json = Newtonsoft.Json.JsonConvert.SerializeObject(model);
-
-                    File.WriteAllText(filename, json);
-                    return true;
-                }
-                catch (Exception ex)
-                {
-                    return false;
-                }
+                File.WriteAllText(filename, json);
+                return true;
             }
-            return false;
+            catch (Exception ex)
+            {
+                return false;
+            }
+            //}
         }
 
         private StockConfigModel GetModelFromDataContainer()
@@ -283,7 +295,12 @@ namespace AotoManager
             model.LimitTime = chkLimitTime.Checked;
             model.BuyBeginTime = dtBeginTime.Value;
             model.BuyEndTime = dtEndTime.Value;
-            model.Monitoring = btnStop.Text == "开始监控" ? false : true;
+           
+
+            int Cnt = 0;
+            
+
+
             List<StockList> list = new List<StockList>();
             for (int i = 0; i < dataGrid.Rows.Count; i++)
             {
@@ -291,18 +308,33 @@ namespace AotoManager
                 if (cells["StockCode"].Value!=null &&cells["StockName"].Value!=null)
                 {
                     if (cells["StockCode"].Value.ToString() != "" && cells["StockName"].Value.ToString() != "")
-                        list.Add(new StockList { StockCode = dataGrid.Rows[i].Cells["StockCode"].Value.ToString(), StockName = dataGrid.Rows[i].Cells["StockName"].Value.ToString(), BuyPrice = Convert.ToDecimal(dataGrid.Rows[i].Cells["BuyPrice"].Value), BuyAmount = Convert.ToInt32(dataGrid.Rows[i].Cells["BuyAmount"].Value) });
+                    { 
+                        list.Add(new StockList { StockCode = cells["StockCode"].Value.ToString(), StockName = cells["StockName"].Value.ToString(), BuyPrice = Convert.ToDecimal(cells["BuyPrice"].Value), BuyAmount = Convert.ToInt32(cells["BuyAmount"].Value), Monitor = cells["Monitor"].Value.ToString()});
+                        if (cells["Monitor"].Value.ToString() == "监控中")
+                            Cnt++;
+                    }
+
                 }
             }
+
+            model.Monitoring = Cnt>0 ? true : false;
             model.StockList = list;
             return model;
         }
 
 
-
+        private void ClearRow(int rowIndex)
+        {
+            dataGrid.Rows[rowIndex].Cells["StockCode"].Value = "";
+            dataGrid.Rows[rowIndex].Cells["StockName"].Value = "";
+            dataGrid.Rows[rowIndex].Cells["BuyPrice"].Value = 0M;
+            dataGrid.Rows[rowIndex].Cells["BuyAmount"].Value = 0M;
+        }
 
         private void dataGrid_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
+           if(e.ColumnIndex==0)
+            { 
            var cell = dataGrid.Rows[e.RowIndex].Cells[0].Value;
             
             if (cell == null)
@@ -320,23 +352,27 @@ namespace AotoManager
                             if (dataGrid.Rows[j].Cells["StockCode"].Value.ToString() == dataGrid.Rows[e.RowIndex].Cells["StockCode"].Value.ToString())
                             { 
                                 MessageBox.Show("证券信息重复！", "注意", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                                dataGrid.Rows[e.RowIndex].Cells["StockCode"].Value = "";
-                                dataGrid.Rows[e.RowIndex].Cells["StockName"].Value = "";
-                                dataGrid.Rows[e.RowIndex].Cells["BuyPrice"].Value = 0M;
-                                dataGrid.Rows[e.RowIndex].Cells["BuyAmount"].Value = 0M;
+                                ClearRow(e.RowIndex);
                             }
                             else
                             {
                                 dataGrid.Rows[e.RowIndex].Cells["StockName"].Value = model.Name;
                                 dataGrid.Rows[e.RowIndex].Cells["BuyPrice"].Value = model.CurrentPrice;
+                                dataGrid.Rows[e.RowIndex].Cells["BuyAmount"].Value = 100;//默认值
+
+                                dataGrid.Rows[e.RowIndex].Cells["Monitor"].Value = "已停止";//默认值
                             }
                         }
                     }
                 }
                else
-                 MessageBox.Show("获取信息失败！", "失败", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                { 
+                    MessageBox.Show("获取信息失败！", "失败", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    ClearRow(e.RowIndex);
+                }
             }
-             if (e.RowIndex == dataGrid.Rows.Count - 1)
+            }
+            if (e.RowIndex == dataGrid.Rows.Count - 1)
             {
                 DataGridViewCellCollection cells= dataGrid.Rows[e.RowIndex].Cells;
                 if (cells["StockCode"].Value.ToString() != ""&& cells["StockName"].Value.ToString() != "")
@@ -369,10 +405,12 @@ namespace AotoManager
 
         private void btnStop_Click(object sender, EventArgs e)
         {
-            btnStop.Text=( btnStop.Text == "停止监控") ? "开始监控" : "停止监控";
+            Boolean flag = (btnStop.Text == "停止监控");
+            btnStop.Text= flag ? "开始监控" : "停止监控";
 
-            lblMonitor.Text = (btnStop.Text == "停止监控") ? "正在监控..." : "监控已停止...";
+            lblMonitor.Text = flag ? "正在监控..." : "监控已停止...";
             StockConfigModel model = GetModelFromDataContainer();
+            model.StockList.ForEach(x => x.Monitor =  flag ? "已停止": "监控中");
             BindData(model);
         }
     }

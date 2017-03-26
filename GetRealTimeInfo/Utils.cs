@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using GetRealTimeInfo.Model;
 using Qiniu.Util;
-
+using System.Runtime.InteropServices;
 namespace GetRealTimeInfo
 {
      public static class Utils
@@ -16,6 +16,65 @@ namespace GetRealTimeInfo
         public static string FileNameAoto = "aoto.txt";
         public static string Uri = "http://rs.qiniu.com/stat/";
         public static string Path = "http://omy714q6d.bkt.clouddn.com/aoto.txt";
+
+        [DllImport("user32.dll")]
+        public static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+        [DllImport("user32.dll")]
+        public static extern bool SetForegroundWindow(IntPtr hWnd);
+        [DllImport("user32.dll")]
+        public static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
+        [DllImport("user32.dll")]
+        public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
+        [DllImport("user32.dll")]
+        public static extern bool SetCursorPos(int X, int Y);
+        [DllImport("user32.dll")]
+        public static extern void mouse_event(MouseEventFlag dwFlags, int dx, int dy, int dwData, int dwExtraInfo);
+        [DllImport("user32.dll")]
+        public static extern void keybd_event(byte bVk, byte bScan, uint dwFlags, uint dwExtraInfo);
+        [DllImport("user32.dll")]
+        public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndlnsertAfter, int X, int Y, int cx, int cy, uint Flags);
+        //ShowWindow参数
+        private const int SW_SHOWNORMAL = 1;
+        private const int SW_RESTORE = 9;
+        private const int SW_SHOWNOACTIVATE = 4;
+        //SendMessage参数
+        private const int WM_KEYDOWN = 0X100;
+        private const int WM_KEYUP = 0X101;
+        private const int WM_SYSCHAR = 0X106;
+        private const int WM_SYSKEYUP = 0X105;
+        private const int WM_SYSKEYDOWN = 0X104;
+        private const int WM_CHAR = 0X102;
+        /// <summary>
+        /// 鼠标操作标志位集合
+        /// </summary>
+        [Flags]
+        public enum MouseEventFlag : uint
+        {
+            /// <summary>
+            /// 鼠标移动事件
+            /// </summary>
+            Move = 0x0001,
+
+            /// <summary>
+            /// 鼠标左键按下事件
+            /// </summary>
+            LeftDown = 0x0002,
+            LeftUp = 0x0004,
+            RightDown = 0x0008,
+            RightUp = 0x0010,
+            MiddleDown = 0x0020,
+            MiddleUp = 0x0040,
+            XDown = 0x0080,
+            XUp = 0x0100,
+            Wheel = 0x0800,
+            VirtualDesk = 0x4000,
+            /// <summary>
+            /// 设置鼠标坐标为绝对位置（dx,dy）,否则为距离最后一次事件触发的相对位置
+            /// </summary>
+            Absolute = 0x8000
+        }
+
+
         public static Boolean CanGetFile(Mac mac)
         {
             if (!File.Exists(FileNameAoto))
@@ -114,28 +173,34 @@ namespace GetRealTimeInfo
         public static string Request_WebRequest(string uri, int timeout, Encoding encoding, Mac mac)
         {
             string result = string.Empty;
+            try
+            {
+                WebRequest request = WebRequest.Create(new Uri(uri));
 
-            WebRequest request = WebRequest.Create(new Uri(uri));
+                //if (!string.IsNullOrEmpty(storeName) && !string.IsNullOrEmpty(fileName))
+                //{
+                //request.Credentials = GetCredentialCache(uri, storeName, fileName);
+                request.Headers.Add("Authorization", GetToken(uri, mac));
+                //}
 
-            //if (!string.IsNullOrEmpty(storeName) && !string.IsNullOrEmpty(fileName))
-            //{
-            //request.Credentials = GetCredentialCache(uri, storeName, fileName);
-            request.Headers.Add("Authorization", GetToken(uri, mac));
-            //}
+                if (timeout > 0)
+                    request.Timeout = timeout;
 
-            if (timeout > 0)
-                request.Timeout = timeout;
+                WebResponse response = request.GetResponse();
+                Stream stream = response.GetResponseStream();
+                StreamReader sr = encoding == null ? new StreamReader(stream) : new StreamReader(stream, encoding);
 
-            WebResponse response = request.GetResponse();
-            Stream stream = response.GetResponseStream();
-            StreamReader sr = encoding == null ? new StreamReader(stream) : new StreamReader(stream, encoding);
+                result = sr.ReadToEnd();
 
-            result = sr.ReadToEnd();
+                sr.Close();
+                stream.Close();
 
-            sr.Close();
-            stream.Close();
-
-            return result;
+                return result;
+            }
+            catch (Exception ex)
+            {
+                return result;
+            }
         }
 
 

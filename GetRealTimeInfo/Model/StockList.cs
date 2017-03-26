@@ -31,5 +31,6 @@ namespace GetRealTimeInfo.Model
         /// 买入策略（实际只存在一种，故省略）
         /// </summary>
         //public int BuyType { get; set; }
+        public string Monitor { get; set; }
     }
 }
