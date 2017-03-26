@@ -146,6 +146,7 @@
             this.Monitor});
             this.dataGrid.Location = new System.Drawing.Point(12, 165);
             this.dataGrid.Name = "dataGrid";
+            this.dataGrid.RowTemplate.DefaultCellStyle.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.dataGrid.RowTemplate.Height = 23;
             this.dataGrid.Size = new System.Drawing.Size(907, 288);
             this.dataGrid.TabIndex = 7;

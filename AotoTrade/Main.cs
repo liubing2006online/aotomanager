@@ -15,7 +15,7 @@ using System.Threading;
 using Qiniu.Storage;
 using Qiniu.Http;
 using Qiniu.Storage.Model;
-
+using System.Configuration;
 namespace AotoTrade
 {
     public partial class Main : Form
@@ -41,11 +41,11 @@ namespace AotoTrade
                     {
                     model = CanDownload(Utils.FileNameAoto, mac);
                     BindData(model);
-                    Thread.Sleep(5600);
-                    if(model.Monitoring)
+                    Thread.Sleep(4000);
+                    if (model.Monitoring)
                     { 
                         Monitoring(model);
-                        Thread.Sleep(4000);
+                        Thread.Sleep(5600);
                     }
                 }
 
@@ -68,10 +68,30 @@ namespace AotoTrade
             decimal currentPrice = GetInfo.Get(stock.StockCode).CurrentPrice;
             if (currentPrice <= stock.BuyPrice&&currentPrice!=0&&stock.BuyAmount!=0)
             {
+                System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+                sw.Start();
                 ZhaoShangZhiYuanTrade(stock.StockCode, stock.CurrentPrice.ToString(), stock.BuyAmount.ToString());
-                stock.Monitor = "已停止";
+                sw.Stop();
+                
+                Task.Factory.StartNew(()=>{
 
+                   string ename = System.Configuration.ConfigurationManager.AppSettings["ename"];
+                   string epwd = System.Configuration.ConfigurationManager.AppSettings["epwd"];
+                   string server = System.Configuration.ConfigurationManager.AppSettings["server"];
+                   int port =Convert.ToInt16(System.Configuration.ConfigurationManager.AppSettings["port"]);
+                   string add = System.Configuration.ConfigurationManager.AppSettings["add"];
+                   string subject = string.Format("成功以{0}元买入{1}({2}){3}股", stock.CurrentPrice, stock.StockName, stock.StockCode, stock.BuyAmount);
+                   string body = string.Format("用时{0}秒", sw.Elapsed.TotalSeconds);
+
+                   Simplify.Mail.MailSenderSettings settings = new Simplify.Mail.MailSenderSettings(server, port, ename, epwd);
+                   Simplify.Mail.MailSender msender = new Simplify.Mail.MailSender(settings);
+                   msender.Send(new System.Net.Mail.MailMessage(add, add, subject, body));
+
+                });
+
+                stock.Monitor = "已停止";
                 UploadFile(model);
+
             }
         }
 
@@ -276,9 +296,9 @@ namespace AotoTrade
                     System.Threading.Thread.Sleep(100);
                     Utils.mouse_event(Utils.MouseEventFlag.LeftDown, 0, 0, 0, 0); //模拟鼠标按下操作
                     Utils.mouse_event(Utils.MouseEventFlag.LeftUp, 0, 0, 0, 0); //模拟鼠标放开操作
-                    Thread.Sleep(800);
+                    Thread.Sleep(200);
                     SendKeys.SendWait(code);
-                    Thread.Sleep(800);
+                    Thread.Sleep(300);
                     SendKeys.SendWait(currentPrice);
                     Thread.Sleep(200);
                     SendKeys.SendWait("{TAB}");
@@ -288,21 +308,13 @@ namespace AotoTrade
                     SendKeys.SendWait("{ENTER}");
                     Thread.Sleep(200);
                     SendKeys.SendWait("{ENTER}");
-                    Thread.Sleep(600);
+                    Thread.Sleep(500);
                     SendKeys.SendWait("{ENTER}");
                 }
             }
         }
 
-        private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
-        {
-            DelFileFlag = true;
-        }
 
-        private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            SaveFileFlag = DelFileFlag;
-            MessageBox.Show(SaveFileFlag.ToString());
-        }
+
     }
 }

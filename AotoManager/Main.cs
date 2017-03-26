@@ -234,19 +234,21 @@ namespace AotoManager
                 int Cnt=0;
                 for (int i = 0; i < dataGrid.Rows.Count; i++)
                 {
-                    if (dataGrid.Rows[i].Cells["BuyPrice"].Value.ToString() != "0" && dataGrid.Rows[i].Cells["StockName"].Value.ToString() != "")
+                    if (dataGrid.Rows[i].Cells["BuyPrice"].Value.ToString() != "0.00" && dataGrid.Rows[i].Cells["StockName"].Value.ToString() != "")
                         Cnt++;
                 }
 
                 
-
-                decimal everyBalance = Convert.ToDecimal(balance / Cnt);
-                for (int i = 0; i < Cnt; i++)
-                {
-                    decimal price;
-                    if(decimal.TryParse(dataGrid.Rows[i].Cells["BuyPrice"].Value.ToString(),out price))
-                    { 
-                      dataGrid.Rows[i].Cells["BuyAmount"].Value = GetStoreHouse(everyBalance, price);
+                if(Cnt!=0)
+                { 
+                    decimal everyBalance = Convert.ToDecimal(balance / Cnt);
+                    for (int i = 0; i < Cnt; i++)
+                    {
+                        decimal price;
+                        if(decimal.TryParse(dataGrid.Rows[i].Cells["BuyPrice"].Value.ToString(),out price))
+                        { 
+                          dataGrid.Rows[i].Cells["BuyAmount"].Value = GetStoreHouse(everyBalance, price);
+                        }
                     }
                 }
             }

@@ -45,7 +45,6 @@
             this.Monitor = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.lblMessage = new System.Windows.Forms.Label();
             this.lblMonitor = new System.Windows.Forms.Label();
-            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             ((System.ComponentModel.ISupportInitialize)(this.dataGrid)).BeginInit();
             this.SuspendLayout();
             // 
@@ -142,6 +141,7 @@
             this.dataGrid.Location = new System.Drawing.Point(-7, 118);
             this.dataGrid.Name = "dataGrid";
             this.dataGrid.ReadOnly = true;
+            this.dataGrid.RowTemplate.DefaultCellStyle.Font = new System.Drawing.Font("宋体", 12F);
             this.dataGrid.RowTemplate.Height = 23;
             this.dataGrid.Size = new System.Drawing.Size(907, 288);
             this.dataGrid.TabIndex = 18;
@@ -212,11 +212,6 @@
             this.lblMonitor.Text = "正在监控...";
             this.lblMonitor.Visible = false;
             // 
-            // backgroundWorker1
-            // 
-            this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
-            this.backgroundWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker1_RunWorkerCompleted);
-            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -260,7 +255,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn BuyPrice;
         private System.Windows.Forms.DataGridViewTextBoxColumn BuyAmount;
         private System.Windows.Forms.DataGridViewTextBoxColumn Monitor;
-        private System.ComponentModel.BackgroundWorker backgroundWorker1;
     }
 }
 
