@@ -36,16 +36,21 @@ namespace AotoTrade
             #region 交易线程
             Task.Factory.StartNew(() =>
             {
-                    //StockConfigModel model = GetModelFromDataContainer();
-                    while (true)
-                    {
-                    model = CanDownload(Utils.FileNameAoto, mac);
-                    BindData(model);
-                    Thread.Sleep(4000);
+                while (true)
+                {
                     if (model.Monitoring)
-                    { 
-                        Monitoring(model);
-                        Thread.Sleep(5600);
+                    {
+                        model = CanDownload(Utils.FileNameAoto, mac);
+                        BindData(model);
+                        Thread.Sleep(4000);
+                   
+                        if(model.LimitTime)
+                        { 
+                            if(DateTime.Parse(DateTime.Now.ToLongTimeString()) >= DateTime.Parse(model.BuyBeginTime.ToLongTimeString()) && DateTime.Parse(DateTime.Now.ToLongTimeString()) <DateTime.Parse( model.BuyEndTime.ToLongTimeString()) )
+                                Monitoring(model);
+                        }
+                        else
+                            Monitoring(model);
                     }
                 }
 
@@ -61,6 +66,7 @@ namespace AotoTrade
                 if(stock.Monitor == "监控中")
                    reachBuyCondition(model,stock);
             }
+            Thread.Sleep(5600);
         }
 
         private void reachBuyCondition(StockConfigModel model,StockList stock)
@@ -313,8 +319,6 @@ namespace AotoTrade
                 }
             }
         }
-
-
 
     }
 }
