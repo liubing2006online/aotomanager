@@ -249,7 +249,7 @@ namespace AotoTrade
 
                 StockConfigModel configModel = Newtonsoft.Json.JsonConvert.DeserializeObject(json, typeof(StockConfigModel)) as StockConfigModel;
 
-                lblMessage.Text = "下载文件转换成功," + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
+                lblMessage.Text = "下载文件转换成功," + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
                 lblMessage.ForeColor = Color.OrangeRed;
                 System.Threading.Thread.Sleep(1000);
                 lblMessage.ForeColor = System.Drawing.SystemColors.HotTrack;

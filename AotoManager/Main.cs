@@ -121,7 +121,7 @@ namespace AotoManager
             // respJson是返回的json消息，示例: { "key":"FILE","hash":"HASH","fsize":FILE_SIZE }
             if (respInfo.StatusCode == 200)
             {
-                lblMessage.Text = "上传成功," + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
+                lblMessage.Text = "上传成功," + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
                 lblMessage.ForeColor = (lblMessage.ForeColor == Color.OrangeRed) ? System.Drawing.SystemColors.HotTrack : Color.OrangeRed;
             }
             else
