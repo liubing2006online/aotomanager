@@ -45,6 +45,7 @@
             this.Monitor = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.lblMessage = new System.Windows.Forms.Label();
             this.lblMonitor = new System.Windows.Forms.Label();
+            this.cbxSoft = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGrid)).BeginInit();
             this.SuspendLayout();
             // 
@@ -195,7 +196,7 @@
             this.lblMessage.AutoSize = true;
             this.lblMessage.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.lblMessage.ForeColor = System.Drawing.SystemColors.HotTrack;
-            this.lblMessage.Location = new System.Drawing.Point(315, 72);
+            this.lblMessage.Location = new System.Drawing.Point(445, 76);
             this.lblMessage.Name = "lblMessage";
             this.lblMessage.Size = new System.Drawing.Size(0, 16);
             this.lblMessage.TabIndex = 26;
@@ -212,11 +213,25 @@
             this.lblMonitor.Text = "正在监控...";
             this.lblMonitor.Visible = false;
             // 
+            // cbxSoft
+            // 
+            this.cbxSoft.Enabled = false;
+            this.cbxSoft.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.cbxSoft.FormattingEnabled = true;
+            this.cbxSoft.Items.AddRange(new object[] {
+            "招商智远",
+            "10JQKA"});
+            this.cbxSoft.Location = new System.Drawing.Point(270, 70);
+            this.cbxSoft.Name = "cbxSoft";
+            this.cbxSoft.Size = new System.Drawing.Size(124, 24);
+            this.cbxSoft.TabIndex = 28;
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(892, 518);
+            this.Controls.Add(this.cbxSoft);
             this.Controls.Add(this.lblMonitor);
             this.Controls.Add(this.lblMessage);
             this.Controls.Add(this.dtEndTime);
@@ -255,6 +270,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn BuyPrice;
         private System.Windows.Forms.DataGridViewTextBoxColumn BuyAmount;
         private System.Windows.Forms.DataGridViewTextBoxColumn Monitor;
+        private System.Windows.Forms.ComboBox cbxSoft;
     }
 }
 

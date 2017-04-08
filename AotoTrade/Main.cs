@@ -38,12 +38,11 @@ namespace AotoTrade
             {
                 while (true)
                 {
+                    model = CanDownload(Utils.FileNameAoto, mac);
+                    BindData(model);
                     if (model.Monitoring)
                     {
-                        model = CanDownload(Utils.FileNameAoto, mac);
-                        BindData(model);
-                        Thread.Sleep(4000);
-                   
+                        Thread.Sleep(1000);
                         if(model.LimitTime)
                         { 
                             if(DateTime.Parse(DateTime.Now.ToLongTimeString()) >= DateTime.Parse(model.BuyBeginTime.ToLongTimeString()) && DateTime.Parse(DateTime.Now.ToLongTimeString()) <DateTime.Parse( model.BuyEndTime.ToLongTimeString()) )
@@ -52,8 +51,8 @@ namespace AotoTrade
                         else
                             Monitoring(model);
                     }
+                    Thread.Sleep(5600);
                 }
-
             });
             #endregion
 
@@ -66,7 +65,7 @@ namespace AotoTrade
                 if(stock.Monitor == "监控中")
                    reachBuyCondition(model,stock);
             }
-            Thread.Sleep(5600);
+           
         }
 
         private void reachBuyCondition(StockConfigModel model,StockList stock)
@@ -76,11 +75,17 @@ namespace AotoTrade
             {
                 System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
                 sw.Start();
-                ZhaoShangZhiYuanTrade(stock.StockCode, stock.CurrentPrice.ToString(), stock.BuyAmount.ToString());
+                Boolean flagTrade = false;
+                if(cbxSoft.SelectedIndex==0)
+                   flagTrade  =  ZhaoShangZhiYuanTrade(stock);
+                else
+                    flagTrade = JQKA(stock);
                 sw.Stop();
-                
-                Task.Factory.StartNew(()=>{
+               
 
+                //Task.Factory.StartNew(()=>{
+                if(flagTrade)
+                { 
                    string ename = System.Configuration.ConfigurationManager.AppSettings["ename"];
                    string epwd = System.Configuration.ConfigurationManager.AppSettings["epwd"];
                    string server = System.Configuration.ConfigurationManager.AppSettings["server"];
@@ -93,11 +98,12 @@ namespace AotoTrade
                    Simplify.Mail.MailSender msender = new Simplify.Mail.MailSender(settings);
                    msender.Send(new System.Net.Mail.MailMessage(add, add, subject, body));
 
-                });
+                //});
+                    stock.BuyAmount = 0;
+                    stock.Monitor = "已停止";
 
-                stock.Monitor = "已停止";
-                UploadFile(model);
-
+                    UploadFile(model);
+                }
             }
         }
 
@@ -282,13 +288,13 @@ namespace AotoTrade
                 dtEndTime.Value = configModel.BuyEndTime;
                 lblMonitor.Visible = true;
                 lblMonitor.Text = Cnt > 0 ? "正在监控..." : "监控已停止...";
-
+                cbxSoft.SelectedIndex = configModel.TradeSoftWare;
             }
         }
 
 
 
-        private void ZhaoShangZhiYuanTrade(string code,string currentPrice,string buyAmount)
+        private Boolean ZhaoShangZhiYuanTrade(StockList stock)
         {
             IntPtr myIntPtr = Utils.FindWindow("TdxW_MainFrame_Class", null);
             Boolean flagFore = Utils.SetForegroundWindow(myIntPtr);
@@ -303,13 +309,13 @@ namespace AotoTrade
                     Utils.mouse_event(Utils.MouseEventFlag.LeftDown, 0, 0, 0, 0); //模拟鼠标按下操作
                     Utils.mouse_event(Utils.MouseEventFlag.LeftUp, 0, 0, 0, 0); //模拟鼠标放开操作
                     Thread.Sleep(200);
-                    SendKeys.SendWait(code);
+                    SendKeys.SendWait(stock.StockCode);
                     Thread.Sleep(300);
-                    SendKeys.SendWait(currentPrice);
+                    SendKeys.SendWait(stock.CurrentPrice.ToString());
                     Thread.Sleep(200);
                     SendKeys.SendWait("{TAB}");
                     Thread.Sleep(200);
-                    SendKeys.SendWait(buyAmount);
+                    SendKeys.SendWait(stock.BuyAmount.ToString());
                     Thread.Sleep(200);
                     SendKeys.SendWait("{ENTER}");
                     Thread.Sleep(200);
@@ -318,6 +324,40 @@ namespace AotoTrade
                     SendKeys.SendWait("{ENTER}");
                 }
             }
+            return flagFore;
+        }
+
+
+        private Boolean JQKA(StockList stock)
+        {
+            IntPtr myIntPtr = Utils.FindWindow(null, "网上股票交易系统5.0");
+            Boolean flagFore = Utils.SetForegroundWindow(myIntPtr);
+            if (flagFore)
+            {
+                Boolean flagShowMax = Utils.ShowWindow(myIntPtr, 3);
+                if (flagShowMax)
+                {
+                    //Thread.Sleep(300);
+                    SendKeys.SendWait("{F1}");
+                    Thread.Sleep(200);
+                    SendKeys.SendWait(stock.StockCode);
+                    Thread.Sleep(300);
+                    SendKeys.SendWait("{TAB}");
+                    Thread.Sleep(200);
+                    SendKeys.SendWait(stock.CurrentPrice.ToString());
+                    Thread.Sleep(200);
+                    SendKeys.SendWait("{TAB}");
+                    Thread.Sleep(200);
+                    SendKeys.SendWait(stock.BuyAmount.ToString());
+                    Thread.Sleep(200);
+                    SendKeys.SendWait("{ENTER}");
+                    Thread.Sleep(200);
+                    SendKeys.SendWait("{ENTER}");
+                    Thread.Sleep(200);
+                    SendKeys.SendWait("{ENTER}");
+                }
+            }
+            return flagFore;
         }
 
     }

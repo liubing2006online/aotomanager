@@ -197,7 +197,7 @@ namespace AotoManager
             dtEndTime.Value = configModel.BuyEndTime;
             btnStop.Visible = true;
             lblMonitor.Visible = true;
-
+            cbxSoft.SelectedIndex= configModel.TradeSoftWare;
             btnStop.Text = Cnt>0 ? "停止监控" : "开始监控";
             lblMonitor.Text = Cnt > 0 ? "正在监控..." : "监控已停止...";
 
@@ -297,7 +297,7 @@ namespace AotoManager
             model.LimitTime = chkLimitTime.Checked;
             model.BuyBeginTime = dtBeginTime.Value;
             model.BuyEndTime = dtEndTime.Value;
-           
+            model.TradeSoftWare= cbxSoft.SelectedIndex;
 
             int Cnt = 0;
             
@@ -309,7 +309,7 @@ namespace AotoManager
                 DataGridViewCellCollection cells = dataGrid.Rows[i].Cells;
                 if (cells["StockCode"].Value!=null &&cells["StockName"].Value!=null)
                 {
-                    if (cells["StockCode"].Value.ToString() != "" && cells["StockName"].Value.ToString() != "")
+                    if (cells["StockCode"].Value.ToString() != ""&& cells["StockCode"].Value.ToString().Length == 6 && cells["StockName"].Value.ToString() != "")
                     { 
                         list.Add(new StockList { StockCode = cells["StockCode"].Value.ToString(), StockName = cells["StockName"].Value.ToString(), BuyPrice = Convert.ToDecimal(cells["BuyPrice"].Value), BuyAmount = Convert.ToInt32(cells["BuyAmount"].Value), Monitor = cells["Monitor"].Value.ToString()});
                         if (cells["Monitor"].Value.ToString() == "监控中")
