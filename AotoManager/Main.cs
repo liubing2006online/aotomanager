@@ -355,6 +355,7 @@ namespace AotoManager
                             { 
                                 MessageBox.Show("证券信息重复！", "注意", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                                 ClearRow(e.RowIndex);
+                                break;
                             }
                             else
                             {

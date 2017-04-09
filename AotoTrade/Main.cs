@@ -24,7 +24,8 @@ namespace AotoTrade
         public static bool SaveFileFlag = false;
         public static bool DelFileFlag = false;
         StockConfigModel model;
-
+        Thread thread = null;
+        private delegate void FlushClient(); //代理
         public Main()
         {
             InitializeComponent();
@@ -34,29 +35,68 @@ namespace AotoTrade
             BindData(model);
 
             #region 交易线程
-            Task.Factory.StartNew(() =>
-            {
-                while (true)
-                {
-                    model = CanDownload(Utils.FileNameAoto, mac);
-                    BindData(model);
-                    if (model.Monitoring)
-                    {
-                        Thread.Sleep(1000);
-                        if(model.LimitTime)
-                        { 
-                            if(DateTime.Parse(DateTime.Now.ToLongTimeString()) >= DateTime.Parse(model.BuyBeginTime.ToLongTimeString()) && DateTime.Parse(DateTime.Now.ToLongTimeString()) <DateTime.Parse( model.BuyEndTime.ToLongTimeString()) )
-                                Monitoring(model);
-                        }
-                        else
-                            Monitoring(model);
-                    }
-                    Thread.Sleep(5600);
-                }
-            });
+            //Task.Factory.StartNew(() =>
+            //{
+            //    while (true)
+            //    {
+            //        model = CanDownload(Utils.FileNameAoto, mac);
+            //        BindData(model);
+            //        if (model.Monitoring)
+            //        {
+            //            Thread.Sleep(1000);
+            //            if(model.LimitTime)
+            //            { 
+            //                if(DateTime.Parse(DateTime.Now.ToLongTimeString()) >= DateTime.Parse(model.BuyBeginTime.ToLongTimeString()) && DateTime.Parse(DateTime.Now.ToLongTimeString()) <DateTime.Parse( model.BuyEndTime.ToLongTimeString()) )
+            //                    Monitoring(model);
+            //            }
+            //            else
+            //                Monitoring(model);
+            //        }
+            //        Thread.Sleep(5600);
+            //    }
+            //});
+            thread = new Thread(CrossThreadFlush);
+            thread.IsBackground = true;
+            thread.Start();
             #endregion
 
         }
+
+        private void CrossThreadFlush()
+        {
+            while (true)
+            {
+                //将sleep和无限循环放在等待异步的外面
+                ThreadFunction();
+                Thread.Sleep(5600);
+            }
+        }
+
+        private void ThreadFunction()
+        {
+            if (this.dataGrid.InvokeRequired)//等待异步
+            {
+                FlushClient fc = new FlushClient(ThreadFunction);
+                this.Invoke(fc); //通过代理调用刷新方法
+            }
+            else
+            {
+                model = CanDownload(Utils.FileNameAoto, mac);
+                BindData(model);
+                if (model.Monitoring)
+                {
+                    Thread.Sleep(1000);
+                    if (model.LimitTime)
+                    {
+                        if (DateTime.Parse(DateTime.Now.ToLongTimeString()) >= DateTime.Parse(model.BuyBeginTime.ToLongTimeString()) && DateTime.Parse(DateTime.Now.ToLongTimeString()) < DateTime.Parse(model.BuyEndTime.ToLongTimeString()))
+                            Monitoring(model);
+                    }
+                    else
+                        Monitoring(model);
+                }
+            }
+        }
+
 
         private void Monitoring(StockConfigModel model)
         {
@@ -235,7 +275,7 @@ namespace AotoTrade
 
         private void btnDownload_Click(object sender, EventArgs e)
         {
-            Download(Utils.FileNameAoto);
+            BindData(Download(Utils.FileNameAoto));
         }
 
         private StockConfigModel CanDownload(string FileNameAoto, Mac mac)
