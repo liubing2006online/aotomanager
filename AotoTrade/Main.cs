@@ -29,7 +29,7 @@ namespace AotoTrade
         public Main()
         {
             InitializeComponent();
-            mac = new Mac(Common.AK, Common.SK);
+            mac = new Mac(System.Configuration.ConfigurationManager.AppSettings["AK"],System.Configuration.ConfigurationManager.AppSettings["SK"]);
             Control.CheckForIllegalCrossThreadCalls = false;
             model = Download(Utils.FileNameAoto);
             BindData(model);

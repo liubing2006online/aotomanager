@@ -32,8 +32,8 @@ namespace AotoManager
         public Main()
         {
             InitializeComponent();
-            AK = Common.AK;
-            SK = Common.SK; ;
+            AK = System.Configuration.ConfigurationManager.AppSettings["AK"];
+            SK = System.Configuration.ConfigurationManager.AppSettings["SK"]; ;
             Uri = Utils.Uri;
             
             mac = new Mac(AK, SK);
