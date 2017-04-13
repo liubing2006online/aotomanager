@@ -56,6 +56,8 @@
             this.lblMonitor = new System.Windows.Forms.Label();
             this.lblMessage = new System.Windows.Forms.Label();
             this.cbxSoft = new System.Windows.Forms.ComboBox();
+            this.btnSetFull = new System.Windows.Forms.Button();
+            this.btnCloseComputer = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGrid)).BeginInit();
             this.SuspendLayout();
             // 
@@ -303,7 +305,7 @@
             this.lblMessage.AutoSize = true;
             this.lblMessage.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.lblMessage.ForeColor = System.Drawing.SystemColors.HotTrack;
-            this.lblMessage.Location = new System.Drawing.Point(439, 61);
+            this.lblMessage.Location = new System.Drawing.Point(413, 30);
             this.lblMessage.Name = "lblMessage";
             this.lblMessage.Size = new System.Drawing.Size(0, 16);
             this.lblMessage.TabIndex = 20;
@@ -320,11 +322,35 @@
             this.cbxSoft.Size = new System.Drawing.Size(124, 24);
             this.cbxSoft.TabIndex = 21;
             // 
+            // btnSetFull
+            // 
+            this.btnSetFull.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnSetFull.Location = new System.Drawing.Point(408, 71);
+            this.btnSetFull.Name = "btnSetFull";
+            this.btnSetFull.Size = new System.Drawing.Size(180, 30);
+            this.btnSetFull.TabIndex = 22;
+            this.btnSetFull.Text = "每个品种配置全仓";
+            this.btnSetFull.UseVisualStyleBackColor = true;
+            this.btnSetFull.Click += new System.EventHandler(this.btnSetFull_Click);
+            // 
+            // btnCloseComputer
+            // 
+            this.btnCloseComputer.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnCloseComputer.Location = new System.Drawing.Point(763, 16);
+            this.btnCloseComputer.Name = "btnCloseComputer";
+            this.btnCloseComputer.Size = new System.Drawing.Size(102, 30);
+            this.btnCloseComputer.TabIndex = 23;
+            this.btnCloseComputer.Text = "关闭电脑";
+            this.btnCloseComputer.UseVisualStyleBackColor = true;
+            this.btnCloseComputer.Click += new System.EventHandler(this.btnCloseComputer_Click);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(931, 585);
+            this.Controls.Add(this.btnCloseComputer);
+            this.Controls.Add(this.btnSetFull);
             this.Controls.Add(this.cbxSoft);
             this.Controls.Add(this.lblMessage);
             this.Controls.Add(this.lblMonitor);
@@ -383,6 +409,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Monitor;
         private System.Windows.Forms.Label lblMessage;
         private System.Windows.Forms.ComboBox cbxSoft;
+        private System.Windows.Forms.Button btnSetFull;
+        private System.Windows.Forms.Button btnCloseComputer;
     }
 }
 

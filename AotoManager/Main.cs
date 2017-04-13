@@ -200,7 +200,7 @@ namespace AotoManager
             cbxSoft.SelectedIndex= configModel.TradeSoftWare;
             btnStop.Text = Cnt>0 ? "停止监控" : "开始监控";
             lblMonitor.Text = Cnt > 0 ? "正在监控..." : "监控已停止...";
-
+            btnCloseComputer.Text= configModel.CloseComputerTime == DateTime.MinValue ? "关闭电脑" : "取消关闭";
         }
 
 
@@ -298,7 +298,8 @@ namespace AotoManager
             model.BuyBeginTime = dtBeginTime.Value;
             model.BuyEndTime = dtEndTime.Value;
             model.TradeSoftWare= cbxSoft.SelectedIndex;
-
+            //关机设置
+            model.CloseComputerTime = (btnCloseComputer.Text == "取消关闭") ? DateTime.Now : DateTime.MinValue;
             int Cnt = 0;
             
 
@@ -415,6 +416,39 @@ namespace AotoManager
             StockConfigModel model = GetModelFromDataContainer();
             model.StockList.ForEach(x => x.Monitor =  flag ? "已停止": "监控中");
             BindData(model);
+        }
+
+        private void btnSetFull_Click(object sender, EventArgs e)
+        {
+            if (GetTrueCondition())
+            {
+                int balance = Convert.ToInt32(txtBalance.Text);
+                int Cnt = 0;
+                for (int i = 0; i < dataGrid.Rows.Count; i++)
+                {
+                    if (dataGrid.Rows[i].Cells["BuyPrice"].Value.ToString() != "0.00" && dataGrid.Rows[i].Cells["StockName"].Value.ToString() != "")
+                        Cnt++;
+                }
+
+
+                if (Cnt != 0)
+                {
+                    decimal everyBalance = Convert.ToDecimal(balance);
+                    for (int i = 0; i < Cnt; i++)
+                    {
+                        decimal price;
+                        if (decimal.TryParse(dataGrid.Rows[i].Cells["BuyPrice"].Value.ToString(), out price))
+                        {
+                            dataGrid.Rows[i].Cells["BuyAmount"].Value = GetStoreHouse(everyBalance, price);
+                        }
+                    }
+                }
+            }
+        }
+
+        private void btnCloseComputer_Click(object sender, EventArgs e)
+        {
+            btnCloseComputer.Text = btnCloseComputer.Text == "关闭电脑"?"取消关闭":"关闭电脑";
         }
     }
 }
