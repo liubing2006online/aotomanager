@@ -33,7 +33,7 @@ namespace AotoManager
         {
             InitializeComponent();
             AK = System.Configuration.ConfigurationManager.AppSettings["AK"];
-            SK = System.Configuration.ConfigurationManager.AppSettings["SK"]; ;
+            SK = System.Configuration.ConfigurationManager.AppSettings["SK"];
             Uri = Utils.Uri;
             
             mac = new Mac(AK, SK);

@@ -22,6 +22,8 @@ namespace AotoTrade
 {
     public partial class Main : Form
     {
+        string AK;
+        string SK;
         Mac mac;
         public static bool SaveFileFlag = false;
         public static bool DelFileFlag = false;
@@ -63,7 +65,9 @@ namespace AotoTrade
         public Main()
         {
             InitializeComponent();
-            mac = new Mac(System.Configuration.ConfigurationManager.AppSettings["AK"],System.Configuration.ConfigurationManager.AppSettings["SK"]);
+            AK = System.Configuration.ConfigurationManager.AppSettings["AK"];
+            SK = System.Configuration.ConfigurationManager.AppSettings["SK"];
+            mac = new Mac(AK, SK);
             Control.CheckForIllegalCrossThreadCalls = false;
             model = Download(Utils.FileNameAoto);
             BindData(model);
@@ -283,7 +287,7 @@ namespace AotoTrade
                 // 文件上传完毕后，在多少天后自动被删除
                 putPolicy.DeleteAfterDays = 1;
                 // 请注意这里的Zone设置(如果不设置，就默认为华东机房)
-                var zoneId = Qiniu.Common.AutoZone.Query(Common.AK, Utils.bucket);
+                var zoneId = Qiniu.Common.AutoZone.Query(AK, Utils.bucket);
                 Qiniu.Common.Config.ConfigZone(zoneId);
                 //Mac mac = new Mac(AK, SK); // Use AK & SK here
                 // 生成上传凭证
