@@ -145,13 +145,16 @@ namespace AotoManager
 
             ListFilesResult list = bm.listFiles(bucket, filename, marker, limit, delimiter);
             List<FileDesc> fileList = list.Items;
-            foreach (FileDesc f in fileList)
-            {
-                var result = bm.delete(bucket, f.Key);
-                if (result.ResponseInfo.StatusCode == 200)
-                    return true;
-                else
-                    return false;
+            if(fileList!=null)
+            { 
+                foreach (FileDesc f in fileList)
+                {
+                    var result = bm.delete(bucket, f.Key);
+                    if (result.ResponseInfo.StatusCode == 200)
+                        return true;
+                    else
+                        return false;
+                }
             }
             return true;
         }
