@@ -203,7 +203,8 @@ namespace AotoTrade
                    Simplify.Mail.MailSender msender = new Simplify.Mail.MailSender(settings);
                    msender.Send(new System.Net.Mail.MailMessage(add, add, subject, body));
 
-                //});
+                    //});
+                    model.AvailableBalance =Convert.ToInt16( Math.Floor( model.AvailableBalance -( stock.CurrentPrice * stock.BuyAmount)));//计算剩余金额
                     stock.BuyAmount = 0;
                     stock.Monitor = "已停止";
 
