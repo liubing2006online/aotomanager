@@ -204,6 +204,7 @@ namespace AotoManager
             btnStop.Text = Cnt>0 ? "停止监控" : "开始监控";
             lblMonitor.Text = Cnt > 0 ? "正在监控..." : "监控已停止...";
             btnCloseComputer.Text= configModel.CloseComputerTime == DateTime.MinValue ? "关闭电脑" : "取消关闭";
+            chkGapLower.Checked = configModel.UseGapLowerTactics;
         }
 
 
@@ -325,6 +326,7 @@ namespace AotoManager
 
             model.Monitoring = Cnt>0 ? true : false;
             model.StockList = list;
+            model.UseGapLowerTactics = chkGapLower.Checked;
             return model;
         }
 

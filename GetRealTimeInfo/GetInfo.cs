@@ -28,7 +28,7 @@ namespace GetRealTimeInfo
                     StockModel model = new StockModel();
                     model.Name = strinfo[0];
                     model.TodayBeginPrice = decimal.Parse(strinfo[1].Substring(0, strinfo[1].Length-1));
-                    model.YesterdayBeginPrice = decimal.Parse(strinfo[2].Substring(0,strinfo[2].Length - 1));
+                    model.YesterdayEndPrice = decimal.Parse(strinfo[2].Substring(0,strinfo[2].Length - 1));
                     model.CurrentPrice = decimal.Parse(strinfo[3].Substring(0,strinfo[3].Length - 1));
                     model.TodayHighestPrice = decimal.Parse(strinfo[4].Substring(0, strinfo[4].Length - 1));
                     model.TodayLowestPrice = decimal.Parse(strinfo[5].Substring(0, strinfo[5].Length - 1));

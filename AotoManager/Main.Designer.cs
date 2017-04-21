@@ -58,6 +58,7 @@
             this.cbxSoft = new System.Windows.Forms.ComboBox();
             this.btnSetFull = new System.Windows.Forms.Button();
             this.btnCloseComputer = new System.Windows.Forms.Button();
+            this.chkGapLower = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGrid)).BeginInit();
             this.SuspendLayout();
             // 
@@ -344,11 +345,23 @@
             this.btnCloseComputer.UseVisualStyleBackColor = true;
             this.btnCloseComputer.Click += new System.EventHandler(this.btnCloseComputer_Click);
             // 
+            // chkGapLower
+            // 
+            this.chkGapLower.AutoSize = true;
+            this.chkGapLower.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.chkGapLower.Location = new System.Drawing.Point(676, 477);
+            this.chkGapLower.Name = "chkGapLower";
+            this.chkGapLower.Size = new System.Drawing.Size(91, 20);
+            this.chkGapLower.TabIndex = 24;
+            this.chkGapLower.Text = "跳空低开";
+            this.chkGapLower.UseVisualStyleBackColor = true;
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(931, 585);
+            this.Controls.Add(this.chkGapLower);
             this.Controls.Add(this.btnCloseComputer);
             this.Controls.Add(this.btnSetFull);
             this.Controls.Add(this.cbxSoft);
@@ -411,6 +424,7 @@
         private System.Windows.Forms.ComboBox cbxSoft;
         private System.Windows.Forms.Button btnSetFull;
         private System.Windows.Forms.Button btnCloseComputer;
+        private System.Windows.Forms.CheckBox chkGapLower;
     }
 }
 

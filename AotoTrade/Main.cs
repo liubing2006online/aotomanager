@@ -124,7 +124,6 @@ namespace AotoTrade
                 BindData(model);
                 if (model.Monitoring)
                 {
-                    Thread.Sleep(1000);
                     if (model.LimitTime)
                     {
                         if (DateTime.Parse(DateTime.Now.ToLongTimeString()) >= DateTime.Parse(model.BuyBeginTime.ToLongTimeString()) && DateTime.Parse(DateTime.Now.ToLongTimeString()) < DateTime.Parse(model.BuyEndTime.ToLongTimeString()))
@@ -173,10 +172,24 @@ namespace AotoTrade
            
         }
 
+        private decimal GetBuyPriceByTactics(StockConfigModel config, StockList stock)
+        {
+            if(config.UseGapLowerTactics)
+            { 
+                StockModel model = GetInfo.Get(stock.StockCode);
+                if (model.YesterdayEndPrice / model.TodayBeginPrice >= 1.01M)
+                {
+                    return Math.Round(stock.BuyPrice * (1 - (model.TodayBeginPrice / model.YesterdayEndPrice)), 2);
+                }
+            }
+            return stock.BuyPrice;
+        }
+
         private void reachBuyCondition(StockConfigModel model,StockList stock)
         {
-            decimal currentPrice = GetInfo.Get(stock.StockCode).CurrentPrice;
-            if (currentPrice <= stock.BuyPrice&&currentPrice!=0&&stock.BuyAmount!=0)
+            //decimal currentPrice = GetInfo.Get(stock.StockCode).CurrentPrice;//实时再获取一次
+            decimal currentPrice = stock.CurrentPrice;//和绑定Grid的数据保持一致
+            if (currentPrice <= GetBuyPriceByTactics(model, stock)&& currentPrice!=0&&stock.BuyAmount!=0)
             {
                 System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
                 sw.Start();
@@ -395,6 +408,7 @@ namespace AotoTrade
                 lblMonitor.Visible = true;
                 lblMonitor.Text = Cnt > 0 ? "正在监控..." : "监控已停止...";
                 cbxSoft.SelectedIndex = configModel.TradeSoftWare;
+                chkGapLower.Checked = configModel.UseGapLowerTactics;
             }
         }
 

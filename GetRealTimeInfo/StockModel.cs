@@ -10,7 +10,7 @@ namespace GetRealTimeInfo
     {
         public string Name { get; set; }
         public decimal TodayBeginPrice { get; set; }
-        public decimal YesterdayBeginPrice { get; set; }
+        public decimal YesterdayEndPrice { get; set; }
         public decimal CurrentPrice { get; set; }
         public decimal TodayHighestPrice { get; set; }
 

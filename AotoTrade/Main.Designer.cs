@@ -46,6 +46,7 @@
             this.lblMessage = new System.Windows.Forms.Label();
             this.lblMonitor = new System.Windows.Forms.Label();
             this.cbxSoft = new System.Windows.Forms.ComboBox();
+            this.chkGapLower = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGrid)).BeginInit();
             this.SuspendLayout();
             // 
@@ -226,11 +227,24 @@
             this.cbxSoft.Size = new System.Drawing.Size(124, 24);
             this.cbxSoft.TabIndex = 28;
             // 
+            // chkGapLower
+            // 
+            this.chkGapLower.AutoSize = true;
+            this.chkGapLower.Enabled = false;
+            this.chkGapLower.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.chkGapLower.Location = new System.Drawing.Point(659, 430);
+            this.chkGapLower.Name = "chkGapLower";
+            this.chkGapLower.Size = new System.Drawing.Size(91, 20);
+            this.chkGapLower.TabIndex = 29;
+            this.chkGapLower.Text = "跳空低开";
+            this.chkGapLower.UseVisualStyleBackColor = true;
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(892, 518);
+            this.Controls.Add(this.chkGapLower);
             this.Controls.Add(this.cbxSoft);
             this.Controls.Add(this.lblMonitor);
             this.Controls.Add(this.lblMessage);
@@ -271,6 +285,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn BuyAmount;
         private System.Windows.Forms.DataGridViewTextBoxColumn Monitor;
         private System.Windows.Forms.ComboBox cbxSoft;
+        private System.Windows.Forms.CheckBox chkGapLower;
     }
 }
 
