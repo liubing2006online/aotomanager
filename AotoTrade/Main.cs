@@ -17,6 +17,8 @@ using Qiniu.Http;
 using Qiniu.Storage.Model;
 using System.Configuration;
 using System.Runtime.InteropServices;
+using System.Diagnostics;
+using System.Net.Mail;
 
 namespace AotoTrade
 {
@@ -191,39 +193,49 @@ namespace AotoTrade
             decimal currentPrice = stock.CurrentPrice;//和绑定Grid的数据保持一致
             if (currentPrice <= GetBuyPriceByTactics(model, stock)&& currentPrice!=0&&stock.BuyAmount!=0)
             {
-                System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+                Stopwatch sw = new Stopwatch();
                 sw.Start();
                 Boolean flagTrade = false;
                 if(cbxSoft.SelectedIndex==0)
                    flagTrade  =  ZhaoShangZhiYuanTrade(stock);
                 else
-                    flagTrade = JQKA(stock);
+                   flagTrade = JQKA(stock);
                 sw.Stop();
-               
+                
+                if (flagTrade)
+                {
+                    Task.Factory.StartNew(() => {
+                        SendMail(stock, sw);
+                    });
 
-                //Task.Factory.StartNew(()=>{
-                if(flagTrade)
-                { 
-                   string ename = System.Configuration.ConfigurationManager.AppSettings["ename"];
-                   string epwd = System.Configuration.ConfigurationManager.AppSettings["epwd"];
-                   string server = System.Configuration.ConfigurationManager.AppSettings["server"];
-                   int port =Convert.ToInt16(System.Configuration.ConfigurationManager.AppSettings["port"]);
-                   string add = System.Configuration.ConfigurationManager.AppSettings["add"];
-                   string subject = string.Format("成功以{0}元买入{1}({2}){3}股", stock.CurrentPrice, stock.StockName, stock.StockCode, stock.BuyAmount);
-                   string body = string.Format("用时{0}秒", sw.Elapsed.TotalSeconds);
+                  model.AvailableBalance =Convert.ToInt16( Math.Floor( model.AvailableBalance -( stock.CurrentPrice * stock.BuyAmount)));//计算剩余金额
+                  stock.BuyAmount = 0;
+                  stock.Monitor = "已停止";
 
-                   Simplify.Mail.MailSenderSettings settings = new Simplify.Mail.MailSenderSettings(server, port, ename, epwd);
-                   Simplify.Mail.MailSender msender = new Simplify.Mail.MailSender(settings);
-                   msender.Send(new System.Net.Mail.MailMessage(add, add, subject, body));
-
-                    //});
-                    model.AvailableBalance =Convert.ToInt16( Math.Floor( model.AvailableBalance -( stock.CurrentPrice * stock.BuyAmount)));//计算剩余金额
-                    stock.BuyAmount = 0;
-                    stock.Monitor = "已停止";
-
-                    UploadFile(model);
+                  UploadFile(model);
                 }
             }
+        }
+
+        private void SendMail(StockList stock,Stopwatch sw)
+        {
+            string subject = string.Format("成功以{0}元买入{1}({2}){3}股", stock.CurrentPrice, stock.StockName, stock.StockCode, stock.BuyAmount);
+            string body = string.Format("用时{0}秒", sw.Elapsed.TotalSeconds);
+            string ename = System.Configuration.ConfigurationManager.AppSettings["ename"];
+            string epwd = System.Configuration.ConfigurationManager.AppSettings["epwd"];
+            string server = System.Configuration.ConfigurationManager.AppSettings["server"];
+            int port = Convert.ToInt16(System.Configuration.ConfigurationManager.AppSettings["port"]);
+            string add = System.Configuration.ConfigurationManager.AppSettings["add"];
+            Simplify.Mail.MailSenderSettings settings = new Simplify.Mail.MailSenderSettings(server, port, ename, epwd);
+            Simplify.Mail.MailSender msender = new Simplify.Mail.MailSender(settings);
+            List<string> addList = add.Split(',').ToList<string>();
+            MailMessage mailMess = new MailMessage();
+            foreach (string address in addList)
+                mailMess.Bcc.Add(address);
+            mailMess.From = new MailAddress(addList[0]);
+            mailMess.Subject = subject;
+            mailMess.Body = body;
+            msender.Send(mailMess);
         }
 
         private Boolean SaveAsDefaultFile(string filename, StockConfigModel model)
