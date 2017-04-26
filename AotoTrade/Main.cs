@@ -63,14 +63,14 @@ namespace AotoTrade
         internal const int TOKEN_ADJUST_PRIVILEGES = 0x00000020;
         internal const string SE_SHUTDOWN_NAME = "SeShutdownPrivilege";
         internal const int EWX_SHUTDOWN = 0x00000001;
-
+        log4net.ILog log = log4net.LogManager.GetLogger("AotoTrade");
         public Main()
         {
             InitializeComponent();
             AK = System.Configuration.ConfigurationManager.AppSettings["AK"];
             SK = System.Configuration.ConfigurationManager.AppSettings["SK"];
             mac = new Mac(AK, SK);
-            Control.CheckForIllegalCrossThreadCalls = false;
+            //Control.CheckForIllegalCrossThreadCalls = false;
             model = Download(Utils.FileNameAoto);
             BindData(model);
 
@@ -121,18 +121,25 @@ namespace AotoTrade
             }
             else
             {
-                model = CanDownload(Utils.FileNameAoto, mac);
-                CloseComputer(model);
-                BindData(model);
-                if (model.Monitoring)
+                try
                 {
-                    if (model.LimitTime)
+                    model = CanDownload(Utils.FileNameAoto, mac);
+                    CloseComputer(model);
+                    BindData(model);
+                    if (model.Monitoring)
                     {
-                        if (DateTime.Parse(DateTime.Now.ToLongTimeString()) >= DateTime.Parse(model.BuyBeginTime.ToLongTimeString()) && DateTime.Parse(DateTime.Now.ToLongTimeString()) < DateTime.Parse(model.BuyEndTime.ToLongTimeString()))
+                        if (model.LimitTime)
+                        {
+                            if (DateTime.Parse(DateTime.Now.ToLongTimeString()) >= DateTime.Parse(model.BuyBeginTime.ToLongTimeString()) && DateTime.Parse(DateTime.Now.ToLongTimeString()) < DateTime.Parse(model.BuyEndTime.ToLongTimeString()))
+                                Monitoring(model);
+                        }
+                        else
                             Monitoring(model);
                     }
-                    else
-                        Monitoring(model);
+                }
+                catch (Exception ex)
+                {
+                    log.InfoFormat("监控出错,{0}", ex.Message);
                 }
             }
         }
@@ -204,8 +211,9 @@ namespace AotoTrade
                 
                 if (flagTrade)
                 {
+                    int amount = stock.BuyAmount;
                     Task.Factory.StartNew(() => {
-                        SendMail(stock, sw);
+                        SendMail(amount,stock, sw);
                     });
 
                   model.AvailableBalance =Convert.ToInt16( Math.Floor( model.AvailableBalance -( stock.CurrentPrice * stock.BuyAmount)));//计算剩余金额
@@ -217,9 +225,9 @@ namespace AotoTrade
             }
         }
 
-        private void SendMail(StockList stock,Stopwatch sw)
+        private void SendMail(int amount,StockList stock,Stopwatch sw)
         {
-            string subject = string.Format("成功以{0}元买入{1}({2}){3}股", stock.CurrentPrice, stock.StockName, stock.StockCode, stock.BuyAmount);
+            string subject = string.Format("成功以{0}元买入{1}({2}){3}股", stock.CurrentPrice, stock.StockName, stock.StockCode, amount);
             string body = string.Format("用时{0}秒", sw.Elapsed.TotalSeconds);
             string ename = System.Configuration.ConfigurationManager.AppSettings["ename"];
             string epwd = System.Configuration.ConfigurationManager.AppSettings["epwd"];

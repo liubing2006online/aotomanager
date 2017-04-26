@@ -78,7 +78,7 @@ namespace GetRealTimeInfo
         public static Boolean CanGetFile(Mac mac)
         {
             if (!File.Exists(FileNameAoto))
-                return true;
+                return false;
             else
             {
                 DateTime filemodifiedTime = File.GetLastWriteTime(FileNameAoto);
