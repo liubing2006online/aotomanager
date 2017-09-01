@@ -20,7 +20,7 @@ namespace AotoManager
 {
     public partial class Main : Form
     {
-        string bucket =Utils.bucket;
+        string bucket = Utils.bucket;
         string FileNameAoto = Utils.FileNameAoto;
         string AK;
         string SK;
@@ -35,7 +35,7 @@ namespace AotoManager
             AK = System.Configuration.ConfigurationManager.AppSettings["AK"];
             SK = System.Configuration.ConfigurationManager.AppSettings["SK"];
             Uri = Utils.Uri;
-            
+
             mac = new Mac(AK, SK);
             txtAK.Text = AK;
             txtSK.Text = SK;
@@ -55,12 +55,12 @@ namespace AotoManager
 
             //string json = Newtonsoft.Json.JsonConvert.SerializeObject(model);
         }
-       
+
         private void btnUpload_Click(object sender, EventArgs e)
         {
-            if(GetTrueCondition())
+            if (GetTrueCondition())
             {
-              UploadFile(GetModelFromDataContainer());
+                UploadFile(GetModelFromDataContainer());
             }
         }
 
@@ -101,11 +101,11 @@ namespace AotoManager
                 //FormUploader fm = new FormUploader();
                 //fm.uploadFile(localFile, saveKey, token, uploadOptions, uploadCompleted);
 
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("出现错误" + ex.Message, "注意", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("出现错误" + ex.Message, "注意", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
 
@@ -145,8 +145,8 @@ namespace AotoManager
 
             ListFilesResult list = bm.listFiles(bucket, filename, marker, limit, delimiter);
             List<FileDesc> fileList = list.Items;
-            if(fileList!=null)
-            { 
+            if (fileList != null)
+            {
                 foreach (FileDesc f in fileList)
                 {
                     var result = bm.delete(bucket, f.Key);
@@ -160,21 +160,31 @@ namespace AotoManager
         }
 
 
- 
+
 
         private void btnDownLoad_Click(object sender, EventArgs e)
         {
-            string filepath =Utils.DownloadFile(FileNameAoto);
-            if (filepath != "")
+            try
             {
-            string json = File.ReadAllText(filepath);
+                string filepath = Utils.DownloadFile(FileNameAoto);
+                if (filepath != "")
+                {
+                    string json = File.ReadAllText(filepath);
 
-            StockConfigModel configModel = Newtonsoft.Json.JsonConvert.DeserializeObject(json, typeof(StockConfigModel)) as StockConfigModel;
+                    StockConfigModel configModel = Newtonsoft.Json.JsonConvert.DeserializeObject(json, typeof(StockConfigModel)) as StockConfigModel;
 
-            BindData(configModel);
+                    BindData(configModel);
+
+                    lblMessage.Text = "下载成功," + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                    lblMessage.ForeColor = (lblMessage.ForeColor == Color.OrangeRed) ? System.Drawing.SystemColors.HotTrack : Color.OrangeRed;
+                }
+                else
+                    MessageBox.Show("下载文件出现错误", "注意", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            else
+            catch (Exception ex)
+            {
                 MessageBox.Show("下载文件出现错误", "注意", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void BindData(StockConfigModel configModel)
@@ -182,7 +192,7 @@ namespace AotoManager
             int Cnt = 0;
             foreach (StockList ll in configModel.StockList)
             {
-                StockModel infoModel= GetInfo.Get(ll.StockCode);
+                StockModel infoModel = GetInfo.Get(ll.StockCode);
                 if (infoModel != null)
                     ll.CurrentPrice = infoModel.CurrentPrice;
                 else
@@ -191,7 +201,7 @@ namespace AotoManager
                 if (ll.Monitor == "监控中")
                     Cnt++;
             }
-                
+
             configModel.StockList.Add(new StockList { StockCode = "", StockName = "", BuyPrice = 0, BuyAmount = 0, CurrentPrice = 0, Monitor = "" });
             dataGrid.DataSource = configModel.StockList;
             txtBalance.Text = configModel.AvailableBalance.ToString();
@@ -200,10 +210,10 @@ namespace AotoManager
             dtEndTime.Value = configModel.BuyEndTime;
             btnStop.Visible = true;
             lblMonitor.Visible = true;
-            cbxSoft.SelectedIndex= configModel.TradeSoftWare;
-            btnStop.Text = Cnt>0 ? "停止监控" : "开始监控";
+            cbxSoft.SelectedIndex = configModel.TradeSoftWare;
+            btnStop.Text = Cnt > 0 ? "停止监控" : "开始监控";
             lblMonitor.Text = Cnt > 0 ? "正在监控..." : "监控已停止...";
-            btnCloseComputer.Text= configModel.CloseComputerTime == DateTime.MinValue ? "关闭电脑" : "取消关闭";
+            btnCloseComputer.Text = configModel.CloseComputerTime == DateTime.MinValue ? "关闭电脑" : "取消关闭";
             chkGapLower.Checked = configModel.UseGapLowerTactics;
         }
 
@@ -235,23 +245,23 @@ namespace AotoManager
             if (GetTrueCondition())
             {
                 int balance = Convert.ToInt32(txtBalance.Text);
-                int Cnt=0;
+                int Cnt = 0;
                 for (int i = 0; i < dataGrid.Rows.Count; i++)
                 {
-                    if (dataGrid.Rows[i].Cells["BuyPrice"].Value.ToString() != "0.00" && dataGrid.Rows[i].Cells["StockName"].Value.ToString() != "")
+                    if (dataGrid.Rows[i].Cells["BuyPrice"].Value != null && dataGrid.Rows[i].Cells["BuyPrice"].Value.ToString() != "0.00" && dataGrid.Rows[i].Cells["StockName"].Value.ToString() != "")
                         Cnt++;
                 }
 
-                
-                if(Cnt!=0)
-                { 
+
+                if (Cnt != 0)
+                {
                     decimal everyBalance = Convert.ToDecimal(balance / Cnt);
                     for (int i = 0; i < Cnt; i++)
                     {
                         decimal price;
-                        if(decimal.TryParse(dataGrid.Rows[i].Cells["BuyPrice"].Value.ToString(),out price))
-                        { 
-                          dataGrid.Rows[i].Cells["BuyAmount"].Value = GetStoreHouse(everyBalance, price);
+                        if (decimal.TryParse(dataGrid.Rows[i].Cells["BuyPrice"].Value.ToString(), out price))
+                        {
+                            dataGrid.Rows[i].Cells["BuyAmount"].Value = GetStoreHouse(everyBalance, price);
                         }
                     }
                 }
@@ -267,16 +277,16 @@ namespace AotoManager
         }
         private void btnSave_Click(object sender, EventArgs e)
         {
-            if(GetTrueCondition())
-            { 
-            if (SaveAsDefaultFile(FileNameAoto,GetModelFromDataContainer()))
-                MessageBox.Show("保存文件到本地成功！", "成功", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            else
-                MessageBox.Show("保存文件到本地失败！", "失败", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            if (GetTrueCondition())
+            {
+                if (SaveAsDefaultFile(FileNameAoto, GetModelFromDataContainer()))
+                    MessageBox.Show("保存文件到本地成功！", "成功", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                else
+                    MessageBox.Show("保存文件到本地失败！", "失败", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        private Boolean SaveAsDefaultFile(string filename,StockConfigModel model)
+        private Boolean SaveAsDefaultFile(string filename, StockConfigModel model)
         {
             //if (GetTrueCondition())
             //{
@@ -301,22 +311,22 @@ namespace AotoManager
             model.LimitTime = chkLimitTime.Checked;
             model.BuyBeginTime = dtBeginTime.Value;
             model.BuyEndTime = dtEndTime.Value;
-            model.TradeSoftWare= cbxSoft.SelectedIndex;
+            model.TradeSoftWare = cbxSoft.SelectedIndex;
             //关机设置
             model.CloseComputerTime = (btnCloseComputer.Text == "取消关闭") ? DateTime.Now : DateTime.MinValue;
             int Cnt = 0;
-            
+
 
 
             List<StockList> list = new List<StockList>();
             for (int i = 0; i < dataGrid.Rows.Count; i++)
             {
                 DataGridViewCellCollection cells = dataGrid.Rows[i].Cells;
-                if (cells["StockCode"].Value!=null &&cells["StockName"].Value!=null)
+                if (cells["StockCode"].Value != null && cells["StockName"].Value != null)
                 {
-                    if (cells["StockCode"].Value.ToString() != ""&& cells["StockCode"].Value.ToString().Length == 6 && cells["StockName"].Value.ToString() != "")
-                    { 
-                        list.Add(new StockList { StockCode = cells["StockCode"].Value.ToString(), StockName = cells["StockName"].Value.ToString(), BuyPrice = Convert.ToDecimal(cells["BuyPrice"].Value), BuyAmount = Convert.ToInt32(cells["BuyAmount"].Value), Monitor = cells["Monitor"].Value.ToString()});
+                    if (cells["StockCode"].Value.ToString() != "" && cells["StockName"].Value.ToString() != "")
+                    {
+                        list.Add(new StockList { StockCode = cells["StockCode"].Value.ToString(), StockName = cells["StockName"].Value.ToString(), BuyPrice = Convert.ToDecimal(cells["BuyPrice"].Value), BuyAmount = Convert.ToInt32(cells["BuyAmount"].Value), Monitor = cells["Monitor"].Value.ToString() });
                         if (cells["Monitor"].Value.ToString() == "监控中")
                             Cnt++;
                     }
@@ -324,7 +334,7 @@ namespace AotoManager
                 }
             }
 
-            model.Monitoring = Cnt>0 ? true : false;
+            model.Monitoring = Cnt > 0 ? true : false;
             model.StockList = list;
             model.UseGapLowerTactics = chkGapLower.Checked;
             return model;
@@ -337,56 +347,71 @@ namespace AotoManager
             dataGrid.Rows[rowIndex].Cells["StockName"].Value = "";
             dataGrid.Rows[rowIndex].Cells["BuyPrice"].Value = 0M;
             dataGrid.Rows[rowIndex].Cells["BuyAmount"].Value = 0M;
+            dataGrid.Rows[rowIndex].Cells["Monitor"].Value = 0M;
+
         }
 
         private void dataGrid_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
-           if(e.ColumnIndex==0)
-            { 
-           var cell = dataGrid.Rows[e.RowIndex].Cells[0].Value;
-            
-            if (cell == null)
-                return;
-            string code = cell.ToString();
-           if (code.Length==6)
-            { 
-               StockModel model=  GetInfo.Get(code);
-               if (model != null)
-               {
-                    for (int j = 0; j < dataGrid.Rows.Count; j++)
-                    {
-                        if (j != e.RowIndex)
-                        {
-                            if (dataGrid.Rows[j].Cells["StockCode"].Value.ToString() == dataGrid.Rows[e.RowIndex].Cells["StockCode"].Value.ToString())
-                            { 
-                                MessageBox.Show("证券信息重复！", "注意", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                                ClearRow(e.RowIndex);
-                                break;
-                            }
-                            else
-                            {
-                                dataGrid.Rows[e.RowIndex].Cells["StockName"].Value = model.Name;
-                                dataGrid.Rows[e.RowIndex].Cells["BuyPrice"].Value = model.CurrentPrice;
-                                dataGrid.Rows[e.RowIndex].Cells["BuyAmount"].Value = 100;//默认值
+            if (e.ColumnIndex == 0)
+            {
+                var cell = dataGrid.Rows[e.RowIndex].Cells[0].Value;
 
-                                dataGrid.Rows[e.RowIndex].Cells["Monitor"].Value = "已停止";//默认值
+                if (cell == null)
+                    return;
+                string code = cell.ToString();
+                if (code.Length == 6)
+                {
+                    StockModel model = GetInfo.Get(code);
+                    if (model != null)
+                    {
+                        bool flag = false;
+                        for (int j = 0; j < dataGrid.Rows.Count; j++)
+                        {
+                            if (j != e.RowIndex)
+                            {
+                                if (dataGrid.Rows[j].Cells["StockCode"].Value != null)
+                                {
+                                    if (dataGrid.Rows[j].Cells["StockCode"].Value.ToString() == dataGrid.Rows[e.RowIndex].Cells["StockCode"].Value.ToString())
+                                    {
+                                        flag = true; break;
+                                    }
+                                }
+
                             }
                         }
+                        if (flag)
+                        {
+                            MessageBox.Show("证券信息重复！", "注意", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            ClearRow(e.RowIndex);
+                        }
+                        else
+                        {
+                            dataGrid.Rows[e.RowIndex].Cells["StockName"].Value = model.Name;
+                            dataGrid.Rows[e.RowIndex].Cells["BuyPrice"].Value = model.CurrentPrice;
+                            dataGrid.Rows[e.RowIndex].Cells["BuyAmount"].Value = 100;//默认值
+                            dataGrid.Rows[e.RowIndex].Cells["Monitor"].Value = "已停止";//默认值
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("获取信息失败！", "失败", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        ClearRow(e.RowIndex);
                     }
                 }
-               else
-                { 
-                    MessageBox.Show("获取信息失败！", "失败", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                else
+                {
                     ClearRow(e.RowIndex);
+                    StockConfigModel model = GetModelFromDataContainer();
+                    BindData(model);
                 }
-            }
             }
             if (e.RowIndex == dataGrid.Rows.Count - 1)
             {
-                DataGridViewCellCollection cells= dataGrid.Rows[e.RowIndex].Cells;
-                if (cells["StockCode"].Value.ToString() != ""&& cells["StockName"].Value.ToString() != "")
+                DataGridViewCellCollection cells = dataGrid.Rows[e.RowIndex].Cells;
+                if (cells["StockCode"].Value != null && cells["StockCode"].Value.ToString() != "" && cells["StockName"].Value.ToString() != "")
                 {
-                    StockConfigModel model= GetModelFromDataContainer();
+                    StockConfigModel model = GetModelFromDataContainer();
                     BindData(model);
                 }
 
@@ -398,28 +423,29 @@ namespace AotoManager
             if (e.KeyCode == Keys.Delete)
             {
                 StockConfigModel model = GetModelFromDataContainer();
-                if(dataGrid.CurrentRow.Index!= dataGrid.Rows.Count-1)
-                { 
-                model.StockList.RemoveAt(dataGrid.CurrentRow.Index);
-                BindData(model);
+                if (dataGrid.CurrentRow.Index != dataGrid.Rows.Count - 1)
+                {
+                    model.StockList.RemoveAt(dataGrid.CurrentRow.Index);
+                    BindData(model);
                 }
             }
-            
+
         }
 
         private void dataGrid_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            dataGrid.Rows[e.RowIndex].Selected = true;
+            if (e.RowIndex != -1)
+                dataGrid.Rows[e.RowIndex].Selected = true;
         }
 
         private void btnStop_Click(object sender, EventArgs e)
         {
             Boolean flag = (btnStop.Text == "停止监控");
-            btnStop.Text= flag ? "开始监控" : "停止监控";
+            btnStop.Text = flag ? "开始监控" : "停止监控";
 
             lblMonitor.Text = flag ? "正在监控..." : "监控已停止...";
             StockConfigModel model = GetModelFromDataContainer();
-            model.StockList.ForEach(x => x.Monitor =  flag ? "已停止": "监控中");
+            model.StockList.ForEach(x => x.Monitor = flag ? "已停止" : "监控中");
             BindData(model);
         }
 
@@ -453,7 +479,13 @@ namespace AotoManager
 
         private void btnCloseComputer_Click(object sender, EventArgs e)
         {
-            btnCloseComputer.Text = btnCloseComputer.Text == "关闭电脑"?"取消关闭":"关闭电脑";
+            btnCloseComputer.Text = btnCloseComputer.Text == "关闭电脑" ? "取消关闭" : "关闭电脑";
+        }
+
+        private void dataGrid_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            MdiForm form = new MdiForm();
+            form.ShowDialog();
         }
     }
 }
