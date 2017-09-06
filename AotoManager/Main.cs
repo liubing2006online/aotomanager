@@ -457,8 +457,11 @@ namespace AotoManager
                 int Cnt = 0;
                 for (int i = 0; i < dataGrid.Rows.Count; i++)
                 {
-                    if (dataGrid.Rows[i].Cells["BuyPrice"].Value.ToString() != "0.00" && dataGrid.Rows[i].Cells["StockName"].Value.ToString() != "")
-                        Cnt++;
+                    if (dataGrid.Rows[i].Cells["BuyPrice"].Value != null)
+                    {
+                        if (dataGrid.Rows[i].Cells["BuyPrice"].Value.ToString() != "0.00" && dataGrid.Rows[i].Cells["StockName"].Value.ToString() != "")
+                            Cnt++;
+                    }
                 }
 
 
