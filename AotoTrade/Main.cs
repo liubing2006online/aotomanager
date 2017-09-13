@@ -180,7 +180,12 @@ namespace AotoTrade
             }
            
         }
-
+        /// <summary>
+        /// 根据策略得到购买价格
+        /// </summary>
+        /// <param name="config"></param>
+        /// <param name="stock"></param>
+        /// <returns></returns>
         private decimal GetBuyPriceByTactics(StockConfigModel config, StockList stock)
         {
             if(config.UseGapLowerTactics)
@@ -193,7 +198,11 @@ namespace AotoTrade
             }
             return stock.BuyPrice;
         }
-
+        /// <summary>
+        /// 达到购买条件
+        /// </summary>
+        /// <param name="model">全量数据model</param>
+        /// <param name="stock">监控中的证券model</param>
         private void reachBuyCondition(StockConfigModel model,StockList stock)
         {
             //decimal currentPrice = GetInfo.Get(stock.StockCode).CurrentPrice;//实时再获取一次
@@ -211,9 +220,9 @@ namespace AotoTrade
                 
                 if (flagTrade)
                 {
-                    int amount = stock.BuyAmount;
+                    int buyamount = stock.BuyAmount;
                     Task.Factory.StartNew(() => {
-                        SendMail(amount,stock, sw);
+                        SendMail(buyamount, stock, sw);
                     });
 
                   model.AvailableBalance =Convert.ToInt16( Math.Floor( model.AvailableBalance -( stock.CurrentPrice * stock.BuyAmount)));//计算剩余金额
@@ -224,10 +233,16 @@ namespace AotoTrade
                 }
             }
         }
-
-        private void SendMail(int amount,StockList stock,Stopwatch sw)
+        
+        /// <summary>
+        /// 发送邮件
+        /// </summary>
+        /// <param name="buyamount">买入数量</param>
+        /// <param name="stock">证券model</param>
+        /// <param name="sw">所耗时间</param>
+        private void SendMail(int buyamount,StockList stock,Stopwatch sw)
         {
-            string subject = string.Format("成功以{0}元买入{1}({2}){3}股", stock.CurrentPrice, stock.StockName, stock.StockCode, amount);
+            string subject = string.Format("成功以{0}元买入{1}({2}){3}股", stock.CurrentPrice, stock.StockName, stock.StockCode, buyamount);
             string body = string.Format("用时{0}秒", sw.Elapsed.TotalSeconds);
             string ename = System.Configuration.ConfigurationManager.AppSettings["ename"];
             string epwd = System.Configuration.ConfigurationManager.AppSettings["epwd"];
@@ -348,7 +363,10 @@ namespace AotoTrade
             }
         }
 
-
+        /// <summary>
+        /// 从数据容器获取实体model
+        /// </summary>
+        /// <returns></returns>
         private StockConfigModel GetModelFromDataContainer()
         {
             StockConfigModel model = new StockConfigModel();
