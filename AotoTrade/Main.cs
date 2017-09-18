@@ -144,11 +144,18 @@ namespace AotoTrade
             }
         }
 
+        /// <summary>
+        /// 关闭电脑
+        /// </summary>
+        /// <param name="model"></param>
         private void CloseComputer(StockConfigModel model)
         {
             if (model.CloseComputerTime.Date == DateTime.Today && DateTime.Now >= model.CloseComputerTime)
             {
                 lblMessage.Text = "正在关闭...";
+                #region 发送邮件通知
+                SendMail(lblMessage.Text, "");
+                #endregion
                 Thread.Sleep(2000);
                 DoExitWin(EWX_SHUTDOWN);
             }
@@ -175,10 +182,10 @@ namespace AotoTrade
         {
             foreach (StockList stock in model.StockList)
             {
-                if(stock.Monitor == "监控中")
-                   reachBuyCondition(model,stock);
+                if (stock.Monitor == "监控中")
+                    reachBuyCondition(model, stock);
             }
-           
+
         }
         /// <summary>
         /// 根据策略得到购买价格
@@ -188,8 +195,8 @@ namespace AotoTrade
         /// <returns></returns>
         private decimal GetBuyPriceByTactics(StockConfigModel config, StockList stock)
         {
-            if(config.UseGapLowerTactics)
-            { 
+            if (config.UseGapLowerTactics)
+            {
                 StockModel model = GetInfo.Get(stock.StockCode);
                 if (model.YesterdayEndPrice / model.TodayBeginPrice >= 1.01M)
                 {
@@ -203,62 +210,81 @@ namespace AotoTrade
         /// </summary>
         /// <param name="model">全量数据model</param>
         /// <param name="stock">监控中的证券model</param>
-        private void reachBuyCondition(StockConfigModel model,StockList stock)
+        private void reachBuyCondition(StockConfigModel model, StockList stock)
         {
             //decimal currentPrice = GetInfo.Get(stock.StockCode).CurrentPrice;//实时再获取一次
             decimal currentPrice = stock.CurrentPrice;//和绑定Grid的数据保持一致
-            if (currentPrice <= GetBuyPriceByTactics(model, stock)&& currentPrice!=0&&stock.BuyAmount!=0)
+            if (currentPrice <= GetBuyPriceByTactics(model, stock) && currentPrice != 0 && stock.BuyAmount != 0)
             {
                 Stopwatch sw = new Stopwatch();
                 sw.Start();
                 Boolean flagTrade = false;
-                if(cbxSoft.SelectedIndex==0)
-                   flagTrade  =  ZhaoShangZhiYuanTrade(stock);
+                if (cbxSoft.SelectedIndex == 0)
+                    flagTrade = ZhaoShangZhiYuanTrade(stock);
                 else
-                   flagTrade = JQKA(stock);
+                    flagTrade = JQKA(stock);
                 sw.Stop();
-                
+
                 if (flagTrade)
                 {
                     int buyamount = stock.BuyAmount;
-                    Task.Factory.StartNew(() => {
-                        SendMail(buyamount, stock, sw);
+
+                    Task.Factory.StartNew(() =>
+                    {
+                        SendTradeSuccessMail(buyamount, stock, sw);
                     });
 
-                  model.AvailableBalance =Convert.ToInt16( Math.Floor( model.AvailableBalance -( stock.CurrentPrice * stock.BuyAmount)));//计算剩余金额
-                  stock.BuyAmount = 0;
-                  stock.Monitor = "已停止";
+                    model.AvailableBalance = Convert.ToInt16(Math.Floor(model.AvailableBalance - (stock.CurrentPrice * stock.BuyAmount)));//计算剩余金额
+                    stock.BuyAmount = 0;
+                    stock.Monitor = "已停止";
 
-                  UploadFile(model);
+                    UploadFile(model);
                 }
             }
         }
-        
+
         /// <summary>
-        /// 发送邮件
+        /// 发送交易成功邮件
         /// </summary>
         /// <param name="buyamount">买入数量</param>
         /// <param name="stock">证券model</param>
         /// <param name="sw">所耗时间</param>
-        private void SendMail(int buyamount,StockList stock,Stopwatch sw)
+        private void SendTradeSuccessMail(int buyamount, StockList stock, Stopwatch sw)
         {
             string subject = string.Format("成功以{0}元买入{1}({2}){3}股", stock.CurrentPrice, stock.StockName, stock.StockCode, buyamount);
             string body = string.Format("用时{0}秒", sw.Elapsed.TotalSeconds);
-            string ename = System.Configuration.ConfigurationManager.AppSettings["ename"];
-            string epwd = System.Configuration.ConfigurationManager.AppSettings["epwd"];
-            string server = System.Configuration.ConfigurationManager.AppSettings["server"];
-            int port = Convert.ToInt16(System.Configuration.ConfigurationManager.AppSettings["port"]);
-            string add = System.Configuration.ConfigurationManager.AppSettings["add"];
-            Simplify.Mail.MailSenderSettings settings = new Simplify.Mail.MailSenderSettings(server, port, ename, epwd);
-            Simplify.Mail.MailSender msender = new Simplify.Mail.MailSender(settings);
-            List<string> addList = add.Split(',').ToList<string>();
-            MailMessage mailMess = new MailMessage();
-            foreach (string address in addList)
-                mailMess.Bcc.Add(address);
-            mailMess.From = new MailAddress(addList[0]);
-            mailMess.Subject = subject;
-            mailMess.Body = body;
-            msender.Send(mailMess);
+            SendMail(subject, body);
+        }
+
+        /// <summary>
+        /// 发送邮件公共方法
+        /// </summary>
+        /// <param name="subject">标题</param>
+        /// <param name="body">内容</param>
+        private void SendMail(string subject, string body)
+        {
+            try
+            {
+                string ename = System.Configuration.ConfigurationManager.AppSettings["ename"];
+                string epwd = System.Configuration.ConfigurationManager.AppSettings["epwd"];
+                string server = System.Configuration.ConfigurationManager.AppSettings["server"];
+                int port = Convert.ToInt16(System.Configuration.ConfigurationManager.AppSettings["port"]);
+                string add = System.Configuration.ConfigurationManager.AppSettings["add"];
+                Simplify.Mail.MailSenderSettings settings = new Simplify.Mail.MailSenderSettings(server, port, ename, epwd);
+                Simplify.Mail.MailSender msender = new Simplify.Mail.MailSender(settings);
+                List<string> addList = add.Split(',').ToList<string>();
+                MailMessage mailMess = new MailMessage();
+                foreach (string address in addList)
+                    mailMess.Bcc.Add(address);
+                mailMess.From = new MailAddress(addList[0]);
+                mailMess.Subject = subject;
+                mailMess.Body = body;
+                msender.Send(mailMess);
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
 
         private Boolean SaveAsDefaultFile(string filename, StockConfigModel model)
@@ -404,8 +430,8 @@ namespace AotoTrade
 
         private StockConfigModel Download(string FileNameAoto)
         {
-           
-            string filepath =Utils.DownloadFile(FileNameAoto);
+
+            string filepath = Utils.DownloadFile(FileNameAoto);
             if (filepath != "")
             {
                 string json = File.ReadAllText(filepath);
@@ -418,7 +444,7 @@ namespace AotoTrade
                 lblMessage.ForeColor = System.Drawing.SystemColors.HotTrack;
 
                 return configModel;
-               
+
             }
             else
             {
