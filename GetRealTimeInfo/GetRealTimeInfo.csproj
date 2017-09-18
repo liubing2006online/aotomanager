@@ -48,7 +48,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Common.cs" />
     <Compile Include="GetInfo.cs" />
     <Compile Include="Model\BuySaleTypeEnum.cs" />
     <Compile Include="Model\FileInfoModel.cs" />
