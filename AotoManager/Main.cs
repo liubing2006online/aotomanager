@@ -39,7 +39,7 @@ namespace AotoManager
             mac = new Mac(AK, SK);
             txtAK.Text = AK;
             txtSK.Text = SK;
-
+            cbxSoft.SelectedIndex = 1;
             //Model.StockConfigModel model = new Model.StockConfigModel();
             //model.AvailableBalance = 900000;
             //model.BuyBeginTime = DateTime.Parse(DateTime.Now.ToString("09:30:00"));
@@ -226,18 +226,8 @@ namespace AotoManager
                 if ((e.KeyChar < '0') || (e.KeyChar > '9'))//这是允许输入0-9数字
                 {
                     e.Handled = true;
-
-
                 }
             }
-
-        }
-
-        private int GetStoreHouse(decimal balance, decimal price)
-        {
-            int tempStore = (int)Math.Floor(balance / price);
-            List<DictionaryEntry> dicAll = new List<DictionaryEntry>();
-            return tempStore - tempStore % 100;
         }
 
         private void btnAverage_Click(object sender, EventArgs e)
@@ -261,7 +251,7 @@ namespace AotoManager
                         decimal price;
                         if (decimal.TryParse(dataGrid.Rows[i].Cells["BuyPrice"].Value.ToString(), out price))
                         {
-                            dataGrid.Rows[i].Cells["BuyAmount"].Value = GetStoreHouse(everyBalance, price);
+                            dataGrid.Rows[i].Cells["BuyAmount"].Value = Utils.GetStoreHouse(everyBalance, price);
                         }
                     }
                 }
@@ -473,7 +463,7 @@ namespace AotoManager
                         decimal price;
                         if (decimal.TryParse(dataGrid.Rows[i].Cells["BuyPrice"].Value.ToString(), out price))
                         {
-                            dataGrid.Rows[i].Cells["BuyAmount"].Value = GetStoreHouse(everyBalance, price);
+                            dataGrid.Rows[i].Cells["BuyAmount"].Value = Utils.GetStoreHouse(everyBalance, price);
                         }
                     }
                 }
@@ -487,8 +477,20 @@ namespace AotoManager
 
         private void dataGrid_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            MdiForm form = new MdiForm();
-            form.ShowDialog();
+            var codecell = dataGrid["StockCode", e.RowIndex].Value;
+            if (codecell != null)
+            {
+                dataGrid.Rows[e.RowIndex].Selected = true;
+
+                string name = dataGrid["StockName", e.RowIndex].Value.ToString();
+                                
+                string buyamount = dataGrid["BuyAmount", e.RowIndex].Value.ToString();
+
+                string buyprice = dataGrid["BuyPrice", e.RowIndex].Value.ToString();
+
+                MdiForm form = new MdiForm(codecell.ToString(), name, buyamount, buyprice, dataGrid);
+                form.ShowDialog();
+            }
         }
     }
 }

@@ -208,5 +208,11 @@ namespace GetRealTimeInfo
         {
             return Auth.createManageToken(url, null, mac);
         }
+
+        public static int GetStoreHouse(decimal balance, decimal price)
+        {
+            int tempStore = (int)Math.Floor(balance / price);
+            return tempStore - tempStore % 100;
+        }
     }
 }
