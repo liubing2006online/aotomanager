@@ -35,6 +35,11 @@
             this.txtBalance = new System.Windows.Forms.TextBox();
             this.lblBalance = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.lblUnit = new System.Windows.Forms.Label();
+            this.txtVarAmount = new System.Windows.Forms.TextBox();
+            this.lblVarAmount = new System.Windows.Forms.Label();
+            this.lblVarTrend = new System.Windows.Forms.Label();
+            this.cbxVarTrend = new System.Windows.Forms.ComboBox();
             this.txtBuyAmount = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.cbxBuyAmount = new System.Windows.Forms.ComboBox();
@@ -103,6 +108,11 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.lblUnit);
+            this.groupBox1.Controls.Add(this.txtVarAmount);
+            this.groupBox1.Controls.Add(this.lblVarAmount);
+            this.groupBox1.Controls.Add(this.lblVarTrend);
+            this.groupBox1.Controls.Add(this.cbxVarTrend);
             this.groupBox1.Controls.Add(this.txtBuyAmount);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.cbxBuyAmount);
@@ -116,9 +126,52 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "买入参数";
             // 
+            // lblUnit
+            // 
+            this.lblUnit.AutoSize = true;
+            this.lblUnit.Location = new System.Drawing.Point(139, 77);
+            this.lblUnit.Name = "lblUnit";
+            this.lblUnit.Size = new System.Drawing.Size(17, 12);
+            this.lblUnit.TabIndex = 13;
+            this.lblUnit.Text = "元";
+            // 
+            // txtVarAmount
+            // 
+            this.txtVarAmount.Location = new System.Drawing.Point(82, 74);
+            this.txtVarAmount.Name = "txtVarAmount";
+            this.txtVarAmount.Size = new System.Drawing.Size(51, 21);
+            this.txtVarAmount.TabIndex = 12;
+            this.txtVarAmount.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtVarAmount_KeyPress);
+            // 
+            // lblVarAmount
+            // 
+            this.lblVarAmount.AutoSize = true;
+            this.lblVarAmount.Location = new System.Drawing.Point(11, 77);
+            this.lblVarAmount.Name = "lblVarAmount";
+            this.lblVarAmount.Size = new System.Drawing.Size(65, 12);
+            this.lblVarAmount.TabIndex = 11;
+            this.lblVarAmount.Text = "变化数量：";
+            // 
+            // lblVarTrend
+            // 
+            this.lblVarTrend.AutoSize = true;
+            this.lblVarTrend.Location = new System.Drawing.Point(11, 48);
+            this.lblVarTrend.Name = "lblVarTrend";
+            this.lblVarTrend.Size = new System.Drawing.Size(65, 12);
+            this.lblVarTrend.TabIndex = 10;
+            this.lblVarTrend.Text = "变化趋势：";
+            // 
+            // cbxVarTrend
+            // 
+            this.cbxVarTrend.FormattingEnabled = true;
+            this.cbxVarTrend.Location = new System.Drawing.Point(82, 45);
+            this.cbxVarTrend.Name = "cbxVarTrend";
+            this.cbxVarTrend.Size = new System.Drawing.Size(95, 20);
+            this.cbxVarTrend.TabIndex = 9;
+            // 
             // txtBuyAmount
             // 
-            this.txtBuyAmount.Location = new System.Drawing.Point(93, 124);
+            this.txtBuyAmount.Location = new System.Drawing.Point(93, 185);
             this.txtBuyAmount.MaxLength = 6;
             this.txtBuyAmount.Name = "txtBuyAmount";
             this.txtBuyAmount.ReadOnly = true;
@@ -128,7 +181,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(11, 127);
+            this.label2.Location = new System.Drawing.Point(11, 188);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(89, 12);
             this.label2.TabIndex = 7;
@@ -137,7 +190,7 @@
             // cbxBuyAmount
             // 
             this.cbxBuyAmount.FormattingEnabled = true;
-            this.cbxBuyAmount.Location = new System.Drawing.Point(93, 86);
+            this.cbxBuyAmount.Location = new System.Drawing.Point(93, 147);
             this.cbxBuyAmount.Name = "cbxBuyAmount";
             this.cbxBuyAmount.Size = new System.Drawing.Size(130, 20);
             this.cbxBuyAmount.TabIndex = 6;
@@ -146,7 +199,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(11, 89);
+            this.label3.Location = new System.Drawing.Point(11, 150);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(89, 12);
             this.label3.TabIndex = 5;
@@ -154,7 +207,7 @@
             // 
             // txtBuyPrice
             // 
-            this.txtBuyPrice.Location = new System.Drawing.Point(82, 42);
+            this.txtBuyPrice.Location = new System.Drawing.Point(82, 103);
             this.txtBuyPrice.MaxLength = 6;
             this.txtBuyPrice.Name = "txtBuyPrice";
             this.txtBuyPrice.Size = new System.Drawing.Size(72, 21);
@@ -165,7 +218,7 @@
             // lblBuyPrice
             // 
             this.lblBuyPrice.AutoSize = true;
-            this.lblBuyPrice.Location = new System.Drawing.Point(11, 45);
+            this.lblBuyPrice.Location = new System.Drawing.Point(11, 106);
             this.lblBuyPrice.Name = "lblBuyPrice";
             this.lblBuyPrice.Size = new System.Drawing.Size(65, 12);
             this.lblBuyPrice.TabIndex = 3;
@@ -230,5 +283,10 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.Button btnCancel;
+        private System.Windows.Forms.Label lblUnit;
+        private System.Windows.Forms.TextBox txtVarAmount;
+        private System.Windows.Forms.Label lblVarAmount;
+        private System.Windows.Forms.Label lblVarTrend;
+        private System.Windows.Forms.ComboBox cbxVarTrend;
     }
 }

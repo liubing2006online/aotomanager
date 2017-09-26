@@ -1,4 +1,5 @@
 ﻿using GetRealTimeInfo;
+using GetRealTimeInfo.Model;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -19,14 +20,27 @@ namespace AotoManager
             InitializeComponent();
         }
         DataGridView mainDataGrid;
-        public MdiForm(string code, string name, string buyamount,string buyprice,DataGridView DataGrid)
+        public MdiForm(string code, string name, string buyamount, string buyprice, string buyvariabletrend, string buyvariableamount, DataGridView DataGrid)
         {
             InitializeComponent();
+
+            List<DictionaryEntry> varTrendList = new List<DictionaryEntry>();
+            varTrendList.Add(new DictionaryEntry(BuyVariableTrendEnum.ReachOrUp.GetEnumDescription(), (int)BuyVariableTrendEnum.ReachOrUp));
+            varTrendList.Add(new DictionaryEntry(BuyVariableTrendEnum.ReachOrDown.GetEnumDescription(), (int)BuyVariableTrendEnum.ReachOrDown));
+            varTrendList.Add(new DictionaryEntry(BuyVariableTrendEnum.DownThenRebound.GetEnumDescription(), (int)BuyVariableTrendEnum.DownThenRebound));
+            varTrendList.Add(new DictionaryEntry(BuyVariableTrendEnum.DownThenUp.GetEnumDescription(), (int)BuyVariableTrendEnum.DownThenUp));
+            cbxVarTrend.DataSource = varTrendList;
+            cbxVarTrend.ValueMember = "Value";
+            cbxVarTrend.DisplayMember = "Key";
+
             txtCode.Text = code;
             txtName.Text = name;
             txtBuyAmount.Text = buyamount;
             txtBuyPrice.Text = buyprice;
+            cbxVarTrend.SelectedValue = int.Parse(buyvariabletrend);
+            txtVarAmount.Text = buyvariableamount;
             mainDataGrid = DataGrid;
+
         }
 
         private void txtBalance_KeyPress(object sender, KeyPressEventArgs e)
@@ -148,7 +162,22 @@ namespace AotoManager
             mainDataGrid.SelectedRows[0].Cells["StockName"].Value = txtName.Text.Trim();
             mainDataGrid.SelectedRows[0].Cells["BuyPrice"].Value = txtBuyPrice.Text.Trim();
             mainDataGrid.SelectedRows[0].Cells["BuyAmount"].Value = txtBuyAmount.Text.Trim();
+            mainDataGrid.SelectedRows[0].Cells["BuyVariableAmount"].Value = txtVarAmount.Text.Trim();
+            mainDataGrid.SelectedRows[0].Cells["BuyVariableTrend"].Value = cbxVarTrend.SelectedValue;
+            mainDataGrid.SelectedRows[0].Cells["BuyStrategy"].Value = string.Format("{0}{1}元", ((BuyVariableTrendEnum)cbxVarTrend.SelectedValue).GetEnumDescription(), txtVarAmount.Text.Trim());
             this.Close();
         }
+
+        private void txtVarAmount_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar != '\b')//这是允许输入退格键
+            {
+                if (((e.KeyChar < '0') || (e.KeyChar > '9')) && (e.KeyChar != '.'))//这是允许输入0-9数字
+                {
+                    e.Handled = true;
+                }
+            }
+        }
+
     }
 }

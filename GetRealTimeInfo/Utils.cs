@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 using GetRealTimeInfo.Model;
 using Qiniu.Util;
 using System.Runtime.InteropServices;
+using System.Reflection;
+using System.ComponentModel;
+
 namespace GetRealTimeInfo
 {
      public static class Utils
@@ -213,6 +216,20 @@ namespace GetRealTimeInfo
         {
             int tempStore = (int)Math.Floor(balance / price);
             return tempStore - tempStore % 100;
+        }
+
+        public static string GetEnumDescription(this Enum value)
+        {
+            Type type = value.GetType();
+            string name = Enum.GetName(type, value);
+            if (name == null)
+            {
+                return null;
+            }
+            FieldInfo field = type.GetField(name);
+            DescriptionAttribute attribute = Attribute.GetCustomAttribute(field, typeof(DescriptionAttribute)) as DescriptionAttribute;
+
+            return attribute == null ? null : attribute.Description;
         }
     }
 }

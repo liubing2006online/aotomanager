@@ -28,9 +28,18 @@ namespace GetRealTimeInfo.Model
         /// </summary>
         public int BuyAmount { get; set; }
         /// <summary>
-        /// 买入策略（实际只存在一种，故省略）
+        /// 买入变化趋势
         /// </summary>
-        //public int BuyType { get; set; }
+        public int BuyVariableTrend { get; set; }
+
+        /// <summary>
+        /// 买入变化数量
+        /// </summary>
+        public int BuyVariableAmount { get; set; }
+        /// <summary>
+        /// 买入策略
+        /// </summary>
+        public string BuyStrategy { get; set; }
         public string Monitor { get; set; }
     }
 }

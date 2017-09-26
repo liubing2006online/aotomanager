@@ -49,7 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GetInfo.cs" />
-    <Compile Include="Model\BuySaleTypeEnum.cs" />
+    <Compile Include="Model\BuyVariableTrendEnum.cs" />
     <Compile Include="Model\FileInfoModel.cs" />
     <Compile Include="Model\StockConfigModel.cs" />
     <Compile Include="Model\StockList.cs" />
