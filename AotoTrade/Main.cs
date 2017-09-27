@@ -214,7 +214,7 @@ namespace AotoTrade
         {
             //decimal currentPrice = GetInfo.Get(stock.StockCode).CurrentPrice;//实时再获取一次
             decimal currentPrice = stock.CurrentPrice;//和绑定Grid的数据保持一致
-            if (currentPrice <= GetBuyPriceByTactics(model, stock) && currentPrice != 0 && stock.BuyAmount != 0)
+            if (CurrentCanTrade(model, stock) && currentPrice != 0 && stock.BuyAmount != 0)
             {
                 Stopwatch sw = new Stopwatch();
                 sw.Start();
@@ -241,6 +241,87 @@ namespace AotoTrade
                     UploadFile(model);
                 }
             }
+        }
+
+        /// <summary>
+        /// 是否能下单
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="stock"></param>
+        /// <returns></returns>
+        private bool CurrentCanTrade(StockConfigModel model, StockList stock)
+        {
+            if (stock.BuyVariableTrend != 0)
+            {
+                if (stock.BuyVariableTrend == (int)BuyVariableTrendEnum.ReachOrDown)
+                {
+                    return stock.CurrentPrice <= GetBuyPriceByTactics(model, stock);
+                }
+                else if (stock.BuyVariableTrend == (int)BuyVariableTrendEnum.DownThenRebound)
+                {
+                    if (stock.BuyPrice - stock.CurrentPrice >= stock.BuyVariableAmount)
+                        stock.BuyMarkPrice = stock.CurrentPrice;
+
+                    if (stock.CurrentPrice - stock.BuyMarkPrice >= stock.BuyVariableAmount)
+                        return true;
+                }
+                else if (stock.BuyVariableTrend == (int)BuyVariableTrendEnum.DownThenUp)
+                {
+                    if (stock.BuyMarkPrice == 0)
+                    {
+                        if (stock.BuyPrice - stock.CurrentPrice >= stock.BuyVariableAmount)
+                            stock.BuyMarkPrice = stock.CurrentPrice;
+                    }
+                    else
+                    {
+                        if (stock.BuyMarkPrice - stock.CurrentPrice >= stock.BuyVariableAmount)
+                            stock.BuyMarkPrice = stock.CurrentPrice;
+                    }
+
+                    if (stock.CurrentPrice - stock.BuyMarkPrice >= stock.BuyVariableAmount)
+                        return true;
+                }
+                else if (stock.BuyVariableTrend == (int)BuyVariableTrendEnum.ReachOrUp)
+                {
+                    return stock.CurrentPrice >= stock.BuyPrice;
+                }
+            }
+            else if (stock.SaleVariableTrend != 0)
+            {
+                if (stock.SaleVariableTrend == (int)SaleVariableTrendEnum.ReachOrDown)
+                {
+                    return stock.CurrentPrice <= stock.SalePrice;
+                }
+                else if (stock.SaleVariableTrend == (int)SaleVariableTrendEnum.UpThenFallBack)
+                {
+                    if (stock.CurrentPrice - stock.SalePrice >= stock.SaleVariableAmount)
+                        stock.SaleMarkPrice = stock.CurrentPrice;
+
+                    if (stock.SaleMarkPrice - stock.CurrentPrice >= stock.SaleVariableAmount)
+                        return true;
+                }
+                else if (stock.SaleVariableTrend == (int)SaleVariableTrendEnum.UpThenDown)
+                {
+                    if (stock.SaleMarkPrice == 0)
+                    {
+                        if (stock.CurrentPrice - stock.SalePrice >= stock.SaleVariableAmount)
+                            stock.SaleMarkPrice = stock.CurrentPrice;
+                    }
+                    else
+                    {
+                        if (stock.CurrentPrice - stock.SaleMarkPrice >= stock.SaleVariableAmount)
+                            stock.SaleMarkPrice = stock.CurrentPrice;
+                    }
+
+                    if (stock.SaleMarkPrice - stock.CurrentPrice >= stock.SaleVariableAmount)
+                        return true;
+                }
+                else if (stock.SaleVariableTrend == (int)SaleVariableTrendEnum.ReachOrUp)
+                {
+                    return stock.CurrentPrice >= stock.SalePrice;
+                }
+            }
+            return false;
         }
 
         /// <summary>

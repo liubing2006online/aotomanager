@@ -32,6 +32,9 @@ namespace GetRealTimeInfo.Model
         public Boolean Monitoring { get; set; }
 
         public int TradeSoftWare { get; set; }
+        /// <summary>
+        /// 使用跳空低开策略
+        /// </summary>
         public Boolean UseGapLowerTactics { get; set; }
         public List<StockList> StockList { get; set; }
 
