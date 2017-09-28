@@ -41,6 +41,21 @@
             this.lblBalance = new System.Windows.Forms.Label();
             this.txtBalance = new System.Windows.Forms.TextBox();
             this.dataGrid = new System.Windows.Forms.DataGridView();
+            this.btnAverage = new System.Windows.Forms.Button();
+            this.btnSave = new System.Windows.Forms.Button();
+            this.chkLimitTime = new System.Windows.Forms.CheckBox();
+            this.lblBeginTime = new System.Windows.Forms.Label();
+            this.lblEndTime = new System.Windows.Forms.Label();
+            this.dtBeginTime = new System.Windows.Forms.DateTimePicker();
+            this.dtEndTime = new System.Windows.Forms.DateTimePicker();
+            this.button1 = new System.Windows.Forms.Button();
+            this.btnStop = new System.Windows.Forms.Button();
+            this.lblMonitor = new System.Windows.Forms.Label();
+            this.lblMessage = new System.Windows.Forms.Label();
+            this.cbxSoft = new System.Windows.Forms.ComboBox();
+            this.btnSetFull = new System.Windows.Forms.Button();
+            this.btnCloseComputer = new System.Windows.Forms.Button();
+            this.chkGapLower = new System.Windows.Forms.CheckBox();
             this.StockCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.StockName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CurrentPrice = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -57,21 +72,6 @@
             this.SaleVariableAmount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.BuyMarkPrice = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.SaleMarkPrice = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.btnAverage = new System.Windows.Forms.Button();
-            this.btnSave = new System.Windows.Forms.Button();
-            this.chkLimitTime = new System.Windows.Forms.CheckBox();
-            this.lblBeginTime = new System.Windows.Forms.Label();
-            this.lblEndTime = new System.Windows.Forms.Label();
-            this.dtBeginTime = new System.Windows.Forms.DateTimePicker();
-            this.dtEndTime = new System.Windows.Forms.DateTimePicker();
-            this.button1 = new System.Windows.Forms.Button();
-            this.btnStop = new System.Windows.Forms.Button();
-            this.lblMonitor = new System.Windows.Forms.Label();
-            this.lblMessage = new System.Windows.Forms.Label();
-            this.cbxSoft = new System.Windows.Forms.ComboBox();
-            this.btnSetFull = new System.Windows.Forms.Button();
-            this.btnCloseComputer = new System.Windows.Forms.Button();
-            this.chkGapLower = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGrid)).BeginInit();
             this.SuspendLayout();
             // 
@@ -153,6 +153,9 @@
             // dataGrid
             // 
             this.dataGrid.AllowUserToDeleteRows = false;
+            this.dataGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
             dataGridViewCellStyle1.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
@@ -193,133 +196,12 @@
             this.dataGrid.RowsDefaultCellStyle = dataGridViewCellStyle3;
             this.dataGrid.RowTemplate.DefaultCellStyle.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.dataGrid.RowTemplate.Height = 23;
-            this.dataGrid.Size = new System.Drawing.Size(907, 288);
+            this.dataGrid.Size = new System.Drawing.Size(1041, 288);
             this.dataGrid.TabIndex = 7;
             this.dataGrid.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGrid_CellClick);
             this.dataGrid.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGrid_CellDoubleClick);
             this.dataGrid.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGrid_CellEndEdit);
             this.dataGrid.KeyUp += new System.Windows.Forms.KeyEventHandler(this.dataGrid_KeyUp);
-            // 
-            // StockCode
-            // 
-            this.StockCode.DataPropertyName = "StockCode";
-            this.StockCode.HeaderText = "证券代码";
-            this.StockCode.MaxInputLength = 6;
-            this.StockCode.Name = "StockCode";
-            // 
-            // StockName
-            // 
-            this.StockName.DataPropertyName = "StockName";
-            this.StockName.HeaderText = "证券名称";
-            this.StockName.Name = "StockName";
-            this.StockName.ReadOnly = true;
-            // 
-            // CurrentPrice
-            // 
-            this.CurrentPrice.DataPropertyName = "CurrentPrice";
-            this.CurrentPrice.HeaderText = "当前价格";
-            this.CurrentPrice.Name = "CurrentPrice";
-            this.CurrentPrice.ReadOnly = true;
-            this.CurrentPrice.Visible = false;
-            // 
-            // Monitor
-            // 
-            this.Monitor.DataPropertyName = "Monitor";
-            this.Monitor.HeaderText = "监控状态";
-            this.Monitor.Name = "Monitor";
-            this.Monitor.ReadOnly = true;
-            this.Monitor.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            // 
-            // BuyPrice
-            // 
-            this.BuyPrice.DataPropertyName = "BuyPrice";
-            this.BuyPrice.HeaderText = "买入价格";
-            this.BuyPrice.Name = "BuyPrice";
-            // 
-            // BuyAmount
-            // 
-            this.BuyAmount.DataPropertyName = "BuyAmount";
-            this.BuyAmount.HeaderText = "买入数量";
-            this.BuyAmount.Name = "BuyAmount";
-            this.BuyAmount.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            // 
-            // BuyStrategy
-            // 
-            this.BuyStrategy.DataPropertyName = "BuyStrategy";
-            this.BuyStrategy.HeaderText = "买入策略";
-            this.BuyStrategy.Name = "BuyStrategy";
-            this.BuyStrategy.ReadOnly = true;
-            this.BuyStrategy.Width = 130;
-            // 
-            // SalePrice
-            // 
-            this.SalePrice.DataPropertyName = "SalePrice";
-            this.SalePrice.HeaderText = "卖出价格";
-            this.SalePrice.Name = "SalePrice";
-            this.SalePrice.ReadOnly = true;
-            // 
-            // SaleAmount
-            // 
-            this.SaleAmount.DataPropertyName = "SaleAmount";
-            this.SaleAmount.HeaderText = "卖出数量";
-            this.SaleAmount.Name = "SaleAmount";
-            this.SaleAmount.ReadOnly = true;
-            // 
-            // SaleStrategy
-            // 
-            this.SaleStrategy.DataPropertyName = "SaleStrategy";
-            this.SaleStrategy.HeaderText = "卖出策略";
-            this.SaleStrategy.Name = "SaleStrategy";
-            this.SaleStrategy.ReadOnly = true;
-            this.SaleStrategy.Width = 130;
-            // 
-            // BuyVariableTrend
-            // 
-            this.BuyVariableTrend.DataPropertyName = "BuyVariableTrend";
-            this.BuyVariableTrend.HeaderText = "买入变化趋势";
-            this.BuyVariableTrend.Name = "BuyVariableTrend";
-            this.BuyVariableTrend.ReadOnly = true;
-            this.BuyVariableTrend.Visible = false;
-            // 
-            // BuyVariableAmount
-            // 
-            this.BuyVariableAmount.DataPropertyName = "BuyVariableAmount";
-            this.BuyVariableAmount.HeaderText = "买入变化数量";
-            this.BuyVariableAmount.Name = "BuyVariableAmount";
-            this.BuyVariableAmount.ReadOnly = true;
-            this.BuyVariableAmount.Visible = false;
-            // 
-            // SaleVariableTrend
-            // 
-            this.SaleVariableTrend.DataPropertyName = "SaleVariableTrend";
-            this.SaleVariableTrend.HeaderText = "卖出变化趋势";
-            this.SaleVariableTrend.Name = "SaleVariableTrend";
-            this.SaleVariableTrend.ReadOnly = true;
-            this.SaleVariableTrend.Visible = false;
-            // 
-            // SaleVariableAmount
-            // 
-            this.SaleVariableAmount.DataPropertyName = "SaleVariableAmount";
-            this.SaleVariableAmount.HeaderText = "卖出变化数量";
-            this.SaleVariableAmount.Name = "SaleVariableAmount";
-            this.SaleVariableAmount.ReadOnly = true;
-            this.SaleVariableAmount.Visible = false;
-            // 
-            // BuyMarkPrice
-            // 
-            this.BuyMarkPrice.DataPropertyName = "BuyMarkPrice";
-            this.BuyMarkPrice.HeaderText = "买入标记价格";
-            this.BuyMarkPrice.Name = "BuyMarkPrice";
-            this.BuyMarkPrice.ReadOnly = true;
-            this.BuyMarkPrice.Visible = false;
-            // 
-            // SaleMarkPrice
-            // 
-            this.SaleMarkPrice.DataPropertyName = "SaleMarkPrice";
-            this.SaleMarkPrice.HeaderText = "卖出标记价格";
-            this.SaleMarkPrice.Name = "SaleMarkPrice";
-            this.SaleMarkPrice.ReadOnly = true;
-            this.SaleMarkPrice.Visible = false;
             // 
             // btnAverage
             // 
@@ -476,11 +358,132 @@
             this.chkGapLower.Text = "跳空低开";
             this.chkGapLower.UseVisualStyleBackColor = true;
             // 
+            // StockCode
+            // 
+            this.StockCode.DataPropertyName = "StockCode";
+            this.StockCode.HeaderText = "证券代码";
+            this.StockCode.MaxInputLength = 6;
+            this.StockCode.Name = "StockCode";
+            // 
+            // StockName
+            // 
+            this.StockName.DataPropertyName = "StockName";
+            this.StockName.HeaderText = "证券名称";
+            this.StockName.Name = "StockName";
+            this.StockName.ReadOnly = true;
+            // 
+            // CurrentPrice
+            // 
+            this.CurrentPrice.DataPropertyName = "CurrentPrice";
+            this.CurrentPrice.HeaderText = "当前价格";
+            this.CurrentPrice.Name = "CurrentPrice";
+            this.CurrentPrice.ReadOnly = true;
+            this.CurrentPrice.Visible = false;
+            // 
+            // Monitor
+            // 
+            this.Monitor.DataPropertyName = "Monitor";
+            this.Monitor.HeaderText = "监控状态";
+            this.Monitor.Name = "Monitor";
+            this.Monitor.ReadOnly = true;
+            this.Monitor.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            // 
+            // BuyPrice
+            // 
+            this.BuyPrice.DataPropertyName = "BuyPrice";
+            this.BuyPrice.HeaderText = "买入价格";
+            this.BuyPrice.Name = "BuyPrice";
+            // 
+            // BuyAmount
+            // 
+            this.BuyAmount.DataPropertyName = "BuyAmount";
+            this.BuyAmount.HeaderText = "买入数量";
+            this.BuyAmount.Name = "BuyAmount";
+            this.BuyAmount.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            // 
+            // BuyStrategy
+            // 
+            this.BuyStrategy.DataPropertyName = "BuyStrategy";
+            this.BuyStrategy.HeaderText = "买入策略";
+            this.BuyStrategy.Name = "BuyStrategy";
+            this.BuyStrategy.ReadOnly = true;
+            this.BuyStrategy.Width = 150;
+            // 
+            // SalePrice
+            // 
+            this.SalePrice.DataPropertyName = "SalePrice";
+            this.SalePrice.HeaderText = "卖出价格";
+            this.SalePrice.Name = "SalePrice";
+            this.SalePrice.ReadOnly = true;
+            // 
+            // SaleAmount
+            // 
+            this.SaleAmount.DataPropertyName = "SaleAmount";
+            this.SaleAmount.HeaderText = "卖出数量";
+            this.SaleAmount.Name = "SaleAmount";
+            this.SaleAmount.ReadOnly = true;
+            // 
+            // SaleStrategy
+            // 
+            this.SaleStrategy.DataPropertyName = "SaleStrategy";
+            this.SaleStrategy.HeaderText = "卖出策略";
+            this.SaleStrategy.Name = "SaleStrategy";
+            this.SaleStrategy.ReadOnly = true;
+            this.SaleStrategy.Width = 150;
+            // 
+            // BuyVariableTrend
+            // 
+            this.BuyVariableTrend.DataPropertyName = "BuyVariableTrend";
+            this.BuyVariableTrend.HeaderText = "买入变化趋势";
+            this.BuyVariableTrend.Name = "BuyVariableTrend";
+            this.BuyVariableTrend.ReadOnly = true;
+            this.BuyVariableTrend.Visible = false;
+            // 
+            // BuyVariableAmount
+            // 
+            this.BuyVariableAmount.DataPropertyName = "BuyVariableAmount";
+            this.BuyVariableAmount.HeaderText = "买入变化数量";
+            this.BuyVariableAmount.Name = "BuyVariableAmount";
+            this.BuyVariableAmount.ReadOnly = true;
+            this.BuyVariableAmount.Visible = false;
+            // 
+            // SaleVariableTrend
+            // 
+            this.SaleVariableTrend.DataPropertyName = "SaleVariableTrend";
+            this.SaleVariableTrend.HeaderText = "卖出变化趋势";
+            this.SaleVariableTrend.Name = "SaleVariableTrend";
+            this.SaleVariableTrend.ReadOnly = true;
+            this.SaleVariableTrend.Visible = false;
+            // 
+            // SaleVariableAmount
+            // 
+            this.SaleVariableAmount.DataPropertyName = "SaleVariableAmount";
+            this.SaleVariableAmount.HeaderText = "卖出变化数量";
+            this.SaleVariableAmount.Name = "SaleVariableAmount";
+            this.SaleVariableAmount.ReadOnly = true;
+            this.SaleVariableAmount.Visible = false;
+            // 
+            // BuyMarkPrice
+            // 
+            this.BuyMarkPrice.DataPropertyName = "BuyMarkPrice";
+            this.BuyMarkPrice.HeaderText = "买入标记价格";
+            this.BuyMarkPrice.Name = "BuyMarkPrice";
+            this.BuyMarkPrice.ReadOnly = true;
+            this.BuyMarkPrice.Visible = false;
+            // 
+            // SaleMarkPrice
+            // 
+            this.SaleMarkPrice.DataPropertyName = "SaleMarkPrice";
+            this.SaleMarkPrice.HeaderText = "卖出标记价格";
+            this.SaleMarkPrice.Name = "SaleMarkPrice";
+            this.SaleMarkPrice.ReadOnly = true;
+            this.SaleMarkPrice.Visible = false;
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(931, 585);
+            this.ClientSize = new System.Drawing.Size(1065, 585);
             this.Controls.Add(this.chkGapLower);
             this.Controls.Add(this.btnCloseComputer);
             this.Controls.Add(this.btnSetFull);
@@ -504,7 +507,9 @@
             this.Controls.Add(this.txtAK);
             this.Controls.Add(this.lblAK);
             this.Controls.Add(this.btnUpload);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "Main";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "AotoManager";
             ((System.ComponentModel.ISupportInitialize)(this.dataGrid)).EndInit();
             this.ResumeLayout(false);

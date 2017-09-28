@@ -319,7 +319,7 @@ namespace AotoManager
                 {
                     if (cells["StockCode"].Value.ToString() != "" && cells["StockName"].Value.ToString() != "")
                     {
-                        list.Add(new StockList { StockCode = cells["StockCode"].Value.ToString(), StockName = cells["StockName"].Value.ToString(), BuyPrice = Convert.ToDecimal(cells["BuyPrice"].Value), BuyAmount = Convert.ToInt32(cells["BuyAmount"].Value), Monitor = cells["Monitor"].Value.ToString(), BuyVariableTrend = Convert.ToInt32(cells["BuyVariableTrend"].Value), BuyVariableAmount = Convert.ToInt32(cells["BuyVariableAmount"].Value), SalePrice = Convert.ToDecimal(cells["SalePrice"].Value), SaleAmount = Convert.ToInt32(cells["SaleAmount"].Value), SaleVariableTrend = Convert.ToInt32(cells["SaleVariableTrend"].Value), SaleVariableAmount = Convert.ToInt32(cells["SaleVariableAmount"].Value) });
+                        list.Add(new StockList { StockCode = cells["StockCode"].Value.ToString(), StockName = cells["StockName"].Value.ToString(), BuyPrice = Convert.ToDecimal(cells["BuyPrice"].Value), BuyAmount = Convert.ToInt32(cells["BuyAmount"].Value), Monitor = cells["Monitor"].Value.ToString(), BuyVariableTrend = Convert.ToInt32(cells["BuyVariableTrend"].Value), BuyVariableAmount = Convert.ToDecimal(cells["BuyVariableAmount"].Value), SalePrice = Convert.ToDecimal(cells["SalePrice"].Value), SaleAmount = Convert.ToInt32(cells["SaleAmount"].Value), SaleVariableTrend = Convert.ToInt32(cells["SaleVariableTrend"].Value), SaleVariableAmount = Convert.ToDecimal(cells["SaleVariableAmount"].Value) });
                         if (cells["Monitor"].Value.ToString() == "监控中")
                             Cnt++;
                     }

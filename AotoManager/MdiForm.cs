@@ -63,6 +63,10 @@ namespace AotoManager
                 txtSaleAmount.Text = saleamount;
                 txtSalePrice.Text = saleprice;
                 txtSaleVarAmount.Text = salevariableamount;
+                txtBalance.Text = (decimal.Parse(buyprice) * int.Parse(buyamount)).ToString();
+                cbxBuyChooseAmount.DataSource = CalculateBuyStore();
+                cbxBuyChooseAmount.ValueMember = "Value";
+                cbxBuyChooseAmount.DisplayMember = "Key";
             }
             mainConfigModel = configModel;
             mainDataGrid = DataGrid;
@@ -317,7 +321,7 @@ namespace AotoManager
         {
             if (cbxBuyVarTrend.SelectedValue != null)
             {
-                if (Convert.ToInt32(cbxBuyVarTrend.SelectedValue) == (int)BuyVariableTrendEnum.DownThenRebound)
+                if (Convert.ToInt32(((DictionaryEntry)cbxBuyVarTrend.SelectedItem).Value) == (int)BuyVariableTrendEnum.DownThenRebound)
                     txtBuyVarAmount.Text = "0.05";
                 else
                     txtBuyVarAmount.Text = "0";
@@ -328,7 +332,7 @@ namespace AotoManager
         {
             if (cbxSaleVarTrend.SelectedValue != null)
             {
-                if (Convert.ToInt32(cbxSaleVarTrend.SelectedValue) == (int)SaleVariableTrendEnum.UpThenFallBack)
+                if (Convert.ToInt32(((DictionaryEntry)cbxSaleVarTrend.SelectedItem).Value) == (int)SaleVariableTrendEnum.UpThenFallBack)
                     txtSaleVarAmount.Text = "0.05";
                 else
                     txtSaleVarAmount.Text = "0";
