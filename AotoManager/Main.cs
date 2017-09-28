@@ -199,12 +199,13 @@ namespace AotoManager
                     ll.CurrentPrice = 0;
 
                 ll.BuyStrategy = string.Format("{0}{1}元", ((BuyVariableTrendEnum)ll.BuyVariableTrend).GetEnumDescription(), ll.BuyVariableAmount);
+                ll.SaleStrategy = string.Format("{0}{1}元", ((SaleVariableTrendEnum)ll.SaleVariableTrend).GetEnumDescription(), ll.SaleVariableAmount);
 
                 if (ll.Monitor == "监控中")
                     Cnt++;
             }
 
-            configModel.StockList.Add(new StockList { StockCode = "", StockName = "", BuyPrice = 0, BuyAmount = 0, CurrentPrice = 0, Monitor = "" });
+            configModel.StockList.Add(new StockList { StockCode = "", StockName = "", BuyPrice = 0, BuyAmount = 0, CurrentPrice = 0, SalePrice = 0, SaleAmount = 0, Monitor = "" });
             dataGrid.DataSource = configModel.StockList;
             txtBalance.Text = configModel.AvailableBalance.ToString();
             chkLimitTime.Checked = configModel.LimitTime;
@@ -318,7 +319,7 @@ namespace AotoManager
                 {
                     if (cells["StockCode"].Value.ToString() != "" && cells["StockName"].Value.ToString() != "")
                     {
-                        list.Add(new StockList { StockCode = cells["StockCode"].Value.ToString(), StockName = cells["StockName"].Value.ToString(), BuyPrice = Convert.ToDecimal(cells["BuyPrice"].Value), BuyAmount = Convert.ToInt32(cells["BuyAmount"].Value), Monitor = cells["Monitor"].Value.ToString(), BuyVariableTrend = Convert.ToInt32(cells["BuyVariableTrend"].Value), BuyVariableAmount = Convert.ToInt32(cells["BuyVariableAmount"].Value) });
+                        list.Add(new StockList { StockCode = cells["StockCode"].Value.ToString(), StockName = cells["StockName"].Value.ToString(), BuyPrice = Convert.ToDecimal(cells["BuyPrice"].Value), BuyAmount = Convert.ToInt32(cells["BuyAmount"].Value), Monitor = cells["Monitor"].Value.ToString(), BuyVariableTrend = Convert.ToInt32(cells["BuyVariableTrend"].Value), BuyVariableAmount = Convert.ToInt32(cells["BuyVariableAmount"].Value), SalePrice = Convert.ToDecimal(cells["SalePrice"].Value), SaleAmount = Convert.ToInt32(cells["SaleAmount"].Value), SaleVariableTrend = Convert.ToInt32(cells["SaleVariableTrend"].Value), SaleVariableAmount = Convert.ToInt32(cells["SaleVariableAmount"].Value) });
                         if (cells["Monitor"].Value.ToString() == "监控中")
                             Cnt++;
                     }
@@ -384,13 +385,13 @@ namespace AotoManager
                             dataGrid.Rows[e.RowIndex].Cells["BuyAmount"].Value = 100;//默认值
                             dataGrid.Rows[e.RowIndex].Cells["Monitor"].Value = "已停止";//默认值
                             dataGrid.Rows[e.RowIndex].Cells["BuyVariableTrend"].Value = (int)BuyVariableTrendEnum.ReachOrDown;
-                            dataGrid.Rows[e.RowIndex].Cells["BuyVariableAmount"].Value = 0;
+                            dataGrid.Rows[e.RowIndex].Cells["BuyVariableAmount"].Value = 0.00M;
                             dataGrid.Rows[e.RowIndex].Cells["BuyStrategy"].Value = string.Format("{0}{1}元", BuyVariableTrendEnum.ReachOrDown.GetEnumDescription(), 0);
 
                             dataGrid.Rows[e.RowIndex].Cells["SalePrice"].Value = model.CurrentPrice;
                             dataGrid.Rows[e.RowIndex].Cells["SaleAmount"].Value = 100;//默认值
                             dataGrid.Rows[e.RowIndex].Cells["SaleVariableTrend"].Value = (int)SaleVariableTrendEnum.ReachOrUp;
-                            dataGrid.Rows[e.RowIndex].Cells["SaleVariableAmount"].Value = 0;
+                            dataGrid.Rows[e.RowIndex].Cells["SaleVariableAmount"].Value = 0.00M;
                             dataGrid.Rows[e.RowIndex].Cells["SaleStrategy"].Value = string.Format("{0}{1}元", SaleVariableTrendEnum.ReachOrUp.GetEnumDescription(), 0);
 
                         }
@@ -504,7 +505,15 @@ namespace AotoManager
 
                 string buyvariableamount = dataGrid["BuyVariableAmount", e.RowIndex].Value.ToString();
 
-                MdiForm form = new MdiForm(codecell.ToString(), name, buyamount, buyprice, buyvariabletrend, buyvariableamount, dataGrid);
+                string saleamount = dataGrid["SaleAmount", e.RowIndex].Value.ToString();
+
+                string saleprice = dataGrid["SalePrice", e.RowIndex].Value.ToString();
+
+                string salevariabletrend = dataGrid["SaleVariableTrend", e.RowIndex].Value.ToString();
+
+                string salevariableamount = dataGrid["SaleVariableAmount", e.RowIndex].Value.ToString();
+
+                MdiForm form = new MdiForm(codecell.ToString(), name, buyamount, buyprice, buyvariabletrend, buyvariableamount, saleamount, saleprice, salevariabletrend, salevariableamount, GetModelFromDataContainer(),dataGrid);
                 form.ShowDialog();
             }
         }

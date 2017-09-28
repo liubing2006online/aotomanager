@@ -34,21 +34,32 @@
             this.label1 = new System.Windows.Forms.Label();
             this.txtBalance = new System.Windows.Forms.TextBox();
             this.lblBalance = new System.Windows.Forms.Label();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.gbxBuy = new System.Windows.Forms.GroupBox();
             this.lblUnit = new System.Windows.Forms.Label();
-            this.txtVarAmount = new System.Windows.Forms.TextBox();
-            this.lblVarAmount = new System.Windows.Forms.Label();
-            this.lblVarTrend = new System.Windows.Forms.Label();
-            this.cbxVarTrend = new System.Windows.Forms.ComboBox();
+            this.txtBuyVarAmount = new System.Windows.Forms.TextBox();
+            this.lblBuyVarAmount = new System.Windows.Forms.Label();
+            this.lblBuyVarTrend = new System.Windows.Forms.Label();
+            this.cbxBuyVarTrend = new System.Windows.Forms.ComboBox();
             this.txtBuyAmount = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.cbxBuyAmount = new System.Windows.Forms.ComboBox();
-            this.label3 = new System.Windows.Forms.Label();
+            this.lblBuyAmount = new System.Windows.Forms.Label();
+            this.cbxBuyChooseAmount = new System.Windows.Forms.ComboBox();
+            this.lblBuyChooseAmount = new System.Windows.Forms.Label();
             this.txtBuyPrice = new System.Windows.Forms.TextBox();
             this.lblBuyPrice = new System.Windows.Forms.Label();
             this.btnOK = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
-            this.groupBox1.SuspendLayout();
+            this.gbxSale = new System.Windows.Forms.GroupBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.txtSaleVarAmount = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.lblSaleVarTrend = new System.Windows.Forms.Label();
+            this.cbxSaleVarTrend = new System.Windows.Forms.ComboBox();
+            this.txtSaleAmount = new System.Windows.Forms.TextBox();
+            this.lblSaleAmount = new System.Windows.Forms.Label();
+            this.txtSalePrice = new System.Windows.Forms.TextBox();
+            this.lblSalePrice = new System.Windows.Forms.Label();
+            this.gbxBuy.SuspendLayout();
+            this.gbxSale.SuspendLayout();
             this.SuspendLayout();
             // 
             // txtCode
@@ -106,25 +117,25 @@
             this.lblBalance.TabIndex = 5;
             this.lblBalance.Text = "可用资金：";
             // 
-            // groupBox1
+            // gbxBuy
             // 
-            this.groupBox1.Controls.Add(this.lblUnit);
-            this.groupBox1.Controls.Add(this.txtVarAmount);
-            this.groupBox1.Controls.Add(this.lblVarAmount);
-            this.groupBox1.Controls.Add(this.lblVarTrend);
-            this.groupBox1.Controls.Add(this.cbxVarTrend);
-            this.groupBox1.Controls.Add(this.txtBuyAmount);
-            this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.cbxBuyAmount);
-            this.groupBox1.Controls.Add(this.label3);
-            this.groupBox1.Controls.Add(this.txtBuyPrice);
-            this.groupBox1.Controls.Add(this.lblBuyPrice);
-            this.groupBox1.Location = new System.Drawing.Point(12, 138);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(229, 333);
-            this.groupBox1.TabIndex = 6;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "买入参数";
+            this.gbxBuy.Controls.Add(this.lblUnit);
+            this.gbxBuy.Controls.Add(this.txtBuyVarAmount);
+            this.gbxBuy.Controls.Add(this.lblBuyVarAmount);
+            this.gbxBuy.Controls.Add(this.lblBuyVarTrend);
+            this.gbxBuy.Controls.Add(this.cbxBuyVarTrend);
+            this.gbxBuy.Controls.Add(this.txtBuyAmount);
+            this.gbxBuy.Controls.Add(this.lblBuyAmount);
+            this.gbxBuy.Controls.Add(this.cbxBuyChooseAmount);
+            this.gbxBuy.Controls.Add(this.lblBuyChooseAmount);
+            this.gbxBuy.Controls.Add(this.txtBuyPrice);
+            this.gbxBuy.Controls.Add(this.lblBuyPrice);
+            this.gbxBuy.Location = new System.Drawing.Point(12, 138);
+            this.gbxBuy.Name = "gbxBuy";
+            this.gbxBuy.Size = new System.Drawing.Size(229, 333);
+            this.gbxBuy.TabIndex = 6;
+            this.gbxBuy.TabStop = false;
+            this.gbxBuy.Text = "买入参数";
             // 
             // lblUnit
             // 
@@ -135,39 +146,40 @@
             this.lblUnit.TabIndex = 13;
             this.lblUnit.Text = "元";
             // 
-            // txtVarAmount
+            // txtBuyVarAmount
             // 
-            this.txtVarAmount.Location = new System.Drawing.Point(82, 74);
-            this.txtVarAmount.Name = "txtVarAmount";
-            this.txtVarAmount.Size = new System.Drawing.Size(51, 21);
-            this.txtVarAmount.TabIndex = 12;
-            this.txtVarAmount.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtVarAmount_KeyPress);
+            this.txtBuyVarAmount.Location = new System.Drawing.Point(82, 74);
+            this.txtBuyVarAmount.Name = "txtBuyVarAmount";
+            this.txtBuyVarAmount.Size = new System.Drawing.Size(51, 21);
+            this.txtBuyVarAmount.TabIndex = 12;
+            this.txtBuyVarAmount.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtVarAmount_KeyPress);
             // 
-            // lblVarAmount
+            // lblBuyVarAmount
             // 
-            this.lblVarAmount.AutoSize = true;
-            this.lblVarAmount.Location = new System.Drawing.Point(11, 77);
-            this.lblVarAmount.Name = "lblVarAmount";
-            this.lblVarAmount.Size = new System.Drawing.Size(65, 12);
-            this.lblVarAmount.TabIndex = 11;
-            this.lblVarAmount.Text = "变化数量：";
+            this.lblBuyVarAmount.AutoSize = true;
+            this.lblBuyVarAmount.Location = new System.Drawing.Point(11, 77);
+            this.lblBuyVarAmount.Name = "lblBuyVarAmount";
+            this.lblBuyVarAmount.Size = new System.Drawing.Size(65, 12);
+            this.lblBuyVarAmount.TabIndex = 11;
+            this.lblBuyVarAmount.Text = "变化数量：";
             // 
-            // lblVarTrend
+            // lblBuyVarTrend
             // 
-            this.lblVarTrend.AutoSize = true;
-            this.lblVarTrend.Location = new System.Drawing.Point(11, 48);
-            this.lblVarTrend.Name = "lblVarTrend";
-            this.lblVarTrend.Size = new System.Drawing.Size(65, 12);
-            this.lblVarTrend.TabIndex = 10;
-            this.lblVarTrend.Text = "变化趋势：";
+            this.lblBuyVarTrend.AutoSize = true;
+            this.lblBuyVarTrend.Location = new System.Drawing.Point(11, 48);
+            this.lblBuyVarTrend.Name = "lblBuyVarTrend";
+            this.lblBuyVarTrend.Size = new System.Drawing.Size(65, 12);
+            this.lblBuyVarTrend.TabIndex = 10;
+            this.lblBuyVarTrend.Text = "变化趋势：";
             // 
-            // cbxVarTrend
+            // cbxBuyVarTrend
             // 
-            this.cbxVarTrend.FormattingEnabled = true;
-            this.cbxVarTrend.Location = new System.Drawing.Point(82, 45);
-            this.cbxVarTrend.Name = "cbxVarTrend";
-            this.cbxVarTrend.Size = new System.Drawing.Size(95, 20);
-            this.cbxVarTrend.TabIndex = 9;
+            this.cbxBuyVarTrend.FormattingEnabled = true;
+            this.cbxBuyVarTrend.Location = new System.Drawing.Point(82, 45);
+            this.cbxBuyVarTrend.Name = "cbxBuyVarTrend";
+            this.cbxBuyVarTrend.Size = new System.Drawing.Size(95, 20);
+            this.cbxBuyVarTrend.TabIndex = 9;
+            this.cbxBuyVarTrend.SelectedIndexChanged += new System.EventHandler(this.cbxBuyVarTrend_SelectedIndexChanged);
             // 
             // txtBuyAmount
             // 
@@ -178,32 +190,32 @@
             this.txtBuyAmount.Size = new System.Drawing.Size(72, 21);
             this.txtBuyAmount.TabIndex = 8;
             // 
-            // label2
+            // lblBuyAmount
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(11, 188);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(89, 12);
-            this.label2.TabIndex = 7;
-            this.label2.Text = "实际买入数量：";
+            this.lblBuyAmount.AutoSize = true;
+            this.lblBuyAmount.Location = new System.Drawing.Point(11, 188);
+            this.lblBuyAmount.Name = "lblBuyAmount";
+            this.lblBuyAmount.Size = new System.Drawing.Size(89, 12);
+            this.lblBuyAmount.TabIndex = 7;
+            this.lblBuyAmount.Text = "实际买入数量：";
             // 
-            // cbxBuyAmount
+            // cbxBuyChooseAmount
             // 
-            this.cbxBuyAmount.FormattingEnabled = true;
-            this.cbxBuyAmount.Location = new System.Drawing.Point(93, 147);
-            this.cbxBuyAmount.Name = "cbxBuyAmount";
-            this.cbxBuyAmount.Size = new System.Drawing.Size(130, 20);
-            this.cbxBuyAmount.TabIndex = 6;
-            this.cbxBuyAmount.DropDownClosed += new System.EventHandler(this.cbxBuyAmount_DropDownClosed);
+            this.cbxBuyChooseAmount.FormattingEnabled = true;
+            this.cbxBuyChooseAmount.Location = new System.Drawing.Point(93, 147);
+            this.cbxBuyChooseAmount.Name = "cbxBuyChooseAmount";
+            this.cbxBuyChooseAmount.Size = new System.Drawing.Size(130, 20);
+            this.cbxBuyChooseAmount.TabIndex = 6;
+            this.cbxBuyChooseAmount.DropDownClosed += new System.EventHandler(this.cbxBuyAmount_DropDownClosed);
             // 
-            // label3
+            // lblBuyChooseAmount
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(11, 150);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(89, 12);
-            this.label3.TabIndex = 5;
-            this.label3.Text = "可选买入数量：";
+            this.lblBuyChooseAmount.AutoSize = true;
+            this.lblBuyChooseAmount.Location = new System.Drawing.Point(11, 150);
+            this.lblBuyChooseAmount.Name = "lblBuyChooseAmount";
+            this.lblBuyChooseAmount.Size = new System.Drawing.Size(89, 12);
+            this.lblBuyChooseAmount.TabIndex = 5;
+            this.lblBuyChooseAmount.Text = "可选买入数量：";
             // 
             // txtBuyPrice
             // 
@@ -244,14 +256,113 @@
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
+            // gbxSale
+            // 
+            this.gbxSale.Controls.Add(this.label4);
+            this.gbxSale.Controls.Add(this.txtSaleVarAmount);
+            this.gbxSale.Controls.Add(this.label5);
+            this.gbxSale.Controls.Add(this.lblSaleVarTrend);
+            this.gbxSale.Controls.Add(this.cbxSaleVarTrend);
+            this.gbxSale.Controls.Add(this.txtSaleAmount);
+            this.gbxSale.Controls.Add(this.lblSaleAmount);
+            this.gbxSale.Controls.Add(this.txtSalePrice);
+            this.gbxSale.Controls.Add(this.lblSalePrice);
+            this.gbxSale.Location = new System.Drawing.Point(241, 138);
+            this.gbxSale.Name = "gbxSale";
+            this.gbxSale.Size = new System.Drawing.Size(229, 333);
+            this.gbxSale.TabIndex = 14;
+            this.gbxSale.TabStop = false;
+            this.gbxSale.Text = "卖出参数";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(139, 77);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(17, 12);
+            this.label4.TabIndex = 13;
+            this.label4.Text = "元";
+            // 
+            // txtSaleVarAmount
+            // 
+            this.txtSaleVarAmount.Location = new System.Drawing.Point(82, 74);
+            this.txtSaleVarAmount.Name = "txtSaleVarAmount";
+            this.txtSaleVarAmount.Size = new System.Drawing.Size(51, 21);
+            this.txtSaleVarAmount.TabIndex = 12;
+            this.txtSaleVarAmount.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtSaleVarAmount_KeyPress);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(11, 77);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(65, 12);
+            this.label5.TabIndex = 11;
+            this.label5.Text = "变化数量：";
+            // 
+            // lblSaleVarTrend
+            // 
+            this.lblSaleVarTrend.AutoSize = true;
+            this.lblSaleVarTrend.Location = new System.Drawing.Point(11, 48);
+            this.lblSaleVarTrend.Name = "lblSaleVarTrend";
+            this.lblSaleVarTrend.Size = new System.Drawing.Size(65, 12);
+            this.lblSaleVarTrend.TabIndex = 10;
+            this.lblSaleVarTrend.Text = "变化趋势：";
+            // 
+            // cbxSaleVarTrend
+            // 
+            this.cbxSaleVarTrend.FormattingEnabled = true;
+            this.cbxSaleVarTrend.Location = new System.Drawing.Point(82, 45);
+            this.cbxSaleVarTrend.Name = "cbxSaleVarTrend";
+            this.cbxSaleVarTrend.Size = new System.Drawing.Size(95, 20);
+            this.cbxSaleVarTrend.TabIndex = 9;
+            this.cbxSaleVarTrend.SelectedIndexChanged += new System.EventHandler(this.cbxSaleVarTrend_SelectedIndexChanged);
+            // 
+            // txtSaleAmount
+            // 
+            this.txtSaleAmount.Location = new System.Drawing.Point(93, 185);
+            this.txtSaleAmount.MaxLength = 6;
+            this.txtSaleAmount.Name = "txtSaleAmount";
+            this.txtSaleAmount.Size = new System.Drawing.Size(72, 21);
+            this.txtSaleAmount.TabIndex = 8;
+            this.txtSaleAmount.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtSaleAmount_KeyPress);
+            // 
+            // lblSaleAmount
+            // 
+            this.lblSaleAmount.AutoSize = true;
+            this.lblSaleAmount.Location = new System.Drawing.Point(11, 188);
+            this.lblSaleAmount.Name = "lblSaleAmount";
+            this.lblSaleAmount.Size = new System.Drawing.Size(89, 12);
+            this.lblSaleAmount.TabIndex = 7;
+            this.lblSaleAmount.Text = "实际卖出数量：";
+            // 
+            // txtSalePrice
+            // 
+            this.txtSalePrice.Location = new System.Drawing.Point(82, 103);
+            this.txtSalePrice.MaxLength = 6;
+            this.txtSalePrice.Name = "txtSalePrice";
+            this.txtSalePrice.Size = new System.Drawing.Size(72, 21);
+            this.txtSalePrice.TabIndex = 2;
+            this.txtSalePrice.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtSalePrice_KeyPress);
+            // 
+            // lblSalePrice
+            // 
+            this.lblSalePrice.AutoSize = true;
+            this.lblSalePrice.Location = new System.Drawing.Point(11, 106);
+            this.lblSalePrice.Name = "lblSalePrice";
+            this.lblSalePrice.Size = new System.Drawing.Size(65, 12);
+            this.lblSalePrice.TabIndex = 3;
+            this.lblSalePrice.Text = "卖出价格：";
+            // 
             // MdiForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(475, 529);
+            this.Controls.Add(this.gbxSale);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOK);
-            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.gbxBuy);
             this.Controls.Add(this.txtBalance);
             this.Controls.Add(this.lblBalance);
             this.Controls.Add(this.txtName);
@@ -260,8 +371,10 @@
             this.Controls.Add(this.lblCode);
             this.Name = "MdiForm";
             this.Text = "修改信息";
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.gbxBuy.ResumeLayout(false);
+            this.gbxBuy.PerformLayout();
+            this.gbxSale.ResumeLayout(false);
+            this.gbxSale.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -275,19 +388,29 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtBalance;
         private System.Windows.Forms.Label lblBalance;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.GroupBox gbxBuy;
+        private System.Windows.Forms.Label lblBuyChooseAmount;
         private System.Windows.Forms.TextBox txtBuyPrice;
         private System.Windows.Forms.Label lblBuyPrice;
-        private System.Windows.Forms.ComboBox cbxBuyAmount;
+        private System.Windows.Forms.ComboBox cbxBuyChooseAmount;
         private System.Windows.Forms.TextBox txtBuyAmount;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label lblBuyAmount;
         private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Label lblUnit;
-        private System.Windows.Forms.TextBox txtVarAmount;
-        private System.Windows.Forms.Label lblVarAmount;
-        private System.Windows.Forms.Label lblVarTrend;
-        private System.Windows.Forms.ComboBox cbxVarTrend;
+        private System.Windows.Forms.TextBox txtBuyVarAmount;
+        private System.Windows.Forms.Label lblBuyVarAmount;
+        private System.Windows.Forms.Label lblBuyVarTrend;
+        private System.Windows.Forms.ComboBox cbxBuyVarTrend;
+        private System.Windows.Forms.GroupBox gbxSale;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox txtSaleVarAmount;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label lblSaleVarTrend;
+        private System.Windows.Forms.ComboBox cbxSaleVarTrend;
+        private System.Windows.Forms.TextBox txtSaleAmount;
+        private System.Windows.Forms.Label lblSaleAmount;
+        private System.Windows.Forms.TextBox txtSalePrice;
+        private System.Windows.Forms.Label lblSalePrice;
     }
 }

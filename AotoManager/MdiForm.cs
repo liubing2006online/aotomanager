@@ -20,27 +20,52 @@ namespace AotoManager
             InitializeComponent();
         }
         DataGridView mainDataGrid;
-        public MdiForm(string code, string name, string buyamount, string buyprice, string buyvariabletrend, string buyvariableamount, DataGridView DataGrid)
+        StockConfigModel mainConfigModel;
+        public MdiForm(string code, string name, string buyamount, string buyprice, string buyvariabletrend, string buyvariableamount, string saleamount, string saleprice, string salevariabletrend, string salevariableamount, StockConfigModel configModel, DataGridView DataGrid)
         {
             InitializeComponent();
 
-            List<DictionaryEntry> varTrendList = new List<DictionaryEntry>();
-            varTrendList.Add(new DictionaryEntry(BuyVariableTrendEnum.ReachOrUp.GetEnumDescription(), (int)BuyVariableTrendEnum.ReachOrUp));
-            varTrendList.Add(new DictionaryEntry(BuyVariableTrendEnum.ReachOrDown.GetEnumDescription(), (int)BuyVariableTrendEnum.ReachOrDown));
-            varTrendList.Add(new DictionaryEntry(BuyVariableTrendEnum.DownThenRebound.GetEnumDescription(), (int)BuyVariableTrendEnum.DownThenRebound));
-            varTrendList.Add(new DictionaryEntry(BuyVariableTrendEnum.DownThenUp.GetEnumDescription(), (int)BuyVariableTrendEnum.DownThenUp));
-            cbxVarTrend.DataSource = varTrendList;
-            cbxVarTrend.ValueMember = "Value";
-            cbxVarTrend.DisplayMember = "Key";
+            List<DictionaryEntry> buyVarTrendList = new List<DictionaryEntry>();
+            buyVarTrendList.Add(new DictionaryEntry(BuyVariableTrendEnum.ReachOrUp.GetEnumDescription(), (int)BuyVariableTrendEnum.ReachOrUp));
+            buyVarTrendList.Add(new DictionaryEntry(BuyVariableTrendEnum.ReachOrDown.GetEnumDescription(), (int)BuyVariableTrendEnum.ReachOrDown));
+            buyVarTrendList.Add(new DictionaryEntry(BuyVariableTrendEnum.DownThenRebound.GetEnumDescription(), (int)BuyVariableTrendEnum.DownThenRebound));
+            buyVarTrendList.Add(new DictionaryEntry(BuyVariableTrendEnum.DownThenUp.GetEnumDescription(), (int)BuyVariableTrendEnum.DownThenUp));
+            cbxBuyVarTrend.DataSource = buyVarTrendList;
+            cbxBuyVarTrend.ValueMember = "Value";
+            cbxBuyVarTrend.DisplayMember = "Key";
 
-            txtCode.Text = code;
-            txtName.Text = name;
-            txtBuyAmount.Text = buyamount;
-            txtBuyPrice.Text = buyprice;
-            cbxVarTrend.SelectedValue = int.Parse(buyvariabletrend);
-            txtVarAmount.Text = buyvariableamount;
+            List<DictionaryEntry> SaleVarTrendList = new List<DictionaryEntry>();
+            SaleVarTrendList.Add(new DictionaryEntry(SaleVariableTrendEnum.ReachOrUp.GetEnumDescription(), (int)SaleVariableTrendEnum.ReachOrUp));
+            SaleVarTrendList.Add(new DictionaryEntry(SaleVariableTrendEnum.ReachOrDown.GetEnumDescription(), (int)SaleVariableTrendEnum.ReachOrDown));
+            SaleVarTrendList.Add(new DictionaryEntry(SaleVariableTrendEnum.UpThenFallBack.GetEnumDescription(), (int)SaleVariableTrendEnum.UpThenFallBack));
+            SaleVarTrendList.Add(new DictionaryEntry(SaleVariableTrendEnum.UpThenDown.GetEnumDescription(), (int)SaleVariableTrendEnum.UpThenDown));
+            cbxSaleVarTrend.DataSource = SaleVarTrendList;
+            cbxSaleVarTrend.ValueMember = "Value";
+            cbxSaleVarTrend.DisplayMember = "Key";
+            if (code == "")
+            {
+                this.Text = "添加证券";
+                cbxBuyVarTrend.SelectedValue = (int)BuyVariableTrendEnum.ReachOrDown;
+                cbxSaleVarTrend.SelectedValue = (int)SaleVariableTrendEnum.ReachOrUp;
+                txtBuyVarAmount.Text = "0";
+                txtSaleVarAmount.Text = "0";
+            }
+            else
+            {
+                this.Text = "修改信息";
+                cbxBuyVarTrend.SelectedValue = int.Parse(buyvariabletrend);
+                cbxSaleVarTrend.SelectedValue = int.Parse(salevariabletrend);
+                txtCode.Text = code;
+                txtName.Text = name;
+                txtBuyAmount.Text = buyamount;
+                txtBuyPrice.Text = buyprice;
+                txtBuyVarAmount.Text = buyvariableamount;
+                txtSaleAmount.Text = saleamount;
+                txtSalePrice.Text = saleprice;
+                txtSaleVarAmount.Text = salevariableamount;
+            }
+            mainConfigModel = configModel;
             mainDataGrid = DataGrid;
-
         }
 
         private void txtBalance_KeyPress(object sender, KeyPressEventArgs e)
@@ -96,10 +121,10 @@ namespace AotoManager
             }
             else
             {
-                cbxBuyAmount.Text = "";
-                cbxBuyAmount.DataSource = CalculateStore();
-                cbxBuyAmount.ValueMember = "Value";
-                cbxBuyAmount.DisplayMember = "Key";
+                cbxBuyChooseAmount.Text = "";
+                cbxBuyChooseAmount.DataSource = CalculateBuyStore();
+                cbxBuyChooseAmount.ValueMember = "Value";
+                cbxBuyChooseAmount.DisplayMember = "Key";
             }
         }
 
@@ -112,18 +137,27 @@ namespace AotoManager
             }
             else
             {
-                cbxBuyAmount.Text = "";
-                cbxBuyAmount.DataSource = CalculateStore();
-                cbxBuyAmount.ValueMember = "Value";
-                cbxBuyAmount.DisplayMember = "Key";
+                cbxBuyChooseAmount.Text = "";
+                cbxBuyChooseAmount.DataSource = CalculateBuyStore();
+                cbxBuyChooseAmount.ValueMember = "Value";
+                cbxBuyChooseAmount.DisplayMember = "Key";
             }
 
         }
-        private List<DictionaryEntry> CalculateStore()
+        private List<DictionaryEntry> CalculateBuyStore()
         {
             if (txtBalance.Text != "" && txtBuyPrice.Text != "")
             {
                 return GetAllStoreHouseList(decimal.Parse(txtBalance.Text), decimal.Parse(txtBuyPrice.Text));
+            }
+            return null;
+        }
+
+        private List<DictionaryEntry> CalculateSaleStore()
+        {
+            if (txtBalance.Text != "" && txtSalePrice.Text != "")
+            {
+                return GetAllStoreHouseList(decimal.Parse(txtBalance.Text), decimal.Parse(txtSalePrice.Text));
             }
             return null;
         }
@@ -150,21 +184,82 @@ namespace AotoManager
 
         private void cbxBuyAmount_DropDownClosed(object sender, EventArgs e)
         {
-            if (cbxBuyAmount.SelectedIndex != -1)
+            if (cbxBuyChooseAmount.SelectedIndex != -1)
             {
-                txtBuyAmount.Text = cbxBuyAmount.SelectedValue.ToString();
+                txtBuyAmount.Text = cbxBuyChooseAmount.SelectedValue.ToString();
             }
         }
 
         private void btnOK_Click(object sender, EventArgs e)
         {
-            mainDataGrid.SelectedRows[0].Cells["StockCode"].Value = txtCode.Text.Trim();
-            mainDataGrid.SelectedRows[0].Cells["StockName"].Value = txtName.Text.Trim();
-            mainDataGrid.SelectedRows[0].Cells["BuyPrice"].Value = txtBuyPrice.Text.Trim();
-            mainDataGrid.SelectedRows[0].Cells["BuyAmount"].Value = txtBuyAmount.Text.Trim();
-            mainDataGrid.SelectedRows[0].Cells["BuyVariableAmount"].Value = txtVarAmount.Text.Trim();
-            mainDataGrid.SelectedRows[0].Cells["BuyVariableTrend"].Value = cbxVarTrend.SelectedValue;
-            mainDataGrid.SelectedRows[0].Cells["BuyStrategy"].Value = string.Format("{0}{1}元", ((BuyVariableTrendEnum)cbxVarTrend.SelectedValue).GetEnumDescription(), txtVarAmount.Text.Trim());
+            if (txtCode.Text.Trim() == "")
+            {
+                MessageBox.Show("证券代码为空！", "注意", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtCode.Focus();
+                return;
+            }
+            if (txtBuyPrice.Text.Trim() == "")
+            {
+                MessageBox.Show("买入价格为空！", "注意", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtBuyPrice.Focus();
+                return;
+            }
+            if (txtSalePrice.Text.Trim() == "")
+            {
+                MessageBox.Show("卖出价格为空！", "注意", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtSalePrice.Focus();
+                return;
+            }
+            if (txtBuyVarAmount.Text.Trim() == "")
+            {
+                MessageBox.Show("请输入一个数值！", "注意", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtBuyVarAmount.Focus();
+                return;
+            }
+            if (txtSaleVarAmount.Text.Trim() == "")
+            {
+                MessageBox.Show("请输入一个数值！", "注意", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtSaleVarAmount.Focus();
+                return;
+            }
+
+            StockList stock = new StockList();
+            stock.StockCode = txtCode.Text.Trim();
+            stock.StockName = txtName.Text.Trim();
+            stock.BuyPrice = decimal.Parse(txtBuyPrice.Text.Trim());
+            stock.BuyAmount = int.Parse(txtBuyAmount.Text.Trim() == "" ? "0" : txtBuyAmount.Text.Trim());
+            stock.BuyVariableAmount = decimal.Parse(txtBuyVarAmount.Text.Trim());
+            stock.BuyVariableTrend = Convert.ToInt32(cbxBuyVarTrend.SelectedValue);
+            stock.BuyStrategy = string.Format("{0}{1}元", ((BuyVariableTrendEnum)cbxBuyVarTrend.SelectedValue).GetEnumDescription(), txtBuyVarAmount.Text.Trim());
+            stock.SalePrice = decimal.Parse(txtSalePrice.Text.Trim());
+            stock.SaleAmount = int.Parse(txtSaleAmount.Text.Trim() == "" ? "0" : txtSaleAmount.Text.Trim());
+            stock.SaleVariableAmount = decimal.Parse(txtSaleVarAmount.Text.Trim());
+            stock.SaleVariableTrend = Convert.ToInt32(cbxSaleVarTrend.SelectedValue);
+            stock.SaleStrategy = string.Format("{0}{1}元", ((SaleVariableTrendEnum)cbxSaleVarTrend.SelectedValue).GetEnumDescription(), txtSaleVarAmount.Text.Trim());
+
+            foreach (StockList ll in mainConfigModel.StockList)
+            {
+                ll.BuyStrategy = string.Format("{0}{1}元", ((BuyVariableTrendEnum)ll.BuyVariableTrend).GetEnumDescription(), ll.BuyVariableAmount);
+                ll.SaleStrategy = string.Format("{0}{1}元", ((SaleVariableTrendEnum)ll.SaleVariableTrend).GetEnumDescription(), ll.SaleVariableAmount);
+            }
+            bool flag = false;
+            for (int i = 0; i < mainConfigModel.StockList.Count; i++)
+            {
+                if (mainConfigModel.StockList[i].StockCode == stock.StockCode)
+                {
+                    stock.Monitor = mainConfigModel.StockList[i].Monitor;
+                    mainConfigModel.StockList[i] = stock;
+                    flag = true;
+                }
+            }
+
+            if (!flag)
+            {
+                mainConfigModel.StockList.Add(stock);
+                stock.Monitor = "已停止";
+            }
+            mainConfigModel.StockList.Add(new StockList { StockCode = "", StockName = "", BuyPrice = 0, BuyAmount = 0, CurrentPrice = 0, SalePrice = 0, SaleAmount = 0, Monitor = "" });
+            mainDataGrid.DataSource = mainConfigModel.StockList;
             this.Close();
         }
 
@@ -182,6 +277,62 @@ namespace AotoManager
         private void btnCancel_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void txtSalePrice_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar != '\b')//这是允许输入退格键
+            {
+                if (((e.KeyChar < '0') || (e.KeyChar > '9')) && (e.KeyChar != '.'))//这是允许输入0-9数字
+                {
+                    e.Handled = true;
+                }
+            }
+        }
+
+
+        private void txtSaleVarAmount_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar != '\b')//这是允许输入退格键
+            {
+                if (((e.KeyChar < '0') || (e.KeyChar > '9')) && (e.KeyChar != '.'))//这是允许输入0-9数字
+                {
+                    e.Handled = true;
+                }
+            }
+        }
+
+        private void txtSaleAmount_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar != '\b')//这是允许输入退格键
+            {
+                if ((e.KeyChar < '0') || (e.KeyChar > '9'))//这是允许输入0-9数字
+                {
+                    e.Handled = true;
+                }
+            }
+        }
+
+        private void cbxBuyVarTrend_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cbxBuyVarTrend.SelectedValue != null)
+            {
+                if (Convert.ToInt32(cbxBuyVarTrend.SelectedValue) == (int)BuyVariableTrendEnum.DownThenRebound)
+                    txtBuyVarAmount.Text = "0.05";
+                else
+                    txtBuyVarAmount.Text = "0";
+            }
+        }
+
+        private void cbxSaleVarTrend_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cbxSaleVarTrend.SelectedValue != null)
+            {
+                if (Convert.ToInt32(cbxSaleVarTrend.SelectedValue) == (int)SaleVariableTrendEnum.UpThenFallBack)
+                    txtSaleVarAmount.Text = "0.05";
+                else
+                    txtSaleVarAmount.Text = "0";
+            }
         }
     }
 }
