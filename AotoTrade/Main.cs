@@ -541,6 +541,10 @@ namespace AotoTrade
                 foreach (StockList ll in configModel.StockList)
                 {
                     ll.CurrentPrice = GetInfo.Get(ll.StockCode).CurrentPrice;
+
+                    ll.BuyStrategy = string.Format("{0}{1}元", ((BuyVariableTrendEnum)ll.BuyVariableTrend).GetEnumDescription(), ll.BuyVariableAmount);
+                    ll.SaleStrategy = string.Format("{0}{1}元", ((SaleVariableTrendEnum)ll.SaleVariableTrend).GetEnumDescription(), ll.SaleVariableAmount);
+
                     if (ll.Monitor == "监控中")
                         Cnt++;
                 }

@@ -508,6 +508,7 @@
             this.Controls.Add(this.lblAK);
             this.Controls.Add(this.btnUpload);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.Name = "Main";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "AotoManager";
