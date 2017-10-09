@@ -128,13 +128,21 @@ namespace AotoTrade
                     BindData(model);
                     if (model.Monitoring)
                     {
-                        if (model.LimitTime)
+                        if (model.LimitBuyTime)
                         {
                             if (DateTime.Parse(DateTime.Now.ToLongTimeString()) >= DateTime.Parse(model.BuyBeginTime.ToLongTimeString()) && DateTime.Parse(DateTime.Now.ToLongTimeString()) < DateTime.Parse(model.BuyEndTime.ToLongTimeString()))
-                                Monitoring(model);
+                                Monitoring(model, TradeTypeEnum.Buy);
                         }
                         else
-                            Monitoring(model);
+                            Monitoring(model, TradeTypeEnum.Buy);
+
+                        if (model.LimitSaleTime)
+                        {
+                            if (DateTime.Parse(DateTime.Now.ToLongTimeString()) >= DateTime.Parse(model.SaleBeginTime.ToLongTimeString()) && DateTime.Parse(DateTime.Now.ToLongTimeString()) < DateTime.Parse(model.SaleEndTime.ToLongTimeString()))
+                                Monitoring(model, TradeTypeEnum.Sale);
+                        }
+                        else
+                            Monitoring(model, TradeTypeEnum.Sale);
                     }
                 }
                 catch (Exception ex)
@@ -178,15 +186,20 @@ namespace AotoTrade
         }
 
 
-        private void Monitoring(StockConfigModel model)
+        private void Monitoring(StockConfigModel model, TradeTypeEnum type)
         {
             foreach (StockList stock in model.StockList)
             {
                 if (stock.Monitor == "监控中")
-                    reachBuyCondition(model, stock);
+                {
+                    if (type == TradeTypeEnum.Buy)
+                        reachBuyCondition(model, stock);
+                    else
+                        reachSaleCondition(model, stock);
+                }
             }
-
         }
+
         /// <summary>
         /// 根据策略得到购买价格
         /// </summary>
@@ -214,15 +227,15 @@ namespace AotoTrade
         {
             //decimal currentPrice = GetInfo.Get(stock.StockCode).CurrentPrice;//实时再获取一次
             decimal currentPrice = stock.CurrentPrice;//和绑定Grid的数据保持一致
-            if (CurrentCanTrade(model, stock) && currentPrice != 0 && stock.BuyAmount != 0)
+            if (CurrentCanTrade(model, stock, TradeTypeEnum.Buy) && currentPrice != 0 && stock.BuyAmount != 0)
             {
                 Stopwatch sw = new Stopwatch();
                 sw.Start();
                 Boolean flagTrade = false;
                 if (cbxSoft.SelectedIndex == 0)
-                    flagTrade = ZhaoShangZhiYuanTrade(stock);
+                    flagTrade = ZhaoShangZhiYuanTrade(stock, TradeTypeEnum.Buy);
                 else
-                    flagTrade = JQKA(stock);
+                    flagTrade = JQKA(stock, TradeTypeEnum.Buy);
                 sw.Stop();
 
                 if (flagTrade)
@@ -231,11 +244,49 @@ namespace AotoTrade
 
                     Task.Factory.StartNew(() =>
                     {
-                        SendTradeSuccessMail(buyamount, stock, sw);
+                        SendTradeSuccessMail(buyamount, stock, sw, TradeTypeEnum.Buy);
                     });
 
-                    model.AvailableBalance = Convert.ToInt16(Math.Floor(model.AvailableBalance - (stock.CurrentPrice * stock.BuyAmount)));//计算剩余金额
+                    model.AvailableBalance = Convert.ToInt32(Math.Floor(model.AvailableBalance - (stock.CurrentPrice * stock.BuyAmount)));//计算剩余金额
                     stock.BuyAmount = 0;
+                    stock.Monitor = "已停止";
+
+                    UploadFile(model);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 达到卖出条件
+        /// </summary>
+        /// <param name="model">全量数据model</param>
+        /// <param name="stock">监控中的证券model</param>
+        private void reachSaleCondition(StockConfigModel model, StockList stock)
+        {
+            //decimal currentPrice = GetInfo.Get(stock.StockCode).CurrentPrice;//实时再获取一次
+            decimal currentPrice = stock.CurrentPrice;//和绑定Grid的数据保持一致
+            if (CurrentCanTrade(model, stock, TradeTypeEnum.Sale) && currentPrice != 0 && stock.SaleAmount != 0)
+            {
+                Stopwatch sw = new Stopwatch();
+                sw.Start();
+                Boolean flagTrade = false;
+                if (cbxSoft.SelectedIndex == 0)
+                    flagTrade = ZhaoShangZhiYuanTrade(stock, TradeTypeEnum.Sale);
+                else
+                    flagTrade = JQKA(stock, TradeTypeEnum.Sale);
+                sw.Stop();
+
+                if (flagTrade)
+                {
+                    int saleamount = stock.SaleAmount;
+
+                    Task.Factory.StartNew(() =>
+                    {
+                        SendTradeSuccessMail(saleamount, stock, sw, TradeTypeEnum.Sale);
+                    });
+
+                    model.AvailableBalance = Convert.ToInt32(Math.Floor(model.AvailableBalance + (stock.CurrentPrice * stock.SaleAmount)));//计算剩余金额
+                    stock.SaleAmount = 0;
                     stock.Monitor = "已停止";
 
                     UploadFile(model);
@@ -249,76 +300,82 @@ namespace AotoTrade
         /// <param name="model"></param>
         /// <param name="stock"></param>
         /// <returns></returns>
-        private bool CurrentCanTrade(StockConfigModel model, StockList stock)
+        private bool CurrentCanTrade(StockConfigModel model, StockList stock, TradeTypeEnum type)
         {
-            if (stock.BuyVariableTrend != 0)
+            if (type == TradeTypeEnum.Buy)
             {
-                if (stock.BuyVariableTrend == (int)BuyVariableTrendEnum.ReachOrDown)
+                if (stock.BuyVariableTrend != 0)
                 {
-                    return stock.CurrentPrice <= GetBuyPriceByTactics(model, stock);
-                }
-                else if (stock.BuyVariableTrend == (int)BuyVariableTrendEnum.DownThenRebound)
-                {
-                    if (stock.BuyPrice - stock.CurrentPrice >= stock.BuyVariableAmount)
-                        stock.BuyMarkPrice = stock.CurrentPrice;
-
-                    if (stock.CurrentPrice - stock.BuyMarkPrice >= stock.BuyVariableAmount)
-                        return true;
-                }
-                else if (stock.BuyVariableTrend == (int)BuyVariableTrendEnum.DownThenUp)
-                {
-                    if (stock.BuyMarkPrice == 0)
+                    if (stock.BuyVariableTrend == (int)BuyVariableTrendEnum.ReachOrDown)
+                    {
+                        return stock.CurrentPrice <= GetBuyPriceByTactics(model, stock);
+                    }
+                    else if (stock.BuyVariableTrend == (int)BuyVariableTrendEnum.DownThenRebound)
                     {
                         if (stock.BuyPrice - stock.CurrentPrice >= stock.BuyVariableAmount)
                             stock.BuyMarkPrice = stock.CurrentPrice;
-                    }
-                    else
-                    {
-                        if (stock.BuyMarkPrice - stock.CurrentPrice >= stock.BuyVariableAmount)
-                            stock.BuyMarkPrice = stock.CurrentPrice;
-                    }
 
-                    if (stock.CurrentPrice - stock.BuyMarkPrice >= stock.BuyVariableAmount)
-                        return true;
-                }
-                else if (stock.BuyVariableTrend == (int)BuyVariableTrendEnum.ReachOrUp)
-                {
-                    return stock.CurrentPrice >= stock.BuyPrice;
+                        if (stock.CurrentPrice - stock.BuyMarkPrice >= stock.BuyVariableAmount)
+                            return true;
+                    }
+                    else if (stock.BuyVariableTrend == (int)BuyVariableTrendEnum.DownThenUp)
+                    {
+                        if (stock.BuyMarkPrice == 0)
+                        {
+                            if (stock.BuyPrice - stock.CurrentPrice >= stock.BuyVariableAmount)
+                                stock.BuyMarkPrice = stock.CurrentPrice;
+                        }
+                        else
+                        {
+                            if (stock.BuyMarkPrice - stock.CurrentPrice >= stock.BuyVariableAmount)
+                                stock.BuyMarkPrice = stock.CurrentPrice;
+                        }
+
+                        if (stock.CurrentPrice - stock.BuyMarkPrice >= stock.BuyVariableAmount)
+                            return true;
+                    }
+                    else if (stock.BuyVariableTrend == (int)BuyVariableTrendEnum.ReachOrUp)
+                    {
+                        return stock.CurrentPrice >= stock.BuyPrice;
+                    }
                 }
             }
-            else if (stock.SaleVariableTrend != 0)
+            else
             {
-                if (stock.SaleVariableTrend == (int)SaleVariableTrendEnum.ReachOrDown)
+                if (stock.SaleVariableTrend != 0)
                 {
-                    return stock.CurrentPrice <= stock.SalePrice;
-                }
-                else if (stock.SaleVariableTrend == (int)SaleVariableTrendEnum.UpThenFallBack)
-                {
-                    if (stock.CurrentPrice - stock.SalePrice >= stock.SaleVariableAmount)
-                        stock.SaleMarkPrice = stock.CurrentPrice;
-
-                    if (stock.SaleMarkPrice - stock.CurrentPrice >= stock.SaleVariableAmount)
-                        return true;
-                }
-                else if (stock.SaleVariableTrend == (int)SaleVariableTrendEnum.UpThenDown)
-                {
-                    if (stock.SaleMarkPrice == 0)
+                    if (stock.SaleVariableTrend == (int)SaleVariableTrendEnum.ReachOrDown)
+                    {
+                        return stock.CurrentPrice <= stock.SalePrice;
+                    }
+                    else if (stock.SaleVariableTrend == (int)SaleVariableTrendEnum.UpThenFallBack)
                     {
                         if (stock.CurrentPrice - stock.SalePrice >= stock.SaleVariableAmount)
                             stock.SaleMarkPrice = stock.CurrentPrice;
-                    }
-                    else
-                    {
-                        if (stock.CurrentPrice - stock.SaleMarkPrice >= stock.SaleVariableAmount)
-                            stock.SaleMarkPrice = stock.CurrentPrice;
-                    }
 
-                    if (stock.SaleMarkPrice - stock.CurrentPrice >= stock.SaleVariableAmount)
-                        return true;
-                }
-                else if (stock.SaleVariableTrend == (int)SaleVariableTrendEnum.ReachOrUp)
-                {
-                    return stock.CurrentPrice >= stock.SalePrice;
+                        if (stock.SaleMarkPrice - stock.CurrentPrice >= stock.SaleVariableAmount)
+                            return true;
+                    }
+                    else if (stock.SaleVariableTrend == (int)SaleVariableTrendEnum.UpThenDown)
+                    {
+                        if (stock.SaleMarkPrice == 0)
+                        {
+                            if (stock.CurrentPrice - stock.SalePrice >= stock.SaleVariableAmount)
+                                stock.SaleMarkPrice = stock.CurrentPrice;
+                        }
+                        else
+                        {
+                            if (stock.CurrentPrice - stock.SaleMarkPrice >= stock.SaleVariableAmount)
+                                stock.SaleMarkPrice = stock.CurrentPrice;
+                        }
+
+                        if (stock.SaleMarkPrice - stock.CurrentPrice >= stock.SaleVariableAmount)
+                            return true;
+                    }
+                    else if (stock.SaleVariableTrend == (int)SaleVariableTrendEnum.ReachOrUp)
+                    {
+                        return stock.CurrentPrice >= stock.SalePrice;
+                    }
                 }
             }
             return false;
@@ -327,13 +384,23 @@ namespace AotoTrade
         /// <summary>
         /// 发送交易成功邮件
         /// </summary>
-        /// <param name="buyamount">买入数量</param>
+        /// <param name="amount">数量</param>
         /// <param name="stock">证券model</param>
         /// <param name="sw">所耗时间</param>
-        private void SendTradeSuccessMail(int buyamount, StockList stock, Stopwatch sw)
+        /// <param name="type">买/卖类型</param>
+        private void SendTradeSuccessMail(int amount, StockList stock, Stopwatch sw, TradeTypeEnum type)
         {
-            string subject = string.Format("成功以{0}元买入{1}({2}){3}股", stock.CurrentPrice, stock.StockName, stock.StockCode, buyamount);
-            string body = string.Format("用时{0}秒", sw.Elapsed.TotalSeconds);
+            string subject, body;
+            if (type == TradeTypeEnum.Buy)
+            {
+                subject = string.Format("成功以{0}元买入{1}({2}){3}股", stock.CurrentPrice, stock.StockName, stock.StockCode, amount);
+                body = string.Format("用时{0}秒", sw.Elapsed.TotalSeconds);
+            }
+            else
+            {
+                subject = string.Format("成功以{0}元卖出{1}({2}){3}股", stock.CurrentPrice, stock.StockName, stock.StockCode, amount);
+                body = string.Format("用时{0}秒", sw.Elapsed.TotalSeconds);
+            }
             SendMail(subject, body);
         }
 
@@ -478,9 +545,12 @@ namespace AotoTrade
         {
             StockConfigModel model = new StockConfigModel();
             model.AvailableBalance = Convert.ToInt32(txtBalance.Text);
-            model.LimitTime = chkLimitTime.Checked;
-            model.BuyBeginTime = dtBeginTime.Value;
-            model.BuyEndTime = dtEndTime.Value;
+            model.LimitBuyTime = chkLimitBuyTime.Checked;
+            model.LimitSaleTime = chkLimitSaleTime.Checked;
+            model.BuyBeginTime = dtBuyBeginTime.Value;
+            model.BuyEndTime = dtBuyEndTime.Value;
+            model.SaleBeginTime = dtSaleBeginTime.Value;
+            model.SaleEndTime = dtSaleEndTime.Value;
             model.Monitoring = lblMonitor.Text == "正在监控..." ? true : false;
             List<StockList> list = new List<StockList>();
             for (int i = 0; i < dataGrid.Rows.Count; i++)
@@ -551,9 +621,12 @@ namespace AotoTrade
 
                 dataGrid.DataSource = configModel.StockList;
                 txtBalance.Text = configModel.AvailableBalance.ToString();
-                chkLimitTime.Checked = configModel.LimitTime;
-                dtBeginTime.Value = configModel.BuyBeginTime;
-                dtEndTime.Value = configModel.BuyEndTime;
+                chkLimitBuyTime.Checked = configModel.LimitBuyTime;
+                chkLimitSaleTime.Checked = configModel.LimitSaleTime;
+                dtBuyBeginTime.Value = configModel.BuyBeginTime;
+                dtBuyEndTime.Value = configModel.BuyEndTime;
+                dtSaleBeginTime.Value = configModel.SaleBeginTime;
+                dtSaleEndTime.Value = configModel.SaleEndTime;
                 lblMonitor.Visible = true;
                 lblMonitor.Text = Cnt > 0 ? "正在监控..." : "监控已停止...";
                 cbxSoft.SelectedIndex = configModel.TradeSoftWare;
@@ -563,7 +636,7 @@ namespace AotoTrade
 
 
 
-        private Boolean ZhaoShangZhiYuanTrade(StockList stock)
+        private Boolean ZhaoShangZhiYuanTrade(StockList stock, TradeTypeEnum type)
         {
             IntPtr myIntPtr = Utils.FindWindow("TdxW_MainFrame_Class", null);
             Boolean flagFore = Utils.SetForegroundWindow(myIntPtr);
@@ -572,32 +645,35 @@ namespace AotoTrade
                 Boolean flagShowMax = Utils.ShowWindow(myIntPtr, 3);
                 if (flagShowMax)
                 {
-                    System.Threading.Thread.Sleep(500);
-                    Utils.SetCursorPos(43, 62);
-                    System.Threading.Thread.Sleep(100);
-                    Utils.mouse_event(Utils.MouseEventFlag.LeftDown, 0, 0, 0, 0); //模拟鼠标按下操作
-                    Utils.mouse_event(Utils.MouseEventFlag.LeftUp, 0, 0, 0, 0); //模拟鼠标放开操作
-                    Thread.Sleep(200);
-                    SendKeys.SendWait(stock.StockCode);
-                    Thread.Sleep(300);
-                    SendKeys.SendWait(stock.CurrentPrice.ToString());
-                    Thread.Sleep(200);
-                    SendKeys.SendWait("{TAB}");
-                    Thread.Sleep(200);
-                    SendKeys.SendWait(stock.BuyAmount.ToString());
-                    Thread.Sleep(200);
-                    SendKeys.SendWait("{ENTER}");
-                    Thread.Sleep(200);
-                    SendKeys.SendWait("{ENTER}");
-                    Thread.Sleep(500);
-                    SendKeys.SendWait("{ENTER}");
+                    if (type == TradeTypeEnum.Buy)
+                    {
+                        System.Threading.Thread.Sleep(500);
+                        Utils.SetCursorPos(43, 62);
+                        System.Threading.Thread.Sleep(100);
+                        Utils.mouse_event(Utils.MouseEventFlag.LeftDown, 0, 0, 0, 0); //模拟鼠标按下操作
+                        Utils.mouse_event(Utils.MouseEventFlag.LeftUp, 0, 0, 0, 0); //模拟鼠标放开操作
+                        Thread.Sleep(200);
+                        SendKeys.SendWait(stock.StockCode);
+                        Thread.Sleep(300);
+                        SendKeys.SendWait(stock.CurrentPrice.ToString());
+                        Thread.Sleep(200);
+                        SendKeys.SendWait("{TAB}");
+                        Thread.Sleep(200);
+                        SendKeys.SendWait(stock.BuyAmount.ToString());
+                        Thread.Sleep(200);
+                        SendKeys.SendWait("{ENTER}");
+                        Thread.Sleep(200);
+                        SendKeys.SendWait("{ENTER}");
+                        Thread.Sleep(500);
+                        SendKeys.SendWait("{ENTER}");
+                    }
                 }
             }
             return flagFore;
         }
 
 
-        private Boolean JQKA(StockList stock)
+        private Boolean JQKA(StockList stock, TradeTypeEnum type)
         {
             IntPtr myIntPtr = Utils.FindWindow(null, "网上股票交易系统5.0");
             Boolean flagFore = Utils.SetForegroundWindow(myIntPtr);
@@ -606,24 +682,47 @@ namespace AotoTrade
                 Boolean flagShowMax = Utils.ShowWindow(myIntPtr, 3);
                 if (flagShowMax)
                 {
-                    //Thread.Sleep(300);
-                    SendKeys.SendWait("{F1}");
-                    Thread.Sleep(200);
-                    SendKeys.SendWait(stock.StockCode);
-                    Thread.Sleep(300);
-                    SendKeys.SendWait("{TAB}");
-                    Thread.Sleep(200);
-                    SendKeys.SendWait(stock.CurrentPrice.ToString());
-                    Thread.Sleep(200);
-                    SendKeys.SendWait("{TAB}");
-                    Thread.Sleep(200);
-                    SendKeys.SendWait(stock.BuyAmount.ToString());
-                    Thread.Sleep(200);
-                    SendKeys.SendWait("{ENTER}");
-                    Thread.Sleep(200);
-                    SendKeys.SendWait("{ENTER}");
-                    Thread.Sleep(200);
-                    SendKeys.SendWait("{ENTER}");
+                    if (type == TradeTypeEnum.Buy)
+                    {
+                        //Thread.Sleep(300);
+                        SendKeys.SendWait("{F1}");
+                        Thread.Sleep(200);
+                        SendKeys.SendWait(stock.StockCode);
+                        Thread.Sleep(300);
+                        SendKeys.SendWait("{TAB}");
+                        Thread.Sleep(200);
+                        SendKeys.SendWait(stock.CurrentPrice.ToString());
+                        Thread.Sleep(200);
+                        SendKeys.SendWait("{TAB}");
+                        Thread.Sleep(200);
+                        SendKeys.SendWait(stock.BuyAmount.ToString());
+                        Thread.Sleep(200);
+                        SendKeys.SendWait("{ENTER}");
+                        Thread.Sleep(200);
+                        SendKeys.SendWait("{ENTER}");
+                        Thread.Sleep(200);
+                        SendKeys.SendWait("{ENTER}");
+                    }
+                    else
+                    {
+                        SendKeys.SendWait("{F2}");
+                        Thread.Sleep(200);
+                        SendKeys.SendWait(stock.StockCode);
+                        Thread.Sleep(300);
+                        SendKeys.SendWait("{TAB}");
+                        Thread.Sleep(200);
+                        SendKeys.SendWait(stock.CurrentPrice.ToString());
+                        Thread.Sleep(200);
+                        SendKeys.SendWait("{TAB}");
+                        Thread.Sleep(200);
+                        SendKeys.SendWait(stock.SaleAmount.ToString());
+                        Thread.Sleep(200);
+                        SendKeys.SendWait("{ENTER}");
+                        Thread.Sleep(200);
+                        SendKeys.SendWait("{ENTER}");
+                        Thread.Sleep(200);
+                        SendKeys.SendWait("{ENTER}");
+                    }
                 }
             }
             return flagFore;

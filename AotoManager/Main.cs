@@ -208,9 +208,12 @@ namespace AotoManager
             configModel.StockList.Add(new StockList { StockCode = "", StockName = "", BuyPrice = 0, BuyAmount = 0, CurrentPrice = 0, SalePrice = 0, SaleAmount = 0, Monitor = "" });
             dataGrid.DataSource = configModel.StockList;
             txtBalance.Text = configModel.AvailableBalance.ToString();
-            chkLimitTime.Checked = configModel.LimitTime;
-            dtBeginTime.Value = configModel.BuyBeginTime;
-            dtEndTime.Value = configModel.BuyEndTime;
+            chkLimitBuyTime.Checked = configModel.LimitBuyTime;
+            chkLimitSaleTime.Checked = configModel.LimitSaleTime;
+            dtBuyBeginTime.Value = configModel.BuyBeginTime;
+            dtBuyEndTime.Value = configModel.BuyEndTime;
+            dtSaleBeginTime.Value = configModel.SaleBeginTime;
+            dtSaleEndTime.Value = configModel.SaleEndTime;
             btnStop.Visible = true;
             lblMonitor.Visible = true;
             cbxSoft.SelectedIndex = configModel.TradeSoftWare;
@@ -301,9 +304,12 @@ namespace AotoManager
         {
             StockConfigModel model = new StockConfigModel();
             model.AvailableBalance = Convert.ToInt32(txtBalance.Text);
-            model.LimitTime = chkLimitTime.Checked;
-            model.BuyBeginTime = dtBeginTime.Value;
-            model.BuyEndTime = dtEndTime.Value;
+            model.LimitBuyTime = chkLimitBuyTime.Checked;
+            model.LimitSaleTime = chkLimitSaleTime.Checked;
+            model.BuyBeginTime = dtBuyBeginTime.Value;
+            model.BuyEndTime = dtBuyEndTime.Value;
+            model.SaleBeginTime = dtSaleBeginTime.Value;
+            model.SaleEndTime = dtSaleEndTime.Value;
             model.TradeSoftWare = cbxSoft.SelectedIndex;
             //关机设置
             model.CloseComputerTime = (btnCloseComputer.Text == "取消关闭") ? DateTime.Now : DateTime.MinValue;

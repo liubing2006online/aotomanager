@@ -28,14 +28,14 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.btnDownload = new System.Windows.Forms.Button();
-            this.dtEndTime = new System.Windows.Forms.DateTimePicker();
-            this.dtBeginTime = new System.Windows.Forms.DateTimePicker();
-            this.lblEndTime = new System.Windows.Forms.Label();
-            this.lblBeginTime = new System.Windows.Forms.Label();
-            this.chkLimitTime = new System.Windows.Forms.CheckBox();
+            this.dtBuyEndTime = new System.Windows.Forms.DateTimePicker();
+            this.dtBuyBeginTime = new System.Windows.Forms.DateTimePicker();
+            this.lblBuyEndTime = new System.Windows.Forms.Label();
+            this.lblBuyBeginTime = new System.Windows.Forms.Label();
+            this.chkLimitBuyTime = new System.Windows.Forms.CheckBox();
             this.txtBalance = new System.Windows.Forms.TextBox();
             this.lblBalance = new System.Windows.Forms.Label();
             this.dataGrid = new System.Windows.Forms.DataGridView();
@@ -43,6 +43,11 @@
             this.lblMonitor = new System.Windows.Forms.Label();
             this.cbxSoft = new System.Windows.Forms.ComboBox();
             this.chkGapLower = new System.Windows.Forms.CheckBox();
+            this.dtSaleEndTime = new System.Windows.Forms.DateTimePicker();
+            this.dtSaleBeginTime = new System.Windows.Forms.DateTimePicker();
+            this.lblSaleEndTime = new System.Windows.Forms.Label();
+            this.lblSaleBeginTime = new System.Windows.Forms.Label();
+            this.chkLimitSaleTime = new System.Windows.Forms.CheckBox();
             this.StockCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.StockName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Monitor = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -54,8 +59,8 @@
             this.SaleAmount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.SaleStrategy = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.BuyVariableTrend = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.BuyVariableAmount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.SaleVariableTrend = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.BuyVariableAmount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.SaleVariableAmount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.BuyMarkPrice = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.SaleMarkPrice = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -72,54 +77,54 @@
             this.btnDownload.UseVisualStyleBackColor = true;
             this.btnDownload.Click += new System.EventHandler(this.btnDownload_Click);
             // 
-            // dtEndTime
+            // dtBuyEndTime
             // 
-            this.dtEndTime.Format = System.Windows.Forms.DateTimePickerFormat.Time;
-            this.dtEndTime.Location = new System.Drawing.Point(510, 428);
-            this.dtEndTime.Name = "dtEndTime";
-            this.dtEndTime.Size = new System.Drawing.Size(97, 21);
-            this.dtEndTime.TabIndex = 25;
-            this.dtEndTime.Value = new System.DateTime(2017, 3, 18, 14, 59, 30, 0);
+            this.dtBuyEndTime.Format = System.Windows.Forms.DateTimePickerFormat.Time;
+            this.dtBuyEndTime.Location = new System.Drawing.Point(510, 428);
+            this.dtBuyEndTime.Name = "dtBuyEndTime";
+            this.dtBuyEndTime.Size = new System.Drawing.Size(97, 21);
+            this.dtBuyEndTime.TabIndex = 25;
+            this.dtBuyEndTime.Value = new System.DateTime(2017, 3, 18, 14, 59, 30, 0);
             // 
-            // dtBeginTime
+            // dtBuyBeginTime
             // 
-            this.dtBeginTime.Format = System.Windows.Forms.DateTimePickerFormat.Time;
-            this.dtBeginTime.Location = new System.Drawing.Point(297, 428);
-            this.dtBeginTime.Name = "dtBeginTime";
-            this.dtBeginTime.Size = new System.Drawing.Size(97, 21);
-            this.dtBeginTime.TabIndex = 24;
-            this.dtBeginTime.Value = new System.DateTime(2017, 3, 18, 9, 31, 0, 0);
+            this.dtBuyBeginTime.Format = System.Windows.Forms.DateTimePickerFormat.Time;
+            this.dtBuyBeginTime.Location = new System.Drawing.Point(297, 428);
+            this.dtBuyBeginTime.Name = "dtBuyBeginTime";
+            this.dtBuyBeginTime.Size = new System.Drawing.Size(97, 21);
+            this.dtBuyBeginTime.TabIndex = 24;
+            this.dtBuyBeginTime.Value = new System.DateTime(2017, 3, 18, 9, 31, 0, 0);
             // 
-            // lblEndTime
+            // lblBuyEndTime
             // 
-            this.lblEndTime.AutoSize = true;
-            this.lblEndTime.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lblEndTime.Location = new System.Drawing.Point(400, 430);
-            this.lblEndTime.Name = "lblEndTime";
-            this.lblEndTime.Size = new System.Drawing.Size(104, 16);
-            this.lblEndTime.TabIndex = 23;
-            this.lblEndTime.Text = "买入结束时间";
+            this.lblBuyEndTime.AutoSize = true;
+            this.lblBuyEndTime.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lblBuyEndTime.Location = new System.Drawing.Point(400, 430);
+            this.lblBuyEndTime.Name = "lblBuyEndTime";
+            this.lblBuyEndTime.Size = new System.Drawing.Size(104, 16);
+            this.lblBuyEndTime.TabIndex = 23;
+            this.lblBuyEndTime.Text = "买入结束时间";
             // 
-            // lblBeginTime
+            // lblBuyBeginTime
             // 
-            this.lblBeginTime.AutoSize = true;
-            this.lblBeginTime.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lblBeginTime.Location = new System.Drawing.Point(187, 430);
-            this.lblBeginTime.Name = "lblBeginTime";
-            this.lblBeginTime.Size = new System.Drawing.Size(104, 16);
-            this.lblBeginTime.TabIndex = 22;
-            this.lblBeginTime.Text = "买入开始时间";
+            this.lblBuyBeginTime.AutoSize = true;
+            this.lblBuyBeginTime.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lblBuyBeginTime.Location = new System.Drawing.Point(187, 430);
+            this.lblBuyBeginTime.Name = "lblBuyBeginTime";
+            this.lblBuyBeginTime.Size = new System.Drawing.Size(104, 16);
+            this.lblBuyBeginTime.TabIndex = 22;
+            this.lblBuyBeginTime.Text = "买入开始时间";
             // 
-            // chkLimitTime
+            // chkLimitBuyTime
             // 
-            this.chkLimitTime.AutoSize = true;
-            this.chkLimitTime.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.chkLimitTime.Location = new System.Drawing.Point(30, 430);
-            this.chkLimitTime.Name = "chkLimitTime";
-            this.chkLimitTime.Size = new System.Drawing.Size(123, 20);
-            this.chkLimitTime.TabIndex = 21;
-            this.chkLimitTime.Text = "限定买入时间";
-            this.chkLimitTime.UseVisualStyleBackColor = true;
+            this.chkLimitBuyTime.AutoSize = true;
+            this.chkLimitBuyTime.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.chkLimitBuyTime.Location = new System.Drawing.Point(30, 430);
+            this.chkLimitBuyTime.Name = "chkLimitBuyTime";
+            this.chkLimitBuyTime.Size = new System.Drawing.Size(123, 20);
+            this.chkLimitBuyTime.TabIndex = 21;
+            this.chkLimitBuyTime.Text = "限定买入时间";
+            this.chkLimitBuyTime.UseVisualStyleBackColor = true;
             // 
             // txtBalance
             // 
@@ -144,14 +149,17 @@
             // 
             this.dataGrid.AllowUserToAddRows = false;
             this.dataGrid.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGrid.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            this.dataGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGrid.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.StockCode,
@@ -165,19 +173,25 @@
             this.SaleAmount,
             this.SaleStrategy,
             this.BuyVariableTrend,
-            this.BuyVariableAmount,
             this.SaleVariableTrend,
+            this.BuyVariableAmount,
             this.SaleVariableAmount,
             this.BuyMarkPrice,
             this.SaleMarkPrice});
-            this.dataGrid.Location = new System.Drawing.Point(3, 118);
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGrid.DefaultCellStyle = dataGridViewCellStyle2;
+            this.dataGrid.Location = new System.Drawing.Point(-7, 118);
             this.dataGrid.Name = "dataGrid";
             this.dataGrid.ReadOnly = true;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.dataGrid.RowsDefaultCellStyle = dataGridViewCellStyle4;
             this.dataGrid.RowTemplate.DefaultCellStyle.Font = new System.Drawing.Font("宋体", 12F);
             this.dataGrid.RowTemplate.Height = 23;
-            this.dataGrid.Size = new System.Drawing.Size(1136, 288);
+            this.dataGrid.Size = new System.Drawing.Size(1141, 288);
             this.dataGrid.TabIndex = 18;
             // 
             // lblMessage
@@ -195,7 +209,7 @@
             this.lblMonitor.AutoSize = true;
             this.lblMonitor.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.lblMonitor.ForeColor = System.Drawing.Color.ForestGreen;
-            this.lblMonitor.Location = new System.Drawing.Point(374, 468);
+            this.lblMonitor.Location = new System.Drawing.Point(374, 507);
             this.lblMonitor.Name = "lblMonitor";
             this.lblMonitor.Size = new System.Drawing.Size(96, 16);
             this.lblMonitor.TabIndex = 27;
@@ -226,6 +240,55 @@
             this.chkGapLower.TabIndex = 29;
             this.chkGapLower.Text = "跳空低开";
             this.chkGapLower.UseVisualStyleBackColor = true;
+            // 
+            // dtSaleEndTime
+            // 
+            this.dtSaleEndTime.Format = System.Windows.Forms.DateTimePickerFormat.Time;
+            this.dtSaleEndTime.Location = new System.Drawing.Point(510, 454);
+            this.dtSaleEndTime.Name = "dtSaleEndTime";
+            this.dtSaleEndTime.Size = new System.Drawing.Size(97, 21);
+            this.dtSaleEndTime.TabIndex = 34;
+            this.dtSaleEndTime.Value = new System.DateTime(2017, 3, 18, 14, 59, 30, 0);
+            // 
+            // dtSaleBeginTime
+            // 
+            this.dtSaleBeginTime.Format = System.Windows.Forms.DateTimePickerFormat.Time;
+            this.dtSaleBeginTime.Location = new System.Drawing.Point(297, 454);
+            this.dtSaleBeginTime.Name = "dtSaleBeginTime";
+            this.dtSaleBeginTime.Size = new System.Drawing.Size(97, 21);
+            this.dtSaleBeginTime.TabIndex = 33;
+            this.dtSaleBeginTime.Value = new System.DateTime(2017, 3, 18, 9, 31, 0, 0);
+            // 
+            // lblSaleEndTime
+            // 
+            this.lblSaleEndTime.AutoSize = true;
+            this.lblSaleEndTime.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lblSaleEndTime.Location = new System.Drawing.Point(400, 456);
+            this.lblSaleEndTime.Name = "lblSaleEndTime";
+            this.lblSaleEndTime.Size = new System.Drawing.Size(104, 16);
+            this.lblSaleEndTime.TabIndex = 32;
+            this.lblSaleEndTime.Text = "卖出结束时间";
+            // 
+            // lblSaleBeginTime
+            // 
+            this.lblSaleBeginTime.AutoSize = true;
+            this.lblSaleBeginTime.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lblSaleBeginTime.Location = new System.Drawing.Point(187, 456);
+            this.lblSaleBeginTime.Name = "lblSaleBeginTime";
+            this.lblSaleBeginTime.Size = new System.Drawing.Size(104, 16);
+            this.lblSaleBeginTime.TabIndex = 31;
+            this.lblSaleBeginTime.Text = "卖出开始时间";
+            // 
+            // chkLimitSaleTime
+            // 
+            this.chkLimitSaleTime.AutoSize = true;
+            this.chkLimitSaleTime.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.chkLimitSaleTime.Location = new System.Drawing.Point(30, 456);
+            this.chkLimitSaleTime.Name = "chkLimitSaleTime";
+            this.chkLimitSaleTime.Size = new System.Drawing.Size(123, 20);
+            this.chkLimitSaleTime.TabIndex = 30;
+            this.chkLimitSaleTime.Text = "限定卖出时间";
+            this.chkLimitSaleTime.UseVisualStyleBackColor = true;
             // 
             // StockCode
             // 
@@ -309,14 +372,6 @@
             this.BuyVariableTrend.ReadOnly = true;
             this.BuyVariableTrend.Visible = false;
             // 
-            // BuyVariableAmount
-            // 
-            this.BuyVariableAmount.DataPropertyName = "BuyVariableAmount";
-            this.BuyVariableAmount.HeaderText = "买入变化数量";
-            this.BuyVariableAmount.Name = "BuyVariableAmount";
-            this.BuyVariableAmount.ReadOnly = true;
-            this.BuyVariableAmount.Visible = false;
-            // 
             // SaleVariableTrend
             // 
             this.SaleVariableTrend.DataPropertyName = "SaleVariableTrend";
@@ -324,6 +379,14 @@
             this.SaleVariableTrend.Name = "SaleVariableTrend";
             this.SaleVariableTrend.ReadOnly = true;
             this.SaleVariableTrend.Visible = false;
+            // 
+            // BuyVariableAmount
+            // 
+            this.BuyVariableAmount.DataPropertyName = "BuyVariableAmount";
+            this.BuyVariableAmount.HeaderText = "买入变化数量";
+            this.BuyVariableAmount.Name = "BuyVariableAmount";
+            this.BuyVariableAmount.ReadOnly = true;
+            this.BuyVariableAmount.Visible = false;
             // 
             // SaleVariableAmount
             // 
@@ -353,22 +416,25 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1143, 518);
+            this.ClientSize = new System.Drawing.Size(1136, 560);
+            this.Controls.Add(this.dtSaleEndTime);
+            this.Controls.Add(this.dtSaleBeginTime);
+            this.Controls.Add(this.lblSaleEndTime);
+            this.Controls.Add(this.lblSaleBeginTime);
+            this.Controls.Add(this.chkLimitSaleTime);
             this.Controls.Add(this.chkGapLower);
             this.Controls.Add(this.cbxSoft);
             this.Controls.Add(this.lblMonitor);
             this.Controls.Add(this.lblMessage);
-            this.Controls.Add(this.dtEndTime);
-            this.Controls.Add(this.dtBeginTime);
-            this.Controls.Add(this.lblEndTime);
-            this.Controls.Add(this.lblBeginTime);
-            this.Controls.Add(this.chkLimitTime);
+            this.Controls.Add(this.dtBuyEndTime);
+            this.Controls.Add(this.dtBuyBeginTime);
+            this.Controls.Add(this.lblBuyEndTime);
+            this.Controls.Add(this.lblBuyBeginTime);
+            this.Controls.Add(this.chkLimitBuyTime);
             this.Controls.Add(this.txtBalance);
             this.Controls.Add(this.lblBalance);
             this.Controls.Add(this.dataGrid);
             this.Controls.Add(this.btnDownload);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.MaximizeBox = false;
             this.Name = "Main";
             this.Text = "AotoTD";
             ((System.ComponentModel.ISupportInitialize)(this.dataGrid)).EndInit();
@@ -380,11 +446,11 @@
         #endregion
 
         private System.Windows.Forms.Button btnDownload;
-        private System.Windows.Forms.DateTimePicker dtEndTime;
-        private System.Windows.Forms.DateTimePicker dtBeginTime;
-        private System.Windows.Forms.Label lblEndTime;
-        private System.Windows.Forms.Label lblBeginTime;
-        private System.Windows.Forms.CheckBox chkLimitTime;
+        private System.Windows.Forms.DateTimePicker dtBuyEndTime;
+        private System.Windows.Forms.DateTimePicker dtBuyBeginTime;
+        private System.Windows.Forms.Label lblBuyEndTime;
+        private System.Windows.Forms.Label lblBuyBeginTime;
+        private System.Windows.Forms.CheckBox chkLimitBuyTime;
         private System.Windows.Forms.TextBox txtBalance;
         private System.Windows.Forms.Label lblBalance;
         private System.Windows.Forms.DataGridView dataGrid;
@@ -392,6 +458,11 @@
         private System.Windows.Forms.Label lblMonitor;
         private System.Windows.Forms.ComboBox cbxSoft;
         private System.Windows.Forms.CheckBox chkGapLower;
+        private System.Windows.Forms.DateTimePicker dtSaleEndTime;
+        private System.Windows.Forms.DateTimePicker dtSaleBeginTime;
+        private System.Windows.Forms.Label lblSaleEndTime;
+        private System.Windows.Forms.Label lblSaleBeginTime;
+        private System.Windows.Forms.CheckBox chkLimitSaleTime;
         private System.Windows.Forms.DataGridViewTextBoxColumn StockCode;
         private System.Windows.Forms.DataGridViewTextBoxColumn StockName;
         private System.Windows.Forms.DataGridViewTextBoxColumn Monitor;
@@ -403,8 +474,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn SaleAmount;
         private System.Windows.Forms.DataGridViewTextBoxColumn SaleStrategy;
         private System.Windows.Forms.DataGridViewTextBoxColumn BuyVariableTrend;
-        private System.Windows.Forms.DataGridViewTextBoxColumn BuyVariableAmount;
         private System.Windows.Forms.DataGridViewTextBoxColumn SaleVariableTrend;
+        private System.Windows.Forms.DataGridViewTextBoxColumn BuyVariableAmount;
         private System.Windows.Forms.DataGridViewTextBoxColumn SaleVariableAmount;
         private System.Windows.Forms.DataGridViewTextBoxColumn BuyMarkPrice;
         private System.Windows.Forms.DataGridViewTextBoxColumn SaleMarkPrice;

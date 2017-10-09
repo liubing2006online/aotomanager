@@ -13,9 +13,13 @@ namespace GetRealTimeInfo.Model
         /// </summary>
         public int AvailableBalance;
         /// <summary>
-        /// 是否限定时间
+        /// 是否限定买入时间
         /// </summary>
-        public Boolean LimitTime { get; set; }
+        public Boolean LimitBuyTime { get; set; }
+        /// <summary>
+        /// 是否限定卖出时间
+        /// </summary>
+        public Boolean LimitSaleTime { get; set; }
         /// <summary>
         /// 买入开始时间
         /// </summary>
@@ -24,6 +28,15 @@ namespace GetRealTimeInfo.Model
         /// 买入结束时间
         /// </summary>
         public DateTime BuyEndTime { get; set; }
+
+        /// <summary>
+        /// 卖出开始时间
+        /// </summary>
+        public DateTime SaleBeginTime { get; set; }
+        /// <summary>
+        /// 卖出结束时间
+        /// </summary>
+        public DateTime SaleEndTime { get; set; }
 
         public string Mobile { get; set; }
 
