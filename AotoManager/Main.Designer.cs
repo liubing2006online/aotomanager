@@ -264,14 +264,12 @@
             this.SalePrice.DataPropertyName = "SalePrice";
             this.SalePrice.HeaderText = "卖出价格";
             this.SalePrice.Name = "SalePrice";
-            this.SalePrice.ReadOnly = true;
             // 
             // SaleAmount
             // 
             this.SaleAmount.DataPropertyName = "SaleAmount";
             this.SaleAmount.HeaderText = "卖出数量";
             this.SaleAmount.Name = "SaleAmount";
-            this.SaleAmount.ReadOnly = true;
             // 
             // SaleStrategy
             // 
