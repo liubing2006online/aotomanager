@@ -403,7 +403,7 @@ namespace AotoManager
                             dataGrid.Rows[e.RowIndex].Cells["BuyVariableAmount"].Value = 0.00M;
                             dataGrid.Rows[e.RowIndex].Cells["BuyStrategy"].Value = string.Format("{0}{1}元", BuyVariableTrendEnum.ReachOrDown.GetEnumDescription(), 0);
 
-                            dataGrid.Rows[e.RowIndex].Cells["SalePrice"].Value = model.CurrentPrice;
+                            dataGrid.Rows[e.RowIndex].Cells["SalePrice"].Value = Math.Round(model.CurrentPrice * 1.04M, 2);
                             dataGrid.Rows[e.RowIndex].Cells["SaleAmount"].Value = 100;//默认值
                             dataGrid.Rows[e.RowIndex].Cells["SaleVariableTrend"].Value = (int)SaleVariableTrendEnum.ReachOrUp;
                             dataGrid.Rows[e.RowIndex].Cells["SaleVariableAmount"].Value = 0.00M;
@@ -528,7 +528,7 @@ namespace AotoManager
 
                 string salevariableamount = dataGrid["SaleVariableAmount", e.RowIndex].Value.ToString();
 
-                MdiForm form = new MdiForm(codecell.ToString(), name, buyamount, buyprice, buyvariabletrend, buyvariableamount, saleamount, saleprice, salevariabletrend, salevariableamount, GetModelFromDataContainer(),dataGrid);
+                MdiForm form = new MdiForm(codecell.ToString(), name, buyamount, buyprice, buyvariabletrend, buyvariableamount, saleamount, saleprice, salevariabletrend, salevariableamount, GetModelFromDataContainer(), dataGrid);
                 form.ShowDialog();
             }
         }
