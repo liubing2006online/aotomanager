@@ -231,5 +231,19 @@ namespace GetRealTimeInfo
 
             return attribute == null ? null : attribute.Description;
         }
+
+        public static ConfigModel GetConfig()
+        {
+            try
+            {
+                string content = File.ReadAllText("settings.txt");
+                ConfigModel config = Newtonsoft.Json.JsonConvert.DeserializeObject<ConfigModel>(content);
+                return config;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
     }
 }

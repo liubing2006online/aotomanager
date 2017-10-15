@@ -32,8 +32,17 @@ namespace AotoManager
         public Main()
         {
             InitializeComponent();
-            AK = System.Configuration.ConfigurationManager.AppSettings["AK"];
-            SK = System.Configuration.ConfigurationManager.AppSettings["SK"];
+            ConfigModel config = Utils.GetConfig();
+            if (config != null)
+            {
+                AK = config.AK;
+                SK = config.SK;
+            }
+            else
+            {
+                MessageBox.Show("settings.txt 配置文件不存在", "注意", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
             Uri = Utils.Uri;
 
             mac = new Mac(AK, SK);

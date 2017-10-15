@@ -67,8 +67,16 @@ namespace AotoTrade
         public Main()
         {
             InitializeComponent();
-            AK = System.Configuration.ConfigurationManager.AppSettings["AK"];
-            SK = System.Configuration.ConfigurationManager.AppSettings["SK"];
+            ConfigModel config = Utils.GetConfig();
+            if (config != null)
+            {
+                AK = config.AK;
+                SK = config.SK;
+            }
+            else
+            {
+                MessageBox.Show("settings.txt 配置文件不存在", "注意", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
             mac = new Mac(AK, SK);
             //Control.CheckForIllegalCrossThreadCalls = false;
             model = Download(Utils.FileNameAoto);
@@ -413,21 +421,29 @@ namespace AotoTrade
         {
             try
             {
-                string ename = System.Configuration.ConfigurationManager.AppSettings["ename"];
-                string epwd = System.Configuration.ConfigurationManager.AppSettings["epwd"];
-                string server = System.Configuration.ConfigurationManager.AppSettings["server"];
-                int port = Convert.ToInt16(System.Configuration.ConfigurationManager.AppSettings["port"]);
-                string add = System.Configuration.ConfigurationManager.AppSettings["add"];
-                Simplify.Mail.MailSenderSettings settings = new Simplify.Mail.MailSenderSettings(server, port, ename, epwd);
-                Simplify.Mail.MailSender msender = new Simplify.Mail.MailSender(settings);
-                List<string> addList = add.Split(',').ToList<string>();
-                MailMessage mailMess = new MailMessage();
-                foreach (string address in addList)
-                    mailMess.Bcc.Add(address);
-                mailMess.From = new MailAddress(addList[0]);
-                mailMess.Subject = subject;
-                mailMess.Body = body;
-                msender.Send(mailMess);
+                ConfigModel config = Utils.GetConfig();
+                if (config != null)
+                {
+                    string ename = config.ename;
+                    string epwd = config.epwd;
+                    string server = config.server;
+                    int port = Convert.ToInt16(config.port);
+                    string add = config.add;
+                    Simplify.Mail.MailSenderSettings settings = new Simplify.Mail.MailSenderSettings(server, port, ename, epwd);
+                    Simplify.Mail.MailSender msender = new Simplify.Mail.MailSender(settings);
+                    List<string> addList = add.Split(',').ToList<string>();
+                    MailMessage mailMess = new MailMessage();
+                    foreach (string address in addList)
+                        mailMess.Bcc.Add(address);
+                    mailMess.From = new MailAddress(addList[0]);
+                    mailMess.Subject = subject;
+                    mailMess.Body = body;
+                    msender.Send(mailMess);
+                }
+                else
+                {
+                    MessageBox.Show("settings.txt 配置文件不存在", "注意", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
             catch (Exception ex)
             {

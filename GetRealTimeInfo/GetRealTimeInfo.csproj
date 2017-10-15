@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="GetInfo.cs" />
     <Compile Include="Model\BuyVariableTrendEnum.cs" />
+    <Compile Include="Model\ConfigModel.cs" />
     <Compile Include="Model\FileInfoModel.cs" />
     <Compile Include="Model\SaleVariableTrendEnum.cs" />
     <Compile Include="Model\StockConfigModel.cs" />
