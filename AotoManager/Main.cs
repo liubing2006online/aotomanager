@@ -528,7 +528,7 @@ namespace AotoManager
 
                 string salevariableamount = dataGrid["SaleVariableAmount", e.RowIndex].Value.ToString();
 
-                MdiForm form = new MdiForm(codecell.ToString(), name, buyamount, buyprice, buyvariabletrend, buyvariableamount, saleamount, saleprice, salevariabletrend, salevariableamount, GetModelFromDataContainer(), dataGrid);
+                MdiForm form = new MdiForm(codecell.ToString(), name, buyamount, buyprice, buyvariabletrend, buyvariableamount, saleamount, saleprice, salevariabletrend, salevariableamount, GetModelFromDataContainer(), dataGrid,e.RowIndex);
                 form.ShowDialog();
             }
         }

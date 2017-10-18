@@ -21,7 +21,8 @@ namespace AotoManager
         }
         DataGridView mainDataGrid;
         StockConfigModel mainConfigModel;
-        public MdiForm(string code, string name, string buyamount, string buyprice, string buyvariabletrend, string buyvariableamount, string saleamount, string saleprice, string salevariabletrend, string salevariableamount, StockConfigModel configModel, DataGridView DataGrid)
+        int RowIndexSelect = -1;
+        public MdiForm(string code, string name, string buyamount, string buyprice, string buyvariabletrend, string buyvariableamount, string saleamount, string saleprice, string salevariabletrend, string salevariableamount, StockConfigModel configModel, DataGridView DataGrid, int rowindex)
         {
             InitializeComponent();
 
@@ -49,6 +50,7 @@ namespace AotoManager
                 cbxSaleVarTrend.SelectedValue = (int)SaleVariableTrendEnum.ReachOrUp;
                 txtBuyVarAmount.Text = "0";
                 txtSaleVarAmount.Text = "0";
+                txtCode.ReadOnly = false;
             }
             else
             {
@@ -67,9 +69,11 @@ namespace AotoManager
                 cbxBuyChooseAmount.DataSource = CalculateBuyStore();
                 cbxBuyChooseAmount.ValueMember = "Value";
                 cbxBuyChooseAmount.DisplayMember = "Key";
+                txtCode.ReadOnly = true;
             }
             mainConfigModel = configModel;
             mainDataGrid = DataGrid;
+            RowIndexSelect = rowindex;
         }
 
         private void txtBalance_KeyPress(object sender, KeyPressEventArgs e)
@@ -246,22 +250,26 @@ namespace AotoManager
                 ll.BuyStrategy = string.Format("{0}{1}元", ((BuyVariableTrendEnum)ll.BuyVariableTrend).GetEnumDescription(), ll.BuyVariableAmount);
                 ll.SaleStrategy = string.Format("{0}{1}元", ((SaleVariableTrendEnum)ll.SaleVariableTrend).GetEnumDescription(), ll.SaleVariableAmount);
             }
-            bool flag = false;
-            for (int i = 0; i < mainConfigModel.StockList.Count; i++)
-            {
-                if (mainConfigModel.StockList[i].StockCode == stock.StockCode)
-                {
-                    stock.Monitor = mainConfigModel.StockList[i].Monitor;
-                    mainConfigModel.StockList[i] = stock;
-                    flag = true;
-                }
-            }
 
-            if (!flag)
+            if (RowIndexSelect != mainDataGrid.Rows.Count - 1)
             {
+                stock.Monitor = mainConfigModel.StockList[RowIndexSelect].Monitor;
+                mainConfigModel.StockList[RowIndexSelect] = stock;
+            }
+            else
+            {
+                for (int i = 0; i < mainConfigModel.StockList.Count; i++)
+                {
+                    if (mainConfigModel.StockList[i].StockCode == stock.StockCode)
+                    {
+                        MessageBox.Show("证券代码重复！", "注意", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                }
                 mainConfigModel.StockList.Add(stock);
                 stock.Monitor = "已停止";
             }
+
             mainConfigModel.StockList.Add(new StockList { StockCode = "", StockName = "", BuyPrice = 0, BuyAmount = 0, CurrentPrice = 0, SalePrice = 0, SaleAmount = 0, Monitor = "" });
             mainDataGrid.DataSource = mainConfigModel.StockList;
             this.Close();
