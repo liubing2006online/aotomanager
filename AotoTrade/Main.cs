@@ -63,7 +63,7 @@ namespace AotoTrade
         internal const int TOKEN_ADJUST_PRIVILEGES = 0x00000020;
         internal const string SE_SHUTDOWN_NAME = "SeShutdownPrivilege";
         internal const int EWX_SHUTDOWN = 0x00000001;
-        log4net.ILog log = log4net.LogManager.GetLogger("AotoTrade");
+        log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         public Main()
         {
             InitializeComponent();
@@ -606,6 +606,7 @@ namespace AotoTrade
                 StockConfigModel configModel = Newtonsoft.Json.JsonConvert.DeserializeObject(json, typeof(StockConfigModel)) as StockConfigModel;
 
                 lblMessage.Text = "下载文件转换成功," + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                log.DebugFormat(lblMessage.Text);
                 lblMessage.ForeColor = Color.OrangeRed;
                 System.Threading.Thread.Sleep(1000);
                 lblMessage.ForeColor = System.Drawing.SystemColors.HotTrack;
@@ -615,6 +616,7 @@ namespace AotoTrade
             }
             else
             {
+                log.DebugFormat("下载文件为空,", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
                 return null;
             }
         }
