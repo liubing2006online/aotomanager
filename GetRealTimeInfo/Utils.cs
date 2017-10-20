@@ -13,7 +13,7 @@ using System.ComponentModel;
 
 namespace GetRealTimeInfo
 {
-     public static class Utils
+    public static class Utils
     {
         public static string bucket = "aoto";
         public static string FileNameAoto = "aoto.txt";
@@ -96,11 +96,15 @@ namespace GetRealTimeInfo
         /// <summary>
         /// 下载可公开访问的文件
         /// </summary>
-        public static string DownloadFile(string DestPath)
+        public static bool DownloadFile(string DestPath)
         {
             string text = Utils.Request_WebRequest(string.Format("{0}?{1}", Path, DateTime.Now.Ticks), 0, null);
-            File.WriteAllText(DestPath, text);
-            return DestPath;
+            if (!string.IsNullOrEmpty(text))
+            {
+                File.WriteAllText(DestPath, text);
+                return true;
+            }
+            return false;
         }
 
         /// <summary>

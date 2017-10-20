@@ -131,10 +131,10 @@ namespace AotoManager
             if (respInfo.StatusCode == 200)
             {
                 lblMessage.Text = "上传成功," + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-                lblMessage.ForeColor = (lblMessage.ForeColor == Color.OrangeRed) ? System.Drawing.SystemColors.HotTrack : Color.OrangeRed;
             }
             else
                 lblMessage.Text = "上传失败";
+            lblMessage.ForeColor = (lblMessage.ForeColor == Color.OrangeRed) ? System.Drawing.SystemColors.HotTrack : Color.OrangeRed;
         }
         /// <summary>
         /// 删除远端文件
@@ -175,9 +175,11 @@ namespace AotoManager
         {
             try
             {
-                string filepath = Utils.DownloadFile(FileNameAoto);
-                if (filepath != "")
+                string filepath = "";
+                if (Utils.DownloadFile(FileNameAoto))
                 {
+                    filepath = FileNameAoto;
+
                     string json = File.ReadAllText(filepath);
 
                     StockConfigModel configModel = Newtonsoft.Json.JsonConvert.DeserializeObject(json, typeof(StockConfigModel)) as StockConfigModel;
@@ -528,7 +530,7 @@ namespace AotoManager
 
                 string salevariableamount = dataGrid["SaleVariableAmount", e.RowIndex].Value.ToString();
 
-                MdiForm form = new MdiForm(codecell.ToString(), name, buyamount, buyprice, buyvariabletrend, buyvariableamount, saleamount, saleprice, salevariabletrend, salevariableamount, GetModelFromDataContainer(), dataGrid,e.RowIndex);
+                MdiForm form = new MdiForm(codecell.ToString(), name, buyamount, buyprice, buyvariabletrend, buyvariableamount, saleamount, saleprice, salevariabletrend, salevariableamount, GetModelFromDataContainer(), dataGrid, e.RowIndex);
                 form.ShowDialog();
             }
         }

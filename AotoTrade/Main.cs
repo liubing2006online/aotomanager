@@ -83,26 +83,6 @@ namespace AotoTrade
             BindData(model);
 
             #region 交易线程
-            //Task.Factory.StartNew(() =>
-            //{
-            //    while (true)
-            //    {
-            //        model = CanDownload(Utils.FileNameAoto, mac);
-            //        BindData(model);
-            //        if (model.Monitoring)
-            //        {
-            //            Thread.Sleep(1000);
-            //            if(model.LimitTime)
-            //            { 
-            //                if(DateTime.Parse(DateTime.Now.ToLongTimeString()) >= DateTime.Parse(model.BuyBeginTime.ToLongTimeString()) && DateTime.Parse(DateTime.Now.ToLongTimeString()) <DateTime.Parse( model.BuyEndTime.ToLongTimeString()) )
-            //                    Monitoring(model);
-            //            }
-            //            else
-            //                Monitoring(model);
-            //        }
-            //        Thread.Sleep(5600);
-            //    }
-            //});
             thread = new Thread(CrossThreadFlush);
             thread.IsBackground = true;
             thread.Start();
@@ -134,28 +114,11 @@ namespace AotoTrade
                     model = CanDownload(Utils.FileNameAoto, mac);
                     CloseComputer(model);
                     BindData(model);
-                    if (model.Monitoring)
-                    {
-                        if (model.LimitBuyTime)
-                        {
-                            if (DateTime.Parse(DateTime.Now.ToLongTimeString()) >= DateTime.Parse(model.BuyBeginTime.ToLongTimeString()) && DateTime.Parse(DateTime.Now.ToLongTimeString()) < DateTime.Parse(model.BuyEndTime.ToLongTimeString()))
-                                Monitoring(model, TradeTypeEnum.Buy);
-                        }
-                        else
-                            Monitoring(model, TradeTypeEnum.Buy);
-
-                        if (model.LimitSaleTime)
-                        {
-                            if (DateTime.Parse(DateTime.Now.ToLongTimeString()) >= DateTime.Parse(model.SaleBeginTime.ToLongTimeString()) && DateTime.Parse(DateTime.Now.ToLongTimeString()) < DateTime.Parse(model.SaleEndTime.ToLongTimeString()))
-                                Monitoring(model, TradeTypeEnum.Sale);
-                        }
-                        else
-                            Monitoring(model, TradeTypeEnum.Sale);
-                    }
+                    AllMonitor(model);
                 }
                 catch (Exception ex)
                 {
-                    log.InfoFormat("监控出错,{0}", ex.Message);
+                    log.ErrorFormat("监控出错,{0}", ex.Message);
                 }
             }
         }
@@ -166,14 +129,44 @@ namespace AotoTrade
         /// <param name="model"></param>
         private void CloseComputer(StockConfigModel model)
         {
-            if (model.CloseComputerTime.Date == DateTime.Today && DateTime.Now >= model.CloseComputerTime)
+            if (model != null && model.CloseComputerTime.Date == DateTime.Today && DateTime.Now >= model.CloseComputerTime)
             {
                 lblMessage.Text = "正在关闭...";
                 #region 发送邮件通知
                 SendMail(lblMessage.Text, "");
                 #endregion
+                #region 开关关闭
+                model.CloseComputerTime = DateTime.MinValue;
+                UploadFile(model);
+                #endregion
                 Thread.Sleep(2000);
                 DoExitWin(EWX_SHUTDOWN);
+            }
+        }
+
+        /// <summary>
+        /// 监控方法
+        /// </summary>
+        /// <param name="model"></param>
+        private void AllMonitor(StockConfigModel model)
+        {
+            if (model != null && model.Monitoring)
+            {
+                if (model.LimitBuyTime)
+                {
+                    if (DateTime.Parse(DateTime.Now.ToLongTimeString()) >= DateTime.Parse(model.BuyBeginTime.ToLongTimeString()) && DateTime.Parse(DateTime.Now.ToLongTimeString()) < DateTime.Parse(model.BuyEndTime.ToLongTimeString()))
+                        Monitoring(model, TradeTypeEnum.Buy);
+                }
+                else
+                    Monitoring(model, TradeTypeEnum.Buy);
+
+                if (model.LimitSaleTime)
+                {
+                    if (DateTime.Parse(DateTime.Now.ToLongTimeString()) >= DateTime.Parse(model.SaleBeginTime.ToLongTimeString()) && DateTime.Parse(DateTime.Now.ToLongTimeString()) < DateTime.Parse(model.SaleEndTime.ToLongTimeString()))
+                        Monitoring(model, TradeTypeEnum.Sale);
+                }
+                else
+                    Monitoring(model, TradeTypeEnum.Sale);
             }
         }
 
@@ -481,9 +474,9 @@ namespace AotoTrade
             // respInfo.StatusCode
             // respJson是返回的json消息，示例: { "key":"FILE","hash":"HASH","fsize":FILE_SIZE }
             if (respInfo.StatusCode == 200)
-                lblMessage.Text = "上传成功！";
+                SetMessage("上传成功！" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
             else
-                lblMessage.Text = "上传失败";
+                SetMessage("上传失败" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
         }
         private Boolean DelFile(string filename)
         {
@@ -549,7 +542,8 @@ namespace AotoTrade
             }
             catch (Exception ex)
             {
-                MessageBox.Show("出现错误" + ex.Message, "注意", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                string text = "上传文件出现错误" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                log.ErrorFormat(text, ex.Message);
             }
         }
 
@@ -598,27 +592,33 @@ namespace AotoTrade
         private StockConfigModel Download(string FileNameAoto)
         {
 
-            string filepath = Utils.DownloadFile(FileNameAoto);
-            if (filepath != "")
+            string filepath = "";
+            if (Utils.DownloadFile(FileNameAoto))
             {
+                filepath = FileNameAoto;
+
                 string json = File.ReadAllText(filepath);
 
                 StockConfigModel configModel = Newtonsoft.Json.JsonConvert.DeserializeObject(json, typeof(StockConfigModel)) as StockConfigModel;
 
-                lblMessage.Text = "下载文件转换成功," + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                SetMessage("下载文件转换成功," + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
                 log.DebugFormat(lblMessage.Text);
-                lblMessage.ForeColor = Color.OrangeRed;
-                System.Threading.Thread.Sleep(1000);
-                lblMessage.ForeColor = System.Drawing.SystemColors.HotTrack;
 
                 return configModel;
 
             }
             else
             {
-                log.DebugFormat("下载文件为空,", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+                SetMessage("下载文件出现错误," + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+                log.ErrorFormat(lblMessage.Text);
                 return null;
             }
+        }
+
+        private void SetMessage(string text)
+        {
+            lblMessage.Text = text;
+            lblMessage.ForeColor = (lblMessage.ForeColor == Color.OrangeRed) ? System.Drawing.SystemColors.HotTrack : Color.OrangeRed;
         }
 
         private void BindData(StockConfigModel configModel)

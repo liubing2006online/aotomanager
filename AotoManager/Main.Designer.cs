@@ -150,6 +150,7 @@
             // 
             this.txtBalance.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.txtBalance.Location = new System.Drawing.Point(126, 116);
+            this.txtBalance.MaxLength = 10;
             this.txtBalance.Name = "txtBalance";
             this.txtBalance.Size = new System.Drawing.Size(116, 26);
             this.txtBalance.TabIndex = 9;
