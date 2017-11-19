@@ -517,7 +517,7 @@ namespace AotoTrade
                 // 上传策略的过期时间(单位:秒)
                 putPolicy.SetExpires(3600);
                 // 文件上传完毕后，在多少天后自动被删除
-                putPolicy.DeleteAfterDays = 1;
+                //putPolicy.DeleteAfterDays = 1;
                 // 请注意这里的Zone设置(如果不设置，就默认为华东机房)
                 var zoneId = Qiniu.Common.AutoZone.Query(AK, Utils.bucket);
                 Qiniu.Common.Config.ConfigZone(zoneId);

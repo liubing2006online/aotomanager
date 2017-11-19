@@ -77,19 +77,19 @@ namespace AotoManager
         {
             try
             {
-                SaveFileFlag = SaveAsDefaultFile(FileNameAoto, model);
+                SaveFileFlag = SaveAsDefaultFile(Utils.FileNameAoto, model);
                 // 本地文件
-                string localFile = FileNameAoto;
+                string localFile = Utils.FileNameAoto;
                 // 上传策略
                 PutPolicy putPolicy = new PutPolicy();
                 // 设置要上传的目标空间
-                putPolicy.Scope = bucket;
+                putPolicy.Scope = Utils.bucket;
                 // 上传策略的过期时间(单位:秒)
                 putPolicy.SetExpires(3600);
                 // 文件上传完毕后，在多少天后自动被删除
                 //putPolicy.DeleteAfterDays = 1;
                 // 请注意这里的Zone设置(如果不设置，就默认为华东机房)
-                var zoneId = Qiniu.Common.AutoZone.Query(AK, bucket);
+                var zoneId = Qiniu.Common.AutoZone.Query(AK, Utils.bucket);
                 Qiniu.Common.Config.ConfigZone(zoneId);
                 //Mac mac = new Mac(AK, SK); // Use AK & SK here
                 // 生成上传凭证
@@ -103,9 +103,9 @@ namespace AotoManager
                 //可以适当修改,UploadManager会根据这个阈值自动选择是否使用分片(Resumable)上传    
                 UploadManager um = new UploadManager();
 
-                DelFileFlag = DelFile(FileNameAoto);
+                DelFileFlag = DelFile(Utils.FileNameAoto);
 
-                um.uploadFile(localFile, FileNameAoto, uploadToken, uploadOptions, uploadCompleted);
+                um.uploadFile(localFile, Utils.FileNameAoto, uploadToken, uploadOptions, uploadCompleted);
                 // 方式2：使用FormManager
                 //FormUploader fm = new FormUploader();
                 //fm.uploadFile(localFile, saveKey, token, uploadOptions, uploadCompleted);
