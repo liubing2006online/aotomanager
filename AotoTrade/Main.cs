@@ -410,11 +410,12 @@ namespace AotoTrade
         /// </summary>
         /// <param name="subject">标题</param>
         /// <param name="body">内容</param>
-        private void SendMail(string subject, string body)
+        public bool SendMail(string subject, string body, ConfigModel config = null)
         {
             try
             {
-                ConfigModel config = Utils.GetConfig();
+                if (config == null)
+                    config = Utils.GetConfig();
                 if (config != null)
                 {
                     string ename = config.ename;
@@ -428,19 +429,24 @@ namespace AotoTrade
                     MailMessage mailMess = new MailMessage();
                     foreach (string address in addList)
                         mailMess.Bcc.Add(address);
-                    mailMess.From = new MailAddress(addList[0]);
+                    mailMess.From = new MailAddress(config.sendadd);
                     mailMess.Subject = subject;
                     mailMess.Body = body;
                     msender.Send(mailMess);
+                    return true;
                 }
                 else
                 {
-                    MessageBox.Show("settings.txt 配置文件不存在", "注意", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    log.ErrorFormat("settings.txt 配置文件不存在");
+                    return false;
                 }
             }
             catch (Exception ex)
             {
-
+                string text = "邮件发送失败," + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                log.ErrorFormat("邮件发送失败.{0}", ex.Message);
+                SetMessage(text);
+                return false;
             }
         }
 
@@ -474,9 +480,9 @@ namespace AotoTrade
             // respInfo.StatusCode
             // respJson是返回的json消息，示例: { "key":"FILE","hash":"HASH","fsize":FILE_SIZE }
             if (respInfo.StatusCode == 200)
-                SetMessage("上传成功！" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+                SetMessage("上传成功!" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
             else
-                SetMessage("上传失败" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+                SetMessage("上传失败," + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
         }
         private Boolean DelFile(string filename)
         {
@@ -615,7 +621,7 @@ namespace AotoTrade
             }
         }
 
-        private void SetMessage(string text)
+        public void SetMessage(string text)
         {
             lblMessage.Text = text;
             lblMessage.ForeColor = (lblMessage.ForeColor == Color.OrangeRed) ? System.Drawing.SystemColors.HotTrack : Color.OrangeRed;
@@ -746,5 +752,10 @@ namespace AotoTrade
             return flagFore;
         }
 
+        private void btnSetting_Click(object sender, EventArgs e)
+        {
+            SettingForm form = new SettingForm(this);
+            form.ShowDialog();
+        }
     }
 }

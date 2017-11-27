@@ -29,6 +29,9 @@ namespace AotoManager
         public static bool SaveFileFlag = false;
         public static bool DelFileFlag = false;
         public string Path = Utils.Path;
+        log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        public string AKtxt { set { txtAK.Text = value; } }
+        public string SKtxt { set { txtSK.Text = value; } }
         public Main()
         {
             InitializeComponent();
@@ -117,6 +120,11 @@ namespace AotoManager
             }
         }
 
+        public void SetMessage(string text)
+        {
+            lblMessage.Text = text;
+            lblMessage.ForeColor = (lblMessage.ForeColor == Color.OrangeRed) ? System.Drawing.SystemColors.HotTrack : Color.OrangeRed;
+        }
 
         /// <summary>
         /// 上传完成后回调
@@ -130,11 +138,10 @@ namespace AotoManager
             // respJson是返回的json消息，示例: { "key":"FILE","hash":"HASH","fsize":FILE_SIZE }
             if (respInfo.StatusCode == 200)
             {
-                lblMessage.Text = "上传成功," + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                SetMessage("上传成功," + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
             }
             else
-                lblMessage.Text = "上传失败";
-            lblMessage.ForeColor = (lblMessage.ForeColor == Color.OrangeRed) ? System.Drawing.SystemColors.HotTrack : Color.OrangeRed;
+                SetMessage("上传失败," + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
         }
         /// <summary>
         /// 删除远端文件
@@ -186,14 +193,14 @@ namespace AotoManager
 
                     BindData(configModel);
 
-                    lblMessage.Text = "下载成功," + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-                    lblMessage.ForeColor = (lblMessage.ForeColor == Color.OrangeRed) ? System.Drawing.SystemColors.HotTrack : Color.OrangeRed;
+                    SetMessage("下载成功," + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
                 }
                 else
                     MessageBox.Show("下载文件出现错误", "注意", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             catch (Exception ex)
             {
+                log.ErrorFormat("下载文件出现错误,{0}", ex.Message);
                 MessageBox.Show("下载文件出现错误", "注意", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -533,6 +540,12 @@ namespace AotoManager
                 MdiForm form = new MdiForm(codecell.ToString(), name, buyamount, buyprice, buyvariabletrend, buyvariableamount, saleamount, saleprice, salevariabletrend, salevariableamount, GetModelFromDataContainer(), dataGrid, e.RowIndex);
                 form.ShowDialog();
             }
+        }
+
+        private void btnSet_Click(object sender, EventArgs e)
+        {
+            SettingForm form = new SettingForm(this);
+            form.ShowDialog();
         }
     }
 }

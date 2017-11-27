@@ -28,6 +28,10 @@ namespace GetRealTimeInfo.Model
         /// 接收者地址
         /// </summary>
         public string add { get; set; }
+        /// <summary>
+        /// 发送者邮箱
+        /// </summary>
+        public string sendadd { get; set; }
 
         public string AK { get; set; }
 

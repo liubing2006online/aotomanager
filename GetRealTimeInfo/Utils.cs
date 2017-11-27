@@ -249,5 +249,19 @@ namespace GetRealTimeInfo
                 return null;
             }
         }
+
+        public static bool SaveConfig(ConfigModel content)
+        {
+            try
+            {
+                string config = Newtonsoft.Json.JsonConvert.SerializeObject(content);
+                File.WriteAllText("settings.txt", config);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
     }
 }
