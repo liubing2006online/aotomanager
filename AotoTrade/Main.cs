@@ -552,6 +552,19 @@ namespace AotoTrade
                 log.ErrorFormat(text, ex.Message);
             }
         }
+        private string txtStockCode = "StockCode";
+        private string txtStockName = "StockName";
+        private string txtBuyAmount = "BuyAmount";
+        private string txtBuyPrice = "BuyPrice";
+        private string txtBuyVariableTrend = "BuyVariableTrend";
+        private string txtBuyVariableAmount = "BuyVariableAmount";
+        private string txtSaleAmount = "SaleAmount";
+        private string txtSalePrice = "SalePrice";
+        private string txtSaleVariableTrend = "SaleVariableTrend";
+        private string txtSaleVariableAmount = "SaleVariableAmount";
+        private string txtMonitor = "Monitor";
+        private string txtBuyStrategy = "BuyStrategy";
+        private string txtSaleStrategy = "SaleStrategy";
 
         /// <summary>
         /// 从数据容器获取实体model
@@ -572,10 +585,10 @@ namespace AotoTrade
             for (int i = 0; i < dataGrid.Rows.Count; i++)
             {
                 DataGridViewCellCollection cells = dataGrid.Rows[i].Cells;
-                if (cells["StockCode"].Value != null && cells["StockName"].Value != null)
+                if (cells[txtStockCode].Value != null && cells[txtStockName].Value != null)
                 {
-                    if (cells["StockCode"].Value.ToString() != "" && cells["StockName"].Value.ToString() != "")
-                        list.Add(new StockList { StockCode = cells["StockCode"].Value.ToString(), StockName = cells["StockName"].Value.ToString(), BuyPrice = Convert.ToDecimal(cells["BuyPrice"].Value), BuyAmount = Convert.ToInt32(cells["BuyAmount"].Value), Monitor = cells["Monitor"].Value.ToString() });
+                    if (cells[txtStockCode].Value.ToString() != "" && cells[txtStockName].Value.ToString() != "")
+                        list.Add(new StockList { StockCode = cells[txtStockCode].Value.ToString(), StockName = cells[txtStockName].Value.ToString(), BuyPrice = Convert.ToDecimal(cells[txtBuyPrice].Value), BuyAmount = Convert.ToInt32(cells[txtBuyAmount].Value), Monitor = cells[txtMonitor].Value.ToString() });
                 }
             }
             model.StockList = list;

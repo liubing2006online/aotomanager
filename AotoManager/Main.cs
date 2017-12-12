@@ -262,7 +262,7 @@ namespace AotoManager
                 int Cnt = 0;
                 for (int i = 0; i < dataGrid.Rows.Count; i++)
                 {
-                    if (dataGrid.Rows[i].Cells["BuyPrice"].Value != null && dataGrid.Rows[i].Cells["BuyPrice"].Value.ToString() != "0.00" && dataGrid.Rows[i].Cells["StockName"].Value.ToString() != "")
+                    if (dataGrid.Rows[i].Cells[txtBuyPrice].Value != null && dataGrid.Rows[i].Cells[txtBuyPrice].Value.ToString() != "0.00" && dataGrid.Rows[i].Cells[txtStockName].Value.ToString() != "")
                         Cnt++;
                 }
 
@@ -273,9 +273,9 @@ namespace AotoManager
                     for (int i = 0; i < Cnt; i++)
                     {
                         decimal price;
-                        if (decimal.TryParse(dataGrid.Rows[i].Cells["BuyPrice"].Value.ToString(), out price))
+                        if (decimal.TryParse(dataGrid.Rows[i].Cells[txtBuyPrice].Value.ToString(), out price))
                         {
-                            dataGrid.Rows[i].Cells["BuyAmount"].Value = Utils.GetStoreHouse(everyBalance, price);
+                            dataGrid.Rows[i].Cells[txtBuyAmount].Value = Utils.GetStoreHouse(everyBalance, price);
                         }
                     }
                 }
@@ -339,12 +339,12 @@ namespace AotoManager
             for (int i = 0; i < dataGrid.Rows.Count; i++)
             {
                 DataGridViewCellCollection cells = dataGrid.Rows[i].Cells;
-                if (cells["StockCode"].Value != null && cells["StockName"].Value != null)
+                if (cells[txtStockCode].Value != null && cells[txtStockName].Value != null)
                 {
-                    if (cells["StockCode"].Value.ToString() != "" && cells["StockName"].Value.ToString() != "")
+                    if (cells[txtStockCode].Value.ToString() != "" && cells[txtStockName].Value.ToString() != "")
                     {
-                        list.Add(new StockList { StockCode = cells["StockCode"].Value.ToString(), StockName = cells["StockName"].Value.ToString(), BuyPrice = Convert.ToDecimal(cells["BuyPrice"].Value), BuyAmount = Convert.ToInt32(cells["BuyAmount"].Value), Monitor = cells["Monitor"].Value.ToString(), BuyVariableTrend = Convert.ToInt32(cells["BuyVariableTrend"].Value), BuyVariableAmount = Convert.ToDecimal(cells["BuyVariableAmount"].Value), SalePrice = Convert.ToDecimal(cells["SalePrice"].Value), SaleAmount = Convert.ToInt32(cells["SaleAmount"].Value), SaleVariableTrend = Convert.ToInt32(cells["SaleVariableTrend"].Value), SaleVariableAmount = Convert.ToDecimal(cells["SaleVariableAmount"].Value) });
-                        if (cells["Monitor"].Value.ToString() == "监控中")
+                        list.Add(new StockList { StockCode = cells[txtStockCode].Value.ToString(), StockName = cells[txtStockName].Value.ToString(), BuyPrice = Convert.ToDecimal(cells[txtBuyPrice].Value), BuyAmount = Convert.ToInt32(cells[txtBuyAmount].Value), Monitor = cells[txtMonitor].Value.ToString(), BuyVariableTrend = Convert.ToInt32(cells[txtBuyVariableTrend].Value), BuyVariableAmount = Convert.ToDecimal(cells[txtBuyVariableAmount].Value), SalePrice = Convert.ToDecimal(cells[txtSalePrice].Value), SaleAmount = Convert.ToInt32(cells[txtSaleAmount].Value), SaleVariableTrend = Convert.ToInt32(cells[txtSaleVariableTrend].Value), SaleVariableAmount = Convert.ToDecimal(cells[txtSaleVariableAmount].Value) });
+                        if (cells[txtMonitor].Value.ToString() == "监控中")
                             Cnt++;
                     }
 
@@ -360,11 +360,11 @@ namespace AotoManager
 
         private void ClearRow(int rowIndex)
         {
-            dataGrid.Rows[rowIndex].Cells["StockCode"].Value = "";
-            dataGrid.Rows[rowIndex].Cells["StockName"].Value = "";
-            dataGrid.Rows[rowIndex].Cells["BuyPrice"].Value = 0M;
-            dataGrid.Rows[rowIndex].Cells["BuyAmount"].Value = 0M;
-            dataGrid.Rows[rowIndex].Cells["Monitor"].Value = 0M;
+            dataGrid.Rows[rowIndex].Cells[txtStockCode].Value = "";
+            dataGrid.Rows[rowIndex].Cells[txtStockName].Value = "";
+            dataGrid.Rows[rowIndex].Cells[txtBuyPrice].Value = 0M;
+            dataGrid.Rows[rowIndex].Cells[txtBuyAmount].Value = 0M;
+            dataGrid.Rows[rowIndex].Cells[txtMonitor].Value = 0M;
 
         }
 
@@ -387,9 +387,9 @@ namespace AotoManager
                         {
                             if (j != e.RowIndex)
                             {
-                                if (dataGrid.Rows[j].Cells["StockCode"].Value != null)
+                                if (dataGrid.Rows[j].Cells[txtStockCode].Value != null)
                                 {
-                                    if (dataGrid.Rows[j].Cells["StockCode"].Value.ToString() == dataGrid.Rows[e.RowIndex].Cells["StockCode"].Value.ToString())
+                                    if (dataGrid.Rows[j].Cells[txtStockCode].Value.ToString() == dataGrid.Rows[e.RowIndex].Cells[txtStockCode].Value.ToString())
                                     {
                                         flag = true; break;
                                     }
@@ -404,19 +404,19 @@ namespace AotoManager
                         }
                         else
                         {
-                            dataGrid.Rows[e.RowIndex].Cells["StockName"].Value = model.Name;
-                            dataGrid.Rows[e.RowIndex].Cells["BuyPrice"].Value = model.CurrentPrice;
-                            dataGrid.Rows[e.RowIndex].Cells["BuyAmount"].Value = 100;//默认值
-                            dataGrid.Rows[e.RowIndex].Cells["Monitor"].Value = "已停止";//默认值
-                            dataGrid.Rows[e.RowIndex].Cells["BuyVariableTrend"].Value = (int)BuyVariableTrendEnum.ReachOrDown;
-                            dataGrid.Rows[e.RowIndex].Cells["BuyVariableAmount"].Value = 0.00M;
-                            dataGrid.Rows[e.RowIndex].Cells["BuyStrategy"].Value = string.Format("{0}{1}元", BuyVariableTrendEnum.ReachOrDown.GetEnumDescription(), 0);
+                            dataGrid.Rows[e.RowIndex].Cells[txtStockName].Value = model.Name;
+                            dataGrid.Rows[e.RowIndex].Cells[txtBuyPrice].Value = model.CurrentPrice;
+                            dataGrid.Rows[e.RowIndex].Cells[txtBuyAmount].Value = 100;//默认值
+                            dataGrid.Rows[e.RowIndex].Cells[txtMonitor].Value = "已停止";//默认值
+                            dataGrid.Rows[e.RowIndex].Cells[txtBuyVariableTrend].Value = (int)BuyVariableTrendEnum.ReachOrDown;
+                            dataGrid.Rows[e.RowIndex].Cells[txtBuyVariableAmount].Value = 0.00M;
+                            dataGrid.Rows[e.RowIndex].Cells[txtBuyStrategy].Value = string.Format("{0}{1}元", BuyVariableTrendEnum.ReachOrDown.GetEnumDescription(), 0);
 
-                            dataGrid.Rows[e.RowIndex].Cells["SalePrice"].Value = Math.Round(model.CurrentPrice * 1.04M, 2);
-                            dataGrid.Rows[e.RowIndex].Cells["SaleAmount"].Value = 100;//默认值
-                            dataGrid.Rows[e.RowIndex].Cells["SaleVariableTrend"].Value = (int)SaleVariableTrendEnum.ReachOrUp;
-                            dataGrid.Rows[e.RowIndex].Cells["SaleVariableAmount"].Value = 0.00M;
-                            dataGrid.Rows[e.RowIndex].Cells["SaleStrategy"].Value = string.Format("{0}{1}元", SaleVariableTrendEnum.ReachOrUp.GetEnumDescription(), 0);
+                            dataGrid.Rows[e.RowIndex].Cells[txtSalePrice].Value = Math.Round(model.CurrentPrice * 1.04M, 2);
+                            dataGrid.Rows[e.RowIndex].Cells[txtSaleAmount].Value = 100;//默认值
+                            dataGrid.Rows[e.RowIndex].Cells[txtSaleVariableTrend].Value = (int)SaleVariableTrendEnum.ReachOrUp;
+                            dataGrid.Rows[e.RowIndex].Cells[txtSaleVariableAmount].Value = 0.00M;
+                            dataGrid.Rows[e.RowIndex].Cells[txtSaleStrategy].Value = string.Format("{0}{1}元", SaleVariableTrendEnum.ReachOrUp.GetEnumDescription(), 0);
 
                         }
                     }
@@ -436,7 +436,7 @@ namespace AotoManager
             if (e.RowIndex == dataGrid.Rows.Count - 1)
             {
                 DataGridViewCellCollection cells = dataGrid.Rows[e.RowIndex].Cells;
-                if (cells["StockCode"].Value != null && cells["StockCode"].Value.ToString() != "" && cells["StockName"].Value.ToString() != "")
+                if (cells[txtStockCode].Value != null && cells[txtStockCode].Value.ToString() != "" && cells[txtStockName].Value.ToString() != "")
                 {
                     StockConfigModel model = GetModelFromDataContainer();
                     BindData(model);
@@ -484,9 +484,9 @@ namespace AotoManager
                 int Cnt = 0;
                 for (int i = 0; i < dataGrid.Rows.Count; i++)
                 {
-                    if (dataGrid.Rows[i].Cells["BuyPrice"].Value != null)
+                    if (dataGrid.Rows[i].Cells[txtBuyPrice].Value != null)
                     {
-                        if (dataGrid.Rows[i].Cells["BuyPrice"].Value.ToString() != "0.00" && dataGrid.Rows[i].Cells["StockName"].Value.ToString() != "")
+                        if (dataGrid.Rows[i].Cells[txtBuyPrice].Value.ToString() != "0.00" && dataGrid.Rows[i].Cells[txtStockName].Value.ToString() != "")
                             Cnt++;
                     }
                 }
@@ -498,9 +498,9 @@ namespace AotoManager
                     for (int i = 0; i < Cnt; i++)
                     {
                         decimal price;
-                        if (decimal.TryParse(dataGrid.Rows[i].Cells["BuyPrice"].Value.ToString(), out price))
+                        if (decimal.TryParse(dataGrid.Rows[i].Cells[txtBuyPrice].Value.ToString(), out price))
                         {
-                            dataGrid.Rows[i].Cells["BuyAmount"].Value = Utils.GetStoreHouse(everyBalance, price);
+                            dataGrid.Rows[i].Cells[txtBuyAmount].Value = Utils.GetStoreHouse(everyBalance, price);
                         }
                     }
                 }
@@ -512,30 +512,45 @@ namespace AotoManager
             btnCloseComputer.Text = btnCloseComputer.Text == "关闭电脑" ? "取消关闭" : "关闭电脑";
         }
 
+        private string txtStockCode = "StockCode";
+        private string txtStockName = "StockName";
+        private string txtBuyAmount = "BuyAmount";
+        private string txtBuyPrice = "BuyPrice";
+        private string txtBuyVariableTrend = "BuyVariableTrend";
+        private string txtBuyVariableAmount = "BuyVariableAmount";
+        private string txtSaleAmount = "SaleAmount";
+        private string txtSalePrice = "SalePrice";
+        private string txtSaleVariableTrend = "SaleVariableTrend";
+        private string txtSaleVariableAmount = "SaleVariableAmount";
+        private string txtMonitor = "Monitor";
+        private string txtBuyStrategy = "BuyStrategy";
+        private string txtSaleStrategy = "SaleStrategy";
+
+
         private void dataGrid_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            var codecell = dataGrid["StockCode", e.RowIndex].Value;
+            var codecell = dataGrid[txtStockCode, e.RowIndex].Value;
             if (codecell != null)
             {
                 dataGrid.Rows[e.RowIndex].Selected = true;
 
-                string name = dataGrid["StockName", e.RowIndex].Value.ToString();
+                string name = dataGrid[txtStockName, e.RowIndex].Value.ToString();
 
-                string buyamount = dataGrid["BuyAmount", e.RowIndex].Value.ToString();
+                string buyamount = dataGrid[txtBuyAmount, e.RowIndex].Value.ToString();
 
-                string buyprice = dataGrid["BuyPrice", e.RowIndex].Value.ToString();
+                string buyprice = dataGrid[txtBuyPrice, e.RowIndex].Value.ToString();
 
-                string buyvariabletrend = dataGrid["BuyVariableTrend", e.RowIndex].Value.ToString();
+                string buyvariabletrend = dataGrid[txtBuyVariableTrend, e.RowIndex].Value.ToString();
 
-                string buyvariableamount = dataGrid["BuyVariableAmount", e.RowIndex].Value.ToString();
+                string buyvariableamount = dataGrid[txtBuyVariableAmount, e.RowIndex].Value.ToString();
 
-                string saleamount = dataGrid["SaleAmount", e.RowIndex].Value.ToString();
+                string saleamount = dataGrid[txtSaleAmount, e.RowIndex].Value.ToString();
 
-                string saleprice = dataGrid["SalePrice", e.RowIndex].Value.ToString();
+                string saleprice = dataGrid[txtSalePrice, e.RowIndex].Value.ToString();
 
-                string salevariabletrend = dataGrid["SaleVariableTrend", e.RowIndex].Value.ToString();
+                string salevariabletrend = dataGrid[txtSaleVariableTrend, e.RowIndex].Value.ToString();
 
-                string salevariableamount = dataGrid["SaleVariableAmount", e.RowIndex].Value.ToString();
+                string salevariableamount = dataGrid[txtSaleVariableAmount, e.RowIndex].Value.ToString();
 
                 MdiForm form = new MdiForm(codecell.ToString(), name, buyamount, buyprice, buyvariabletrend, buyvariableamount, saleamount, saleprice, salevariabletrend, salevariableamount, GetModelFromDataContainer(), dataGrid, e.RowIndex);
                 form.ShowDialog();
