@@ -24,6 +24,11 @@ namespace AotoTrade
 
         private void SettingForm_Load(object sender, EventArgs e)
         {
+            LoadConfig();
+        }
+
+        private void LoadConfig()
+        {
             ConfigModel config = Utils.GetConfig();
             if (config != null)
             {
@@ -35,6 +40,9 @@ namespace AotoTrade
                 txtServer.Text = config.server;
                 txtAddress.Text = config.add;
                 txtSendAddress.Text = config.sendadd;
+                txtBucket.Text = config.Bucket;
+                txtFileName.Text = config.FileName;
+                txtPath.Text = config.Path;
             }
             else
             {
@@ -79,7 +87,7 @@ namespace AotoTrade
 
         private ConfigModel GetConfigByControls()
         {
-            if (txtAK.Text.Trim() == "" || txtSK.Text.Trim() == "" || txtUserName.Text.Trim() == "" || txtPassword.Text.Trim() == "" || txtPort.Text.Trim() == "" || txtServer.Text.Trim() == "" || txtAddress.Text.Trim() == "")
+            if (txtAK.Text.Trim() == "" || txtSK.Text.Trim() == "" || txtUserName.Text.Trim() == "" || txtPassword.Text.Trim() == "" || txtPort.Text.Trim() == "" || txtServer.Text.Trim() == "" || txtAddress.Text.Trim() == "" || txtBucket.Text.Trim() == "" || txtFileName.Text.Trim() == "" || txtPath.Text.Trim() == "")
             {
                 MessageBox.Show("配置不能为空", "注意", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return null;
@@ -93,6 +101,9 @@ namespace AotoTrade
             config.server = txtServer.Text.Trim();
             config.add = txtAddress.Text.Trim();
             config.sendadd = txtSendAddress.Text.Trim();
+            config.Bucket = txtBucket.Text.Trim();
+            config.FileName = txtFileName.Text.Trim();
+            config.Path = txtPath.Text.Trim();
             return config;
         }
 

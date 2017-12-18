@@ -48,11 +48,17 @@
             this.lblMessage = new System.Windows.Forms.Label();
             this.lblSendAddress = new System.Windows.Forms.Label();
             this.txtSendAddress = new System.Windows.Forms.TextBox();
+            this.lblBucket = new System.Windows.Forms.Label();
+            this.txtBucket = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.txtFileName = new System.Windows.Forms.TextBox();
+            this.lblPath = new System.Windows.Forms.Label();
+            this.txtPath = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(99, 396);
+            this.btnSave.Location = new System.Drawing.Point(99, 458);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(75, 23);
             this.btnSave.TabIndex = 0;
@@ -62,7 +68,7 @@
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(214, 396);
+            this.btnCancel.Location = new System.Drawing.Point(214, 458);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 1;
@@ -105,7 +111,7 @@
             // lblAddress
             // 
             this.lblAddress.AutoSize = true;
-            this.lblAddress.Location = new System.Drawing.Point(24, 308);
+            this.lblAddress.Location = new System.Drawing.Point(24, 404);
             this.lblAddress.Name = "lblAddress";
             this.lblAddress.Size = new System.Drawing.Size(77, 12);
             this.lblAddress.TabIndex = 6;
@@ -113,7 +119,7 @@
             // 
             // txtAddress
             // 
-            this.txtAddress.Location = new System.Drawing.Point(120, 305);
+            this.txtAddress.Location = new System.Drawing.Point(120, 401);
             this.txtAddress.Name = "txtAddress";
             this.txtAddress.Size = new System.Drawing.Size(199, 21);
             this.txtAddress.TabIndex = 7;
@@ -121,7 +127,7 @@
             // lblUserName
             // 
             this.lblUserName.AutoSize = true;
-            this.lblUserName.Location = new System.Drawing.Point(12, 107);
+            this.lblUserName.Location = new System.Drawing.Point(12, 203);
             this.lblUserName.Name = "lblUserName";
             this.lblUserName.Size = new System.Drawing.Size(89, 12);
             this.lblUserName.TabIndex = 8;
@@ -129,7 +135,7 @@
             // 
             // txtUserName
             // 
-            this.txtUserName.Location = new System.Drawing.Point(120, 104);
+            this.txtUserName.Location = new System.Drawing.Point(120, 200);
             this.txtUserName.Name = "txtUserName";
             this.txtUserName.Size = new System.Drawing.Size(100, 21);
             this.txtUserName.TabIndex = 9;
@@ -137,7 +143,7 @@
             // lblPassword
             // 
             this.lblPassword.AutoSize = true;
-            this.lblPassword.Location = new System.Drawing.Point(24, 145);
+            this.lblPassword.Location = new System.Drawing.Point(24, 241);
             this.lblPassword.Name = "lblPassword";
             this.lblPassword.Size = new System.Drawing.Size(77, 12);
             this.lblPassword.TabIndex = 10;
@@ -145,7 +151,7 @@
             // 
             // txtPassword
             // 
-            this.txtPassword.Location = new System.Drawing.Point(120, 142);
+            this.txtPassword.Location = new System.Drawing.Point(120, 238);
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.Size = new System.Drawing.Size(100, 21);
             this.txtPassword.TabIndex = 11;
@@ -153,7 +159,7 @@
             // lblPort
             // 
             this.lblPort.AutoSize = true;
-            this.lblPort.Location = new System.Drawing.Point(24, 224);
+            this.lblPort.Location = new System.Drawing.Point(24, 320);
             this.lblPort.Name = "lblPort";
             this.lblPort.Size = new System.Drawing.Size(77, 12);
             this.lblPort.TabIndex = 12;
@@ -161,7 +167,7 @@
             // 
             // txtPort
             // 
-            this.txtPort.Location = new System.Drawing.Point(120, 221);
+            this.txtPort.Location = new System.Drawing.Point(120, 317);
             this.txtPort.Name = "txtPort";
             this.txtPort.Size = new System.Drawing.Size(100, 21);
             this.txtPort.TabIndex = 13;
@@ -169,7 +175,7 @@
             // lblServer
             // 
             this.lblServer.AutoSize = true;
-            this.lblServer.Location = new System.Drawing.Point(12, 184);
+            this.lblServer.Location = new System.Drawing.Point(12, 280);
             this.lblServer.Name = "lblServer";
             this.lblServer.Size = new System.Drawing.Size(89, 12);
             this.lblServer.TabIndex = 14;
@@ -177,14 +183,14 @@
             // 
             // txtServer
             // 
-            this.txtServer.Location = new System.Drawing.Point(120, 181);
+            this.txtServer.Location = new System.Drawing.Point(120, 277);
             this.txtServer.Name = "txtServer";
             this.txtServer.Size = new System.Drawing.Size(100, 21);
             this.txtServer.TabIndex = 15;
             // 
             // btnTest
             // 
-            this.btnTest.Location = new System.Drawing.Point(267, 114);
+            this.btnTest.Location = new System.Drawing.Point(267, 210);
             this.btnTest.Name = "btnTest";
             this.btnTest.Size = new System.Drawing.Size(98, 49);
             this.btnTest.TabIndex = 16;
@@ -196,7 +202,7 @@
             // 
             this.lblMessage.AutoSize = true;
             this.lblMessage.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lblMessage.Location = new System.Drawing.Point(266, 78);
+            this.lblMessage.Location = new System.Drawing.Point(266, 174);
             this.lblMessage.Name = "lblMessage";
             this.lblMessage.Size = new System.Drawing.Size(0, 16);
             this.lblMessage.TabIndex = 17;
@@ -204,7 +210,7 @@
             // lblSendAddress
             // 
             this.lblSendAddress.AutoSize = true;
-            this.lblSendAddress.Location = new System.Drawing.Point(24, 266);
+            this.lblSendAddress.Location = new System.Drawing.Point(24, 362);
             this.lblSendAddress.Name = "lblSendAddress";
             this.lblSendAddress.Size = new System.Drawing.Size(77, 12);
             this.lblSendAddress.TabIndex = 18;
@@ -212,16 +218,70 @@
             // 
             // txtSendAddress
             // 
-            this.txtSendAddress.Location = new System.Drawing.Point(120, 263);
+            this.txtSendAddress.Location = new System.Drawing.Point(120, 359);
             this.txtSendAddress.Name = "txtSendAddress";
             this.txtSendAddress.Size = new System.Drawing.Size(199, 21);
             this.txtSendAddress.TabIndex = 19;
+            // 
+            // lblBucket
+            // 
+            this.lblBucket.AutoSize = true;
+            this.lblBucket.Location = new System.Drawing.Point(42, 99);
+            this.lblBucket.Name = "lblBucket";
+            this.lblBucket.Size = new System.Drawing.Size(41, 12);
+            this.lblBucket.TabIndex = 20;
+            this.lblBucket.Text = "Bucket";
+            // 
+            // txtBucket
+            // 
+            this.txtBucket.Location = new System.Drawing.Point(120, 96);
+            this.txtBucket.Name = "txtBucket";
+            this.txtBucket.Size = new System.Drawing.Size(100, 21);
+            this.txtBucket.TabIndex = 21;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(42, 129);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(53, 12);
+            this.label1.TabIndex = 22;
+            this.label1.Text = "FileName";
+            // 
+            // txtFileName
+            // 
+            this.txtFileName.Location = new System.Drawing.Point(120, 126);
+            this.txtFileName.Name = "txtFileName";
+            this.txtFileName.Size = new System.Drawing.Size(100, 21);
+            this.txtFileName.TabIndex = 23;
+            // 
+            // lblPath
+            // 
+            this.lblPath.AutoSize = true;
+            this.lblPath.Location = new System.Drawing.Point(42, 164);
+            this.lblPath.Name = "lblPath";
+            this.lblPath.Size = new System.Drawing.Size(29, 12);
+            this.lblPath.TabIndex = 24;
+            this.lblPath.Text = "Path";
+            // 
+            // txtPath
+            // 
+            this.txtPath.Location = new System.Drawing.Point(120, 161);
+            this.txtPath.Name = "txtPath";
+            this.txtPath.Size = new System.Drawing.Size(228, 21);
+            this.txtPath.TabIndex = 25;
             // 
             // SettingForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(396, 447);
+            this.ClientSize = new System.Drawing.Size(396, 512);
+            this.Controls.Add(this.txtPath);
+            this.Controls.Add(this.lblPath);
+            this.Controls.Add(this.txtFileName);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.txtBucket);
+            this.Controls.Add(this.lblBucket);
             this.Controls.Add(this.txtSendAddress);
             this.Controls.Add(this.lblSendAddress);
             this.Controls.Add(this.lblMessage);
@@ -273,5 +333,11 @@
         private System.Windows.Forms.Label lblMessage;
         private System.Windows.Forms.Label lblSendAddress;
         private System.Windows.Forms.TextBox txtSendAddress;
+        private System.Windows.Forms.Label lblBucket;
+        private System.Windows.Forms.TextBox txtBucket;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox txtFileName;
+        private System.Windows.Forms.Label lblPath;
+        private System.Windows.Forms.TextBox txtPath;
     }
 }

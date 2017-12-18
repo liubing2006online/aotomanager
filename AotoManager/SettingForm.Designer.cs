@@ -34,11 +34,17 @@
             this.lblSK = new System.Windows.Forms.Label();
             this.txtAK = new System.Windows.Forms.TextBox();
             this.txtSK = new System.Windows.Forms.TextBox();
+            this.lblBucket = new System.Windows.Forms.Label();
+            this.txtBucket = new System.Windows.Forms.TextBox();
+            this.lblFileName = new System.Windows.Forms.Label();
+            this.txtFileName = new System.Windows.Forms.TextBox();
+            this.txtPath = new System.Windows.Forms.TextBox();
+            this.lblPath = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(99, 118);
+            this.btnSave.Location = new System.Drawing.Point(99, 228);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(75, 23);
             this.btnSave.TabIndex = 0;
@@ -48,7 +54,7 @@
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(214, 118);
+            this.btnCancel.Location = new System.Drawing.Point(214, 228);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 1;
@@ -88,11 +94,65 @@
             this.txtSK.Size = new System.Drawing.Size(230, 21);
             this.txtSK.TabIndex = 5;
             // 
+            // lblBucket
+            // 
+            this.lblBucket.AutoSize = true;
+            this.lblBucket.Location = new System.Drawing.Point(36, 104);
+            this.lblBucket.Name = "lblBucket";
+            this.lblBucket.Size = new System.Drawing.Size(41, 12);
+            this.lblBucket.TabIndex = 6;
+            this.lblBucket.Text = "Bucket";
+            // 
+            // txtBucket
+            // 
+            this.txtBucket.Location = new System.Drawing.Point(114, 101);
+            this.txtBucket.Name = "txtBucket";
+            this.txtBucket.Size = new System.Drawing.Size(230, 21);
+            this.txtBucket.TabIndex = 7;
+            // 
+            // lblFileName
+            // 
+            this.lblFileName.AutoSize = true;
+            this.lblFileName.Location = new System.Drawing.Point(36, 142);
+            this.lblFileName.Name = "lblFileName";
+            this.lblFileName.Size = new System.Drawing.Size(53, 12);
+            this.lblFileName.TabIndex = 8;
+            this.lblFileName.Text = "FileName";
+            // 
+            // txtFileName
+            // 
+            this.txtFileName.Location = new System.Drawing.Point(114, 139);
+            this.txtFileName.Name = "txtFileName";
+            this.txtFileName.Size = new System.Drawing.Size(230, 21);
+            this.txtFileName.TabIndex = 9;
+            // 
+            // txtPath
+            // 
+            this.txtPath.Location = new System.Drawing.Point(114, 176);
+            this.txtPath.Name = "txtPath";
+            this.txtPath.Size = new System.Drawing.Size(230, 21);
+            this.txtPath.TabIndex = 11;
+            // 
+            // lblPath
+            // 
+            this.lblPath.AutoSize = true;
+            this.lblPath.Location = new System.Drawing.Point(36, 179);
+            this.lblPath.Name = "lblPath";
+            this.lblPath.Size = new System.Drawing.Size(29, 12);
+            this.lblPath.TabIndex = 10;
+            this.lblPath.Text = "Path";
+            // 
             // SettingForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(396, 181);
+            this.ClientSize = new System.Drawing.Size(396, 282);
+            this.Controls.Add(this.txtPath);
+            this.Controls.Add(this.lblPath);
+            this.Controls.Add(this.txtFileName);
+            this.Controls.Add(this.lblFileName);
+            this.Controls.Add(this.txtBucket);
+            this.Controls.Add(this.lblBucket);
             this.Controls.Add(this.txtSK);
             this.Controls.Add(this.txtAK);
             this.Controls.Add(this.lblSK);
@@ -116,5 +176,11 @@
         private System.Windows.Forms.Label lblSK;
         private System.Windows.Forms.TextBox txtAK;
         private System.Windows.Forms.TextBox txtSK;
+        private System.Windows.Forms.Label lblBucket;
+        private System.Windows.Forms.TextBox txtBucket;
+        private System.Windows.Forms.Label lblFileName;
+        private System.Windows.Forms.TextBox txtFileName;
+        private System.Windows.Forms.TextBox txtPath;
+        private System.Windows.Forms.Label lblPath;
     }
 }

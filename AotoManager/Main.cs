@@ -20,8 +20,6 @@ namespace AotoManager
 {
     public partial class Main : Form
     {
-        string bucket = Utils.bucket;
-        string FileNameAoto = Utils.FileNameAoto;
         string AK;
         string SK;
         public string Uri;
@@ -35,16 +33,7 @@ namespace AotoManager
         public Main()
         {
             InitializeComponent();
-            ConfigModel config = Utils.GetConfig();
-            if (config != null)
-            {
-                AK = config.AK;
-                SK = config.SK;
-            }
-            else
-            {
-                MessageBox.Show("settings.txt 配置文件不存在", "注意", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            LoadConfig();
 
             Uri = Utils.Uri;
 
@@ -52,20 +41,23 @@ namespace AotoManager
             txtAK.Text = AK;
             txtSK.Text = SK;
             cbxSoft.SelectedIndex = 1;
-            //Model.StockConfigModel model = new Model.StockConfigModel();
-            //model.AvailableBalance = 900000;
-            //model.BuyBeginTime = DateTime.Parse(DateTime.Now.ToString("09:30:00"));
-            //model.BuyEndTime = DateTime.Parse(DateTime.Now.ToString("14:59:59"));
-            //model.LimitTime = true;
-            //List<StockList> stocklist = new List<StockList>();
-            //stocklist.Add(new StockList() { BuyAmount = 300, BuyPrice = 21.8M, SaleAmount = 300, SalePrice = 29M, StockCode = "300115", StockName = "长盈精密" });
+        }
 
-            //stocklist.Add(new StockList() { BuyAmount = 900, BuyPrice = 11.8M, SaleAmount = 700, SalePrice = 16.8M, StockCode = "000046", StockName = "泛海建设" });
-
-            //model.StockList = stocklist;
-
-
-            //string json = Newtonsoft.Json.JsonConvert.SerializeObject(model);
+        private void LoadConfig()
+        {
+            ConfigModel config = Utils.GetConfig();
+            if (config != null)
+            {
+                AK = config.AK;
+                SK = config.SK;
+                Utils.bucket = config.Bucket;
+                Utils.FileNameAoto = config.FileName;
+                Utils.Path = string.Format("{0}/{1}", config.Path, config.FileName);
+            }
+            else
+            {
+                MessageBox.Show("settings.txt 配置文件不存在", "注意", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void btnUpload_Click(object sender, EventArgs e)
@@ -159,13 +151,13 @@ namespace AotoManager
             // 由于limit限制，可能需要执行多次操作
             // 返回值中Marker字段若非空，则表示文件数超过了limit
 
-            ListFilesResult list = bm.listFiles(bucket, filename, marker, limit, delimiter);
+            ListFilesResult list = bm.listFiles(Utils.bucket, filename, marker, limit, delimiter);
             List<FileDesc> fileList = list.Items;
             if (fileList != null)
             {
                 foreach (FileDesc f in fileList)
                 {
-                    var result = bm.delete(bucket, f.Key);
+                    var result = bm.delete(Utils.bucket, f.Key);
                     if (result.ResponseInfo.StatusCode == 200)
                         return true;
                     else
@@ -182,10 +174,11 @@ namespace AotoManager
         {
             try
             {
+                LoadConfig();
                 string filepath = "";
-                if (Utils.DownloadFile(FileNameAoto))
+                if (Utils.DownloadFile(Utils.FileNameAoto))
                 {
-                    filepath = FileNameAoto;
+                    filepath = Utils.FileNameAoto;
 
                     string json = File.ReadAllText(filepath);
 
@@ -293,7 +286,7 @@ namespace AotoManager
         {
             if (GetTrueCondition())
             {
-                if (SaveAsDefaultFile(FileNameAoto, GetModelFromDataContainer()))
+                if (SaveAsDefaultFile(Utils.FileNameAoto, GetModelFromDataContainer()))
                     MessageBox.Show("保存文件到本地成功！", "成功", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 else
                     MessageBox.Show("保存文件到本地失败！", "失败", MessageBoxButtons.OK, MessageBoxIcon.Error);

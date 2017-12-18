@@ -30,6 +30,9 @@ namespace AotoManager
             {
                 txtAK.Text = config.AK;
                 txtSK.Text = config.SK;
+                txtBucket.Text = config.Bucket;
+                txtFileName.Text = config.FileName;
+                txtPath.Text = config.Path;
             }
             else
             {
@@ -72,6 +75,9 @@ namespace AotoManager
             ConfigModel config = new ConfigModel();
             config.AK = txtAK.Text.Trim();
             config.SK = txtSK.Text.Trim();
+            config.Bucket = txtBucket.Text.Trim();
+            config.FileName = txtFileName.Text.Trim();
+            config.Path = txtPath.Text.Trim();
             return config;
         }
     }

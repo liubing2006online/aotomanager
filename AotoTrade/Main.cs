@@ -67,16 +67,7 @@ namespace AotoTrade
         public Main()
         {
             InitializeComponent();
-            ConfigModel config = Utils.GetConfig();
-            if (config != null)
-            {
-                AK = config.AK;
-                SK = config.SK;
-            }
-            else
-            {
-                MessageBox.Show("settings.txt 配置文件不存在", "注意", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            LoadConfig();
             mac = new Mac(AK, SK);
             //Control.CheckForIllegalCrossThreadCalls = false;
             model = Download(Utils.FileNameAoto);
@@ -88,6 +79,23 @@ namespace AotoTrade
             thread.Start();
             #endregion
 
+        }
+
+        private void LoadConfig()
+        {
+            ConfigModel config = Utils.GetConfig();
+            if (config != null)
+            {
+                AK = config.AK;
+                SK = config.SK;
+                Utils.bucket = config.Bucket;
+                Utils.FileNameAoto = config.FileName;
+                Utils.Path = string.Format("{0}/{1}", config.Path, config.FileName);
+            }
+            else
+            {
+                MessageBox.Show("settings.txt 配置文件不存在", "注意", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void CrossThreadFlush()
@@ -598,6 +606,7 @@ namespace AotoTrade
 
         private void btnDownload_Click(object sender, EventArgs e)
         {
+            LoadConfig();
             BindData(Download(Utils.FileNameAoto));
         }
 

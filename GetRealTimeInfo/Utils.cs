@@ -15,10 +15,10 @@ namespace GetRealTimeInfo
 {
     public static class Utils
     {
-        public static string bucket = "aoto";
-        public static string FileNameAoto = "aoto.txt";
+        public static string bucket = "";
+        public static string FileNameAoto = "";
         public static string Uri = "http://rs.qiniu.com/stat/";
-        public static string Path = "http://omy714q6d.bkt.clouddn.com/aoto.txt";
+        public static string Path = "";
 
         [DllImport("user32.dll")]
         public static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
