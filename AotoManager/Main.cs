@@ -64,6 +64,7 @@ namespace AotoManager
         {
             if (GetTrueCondition())
             {
+                LoadConfig();
                 UploadFile(GetModelFromDataContainer());
             }
         }
