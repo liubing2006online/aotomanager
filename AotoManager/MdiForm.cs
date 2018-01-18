@@ -76,6 +76,10 @@ namespace AotoManager
             RowIndexSelect = rowindex;
         }
 
+        private void getid()
+        {
+
+        }
         private void txtBalance_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar != '\b')//这是允许输入退格键
