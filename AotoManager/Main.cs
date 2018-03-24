@@ -41,6 +41,7 @@ namespace AotoManager
             txtAK.Text = AK;
             txtSK.Text = SK;
             cbxSoft.SelectedIndex = 1;
+            DownLoad();
         }
 
         private void LoadConfig()
@@ -172,6 +173,11 @@ namespace AotoManager
 
 
         private void btnDownLoad_Click(object sender, EventArgs e)
+        {
+            DownLoad();
+        }
+
+        private void DownLoad()
         {
             try
             {
@@ -400,7 +406,7 @@ namespace AotoManager
                         {
                             dataGrid.Rows[e.RowIndex].Cells[txtStockName].Value = model.Name;
                             dataGrid.Rows[e.RowIndex].Cells[txtBuyPrice].Value = model.CurrentPrice;
-                            dataGrid.Rows[e.RowIndex].Cells[txtBuyAmount].Value = 100;//默认值
+                            SetFull_Stock();
                             dataGrid.Rows[e.RowIndex].Cells[txtMonitor].Value = "已停止";//默认值
                             dataGrid.Rows[e.RowIndex].Cells[txtBuyVariableTrend].Value = (int)BuyVariableTrendEnum.ReachOrDown;
                             dataGrid.Rows[e.RowIndex].Cells[txtBuyVariableAmount].Value = 0.00M;
@@ -471,6 +477,11 @@ namespace AotoManager
         }
 
         private void btnSetFull_Click(object sender, EventArgs e)
+        {
+            SetFull_Stock();
+        }
+
+        private void SetFull_Stock()
         {
             if (GetTrueCondition())
             {

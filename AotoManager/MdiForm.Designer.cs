@@ -369,10 +369,12 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.txtCode);
             this.Controls.Add(this.lblCode);
+            this.KeyPreview = true;
             this.MaximizeBox = false;
             this.Name = "MdiForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "修改信息";
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.MdiForm_KeyUp);
             this.gbxBuy.ResumeLayout(false);
             this.gbxBuy.PerformLayout();
             this.gbxSale.ResumeLayout(false);

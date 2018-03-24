@@ -346,5 +346,13 @@ namespace AotoManager
                     txtSaleVarAmount.Text = "0";
             }
         }
+
+        private void MdiForm_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape)
+            {
+                this.Close();
+            }
+        }
     }
 }
