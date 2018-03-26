@@ -50,7 +50,7 @@
             this.txtSendAddress = new System.Windows.Forms.TextBox();
             this.lblBucket = new System.Windows.Forms.Label();
             this.txtBucket = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
+            this.lblFileName = new System.Windows.Forms.Label();
             this.txtFileName = new System.Windows.Forms.TextBox();
             this.lblPath = new System.Windows.Forms.Label();
             this.txtPath = new System.Windows.Forms.TextBox();
@@ -202,7 +202,7 @@
             // 
             this.lblMessage.AutoSize = true;
             this.lblMessage.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lblMessage.Location = new System.Drawing.Point(266, 174);
+            this.lblMessage.Location = new System.Drawing.Point(264, 276);
             this.lblMessage.Name = "lblMessage";
             this.lblMessage.Size = new System.Drawing.Size(0, 16);
             this.lblMessage.TabIndex = 17;
@@ -239,14 +239,14 @@
             this.txtBucket.Size = new System.Drawing.Size(100, 21);
             this.txtBucket.TabIndex = 21;
             // 
-            // label1
+            // lblFileName
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(42, 129);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(53, 12);
-            this.label1.TabIndex = 22;
-            this.label1.Text = "FileName";
+            this.lblFileName.AutoSize = true;
+            this.lblFileName.Location = new System.Drawing.Point(42, 129);
+            this.lblFileName.Name = "lblFileName";
+            this.lblFileName.Size = new System.Drawing.Size(53, 12);
+            this.lblFileName.TabIndex = 22;
+            this.lblFileName.Text = "FileName";
             // 
             // txtFileName
             // 
@@ -279,7 +279,7 @@
             this.Controls.Add(this.txtPath);
             this.Controls.Add(this.lblPath);
             this.Controls.Add(this.txtFileName);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.lblFileName);
             this.Controls.Add(this.txtBucket);
             this.Controls.Add(this.lblBucket);
             this.Controls.Add(this.txtSendAddress);
@@ -335,7 +335,7 @@
         private System.Windows.Forms.TextBox txtSendAddress;
         private System.Windows.Forms.Label lblBucket;
         private System.Windows.Forms.TextBox txtBucket;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lblFileName;
         private System.Windows.Forms.TextBox txtFileName;
         private System.Windows.Forms.Label lblPath;
         private System.Windows.Forms.TextBox txtPath;
