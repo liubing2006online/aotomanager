@@ -413,7 +413,7 @@ namespace AotoManager
                             dataGrid.Rows[e.RowIndex].Cells[txtBuyStrategy].Value = string.Format("{0}{1}元", BuyVariableTrendEnum.ReachOrDown.GetEnumDescription(), 0);
 
                             dataGrid.Rows[e.RowIndex].Cells[txtSalePrice].Value = Math.Round(model.CurrentPrice * 1.04M, 2);
-                            dataGrid.Rows[e.RowIndex].Cells[txtSaleAmount].Value = 100;//默认值
+                            dataGrid.Rows[e.RowIndex].Cells[txtSaleAmount].Value = 0;//默认值
                             dataGrid.Rows[e.RowIndex].Cells[txtSaleVariableTrend].Value = (int)SaleVariableTrendEnum.ReachOrUp;
                             dataGrid.Rows[e.RowIndex].Cells[txtSaleVariableAmount].Value = 0.00M;
                             dataGrid.Rows[e.RowIndex].Cells[txtSaleStrategy].Value = string.Format("{0}{1}元", SaleVariableTrendEnum.ReachOrUp.GetEnumDescription(), 0);
