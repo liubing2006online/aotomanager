@@ -26,6 +26,7 @@ namespace AotoTrade
     {
         string AK;
         string SK;
+        string RefreshTime;
         Mac mac;
         public static bool SaveFileFlag = false;
         public static bool DelFileFlag = false;
@@ -91,6 +92,7 @@ namespace AotoTrade
                 Utils.bucket = config.Bucket;
                 Utils.FileNameAoto = config.FileName;
                 Utils.Path = string.Format("{0}/{1}", config.Path, config.FileName);
+                RefreshTime = config.RefreshTime;
             }
             else
             {
@@ -104,7 +106,7 @@ namespace AotoTrade
             {
                 //将sleep和无限循环放在等待异步的外面
                 ThreadFunction();
-                Thread.Sleep(5600);
+                Thread.Sleep(string.IsNullOrEmpty(RefreshTime) ? 4800 : int.Parse(RefreshTime));
             }
         }
 

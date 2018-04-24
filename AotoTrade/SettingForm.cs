@@ -43,6 +43,7 @@ namespace AotoTrade
                 txtBucket.Text = config.Bucket;
                 txtFileName.Text = config.FileName;
                 txtPath.Text = config.Path;
+                txtRefresh.Text = config.RefreshTime;
             }
             else
             {
@@ -104,6 +105,7 @@ namespace AotoTrade
             config.Bucket = txtBucket.Text.Trim();
             config.FileName = txtFileName.Text.Trim();
             config.Path = txtPath.Text.Trim();
+            config.RefreshTime = txtRefresh.Text.Trim();
             return config;
         }
 

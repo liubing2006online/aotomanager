@@ -54,11 +54,14 @@
             this.txtFileName = new System.Windows.Forms.TextBox();
             this.lblPath = new System.Windows.Forms.Label();
             this.txtPath = new System.Windows.Forms.TextBox();
+            this.txtRefresh = new System.Windows.Forms.TextBox();
+            this.lblUnit = new System.Windows.Forms.Label();
+            this.lblRefresh = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(99, 458);
+            this.btnSave.Location = new System.Drawing.Point(99, 498);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(75, 23);
             this.btnSave.TabIndex = 0;
@@ -68,7 +71,7 @@
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(214, 458);
+            this.btnCancel.Location = new System.Drawing.Point(214, 498);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 1;
@@ -271,11 +274,42 @@
             this.txtPath.Size = new System.Drawing.Size(228, 21);
             this.txtPath.TabIndex = 25;
             // 
+            // txtRefresh
+            // 
+            this.txtRefresh.Location = new System.Drawing.Point(120, 438);
+            this.txtRefresh.MaxLength = 4;
+            this.txtRefresh.Name = "txtRefresh";
+            this.txtRefresh.Size = new System.Drawing.Size(70, 21);
+            this.txtRefresh.TabIndex = 41;
+            // 
+            // lblUnit
+            // 
+            this.lblUnit.AutoSize = true;
+            this.lblUnit.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lblUnit.Location = new System.Drawing.Point(196, 441);
+            this.lblUnit.Name = "lblUnit";
+            this.lblUnit.Size = new System.Drawing.Size(29, 12);
+            this.lblUnit.TabIndex = 40;
+            this.lblUnit.Text = "毫秒";
+            // 
+            // lblRefresh
+            // 
+            this.lblRefresh.AutoSize = true;
+            this.lblRefresh.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lblRefresh.Location = new System.Drawing.Point(23, 441);
+            this.lblRefresh.Name = "lblRefresh";
+            this.lblRefresh.Size = new System.Drawing.Size(77, 12);
+            this.lblRefresh.TabIndex = 39;
+            this.lblRefresh.Text = "自动刷新间隔";
+            // 
             // SettingForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(396, 512);
+            this.ClientSize = new System.Drawing.Size(396, 540);
+            this.Controls.Add(this.txtRefresh);
+            this.Controls.Add(this.lblUnit);
+            this.Controls.Add(this.lblRefresh);
             this.Controls.Add(this.txtPath);
             this.Controls.Add(this.lblPath);
             this.Controls.Add(this.txtFileName);
@@ -339,5 +373,8 @@
         private System.Windows.Forms.TextBox txtFileName;
         private System.Windows.Forms.Label lblPath;
         private System.Windows.Forms.TextBox txtPath;
+        private System.Windows.Forms.TextBox txtRefresh;
+        private System.Windows.Forms.Label lblUnit;
+        private System.Windows.Forms.Label lblRefresh;
     }
 }
