@@ -658,16 +658,21 @@ namespace AotoTrade
                 int Cnt = 0;
                 foreach (StockList ll in configModel.StockList)
                 {
-                    ll.CurrentPrice = GetInfo.Get(ll.StockCode).CurrentPrice;
+                    StockModel smodel = GetInfo.Get(ll.StockCode);
+                    ll.CurrentPrice = smodel.CurrentPrice;
 
                     ll.BuyStrategy = string.Format("{0}{1}元", ((BuyVariableTrendEnum)ll.BuyVariableTrend).GetEnumDescription(), ll.BuyVariableAmount);
                     ll.SaleStrategy = string.Format("{0}{1}元", ((SaleVariableTrendEnum)ll.SaleVariableTrend).GetEnumDescription(), ll.SaleVariableAmount);
-
+                    if (ll.CurrentPrice >= smodel.YesterdayEndPrice)
+                        ll.IncreaseAmt = string.Format("{0}", Math.Round((ll.CurrentPrice / smodel.YesterdayEndPrice - 1) * 100, 2));
+                    else
+                        ll.IncreaseAmt = string.Format("-{0}", Math.Round((1 - ll.CurrentPrice / smodel.YesterdayEndPrice) * 100, 2));
                     if (ll.Monitor == "监控中")
                         Cnt++;
                 }
 
                 dataGrid.DataSource = configModel.StockList;
+                dataGrid.Refresh();
                 txtBalance.Text = configModel.AvailableBalance.ToString();
                 chkLimitBuyTime.Checked = configModel.LimitBuyTime;
                 chkLimitSaleTime.Checked = configModel.LimitSaleTime;
@@ -780,6 +785,20 @@ namespace AotoTrade
         {
             SettingForm form = new SettingForm(this);
             form.ShowDialog();
+        }
+
+        private void dataGrid_RowPrePaint(object sender, DataGridViewRowPrePaintEventArgs e)
+        {
+            if (dataGrid.Rows[e.RowIndex].Cells["IncreaseAmt"].Value.ToString().Contains("-"))
+            {
+                dataGrid.Rows[e.RowIndex].Cells["IncreaseAmt"].Style.ForeColor = Color.FromArgb(21, 151, 21);
+                dataGrid.Rows[e.RowIndex].Cells["CurrentPrice"].Style.ForeColor = Color.FromArgb(21, 151, 21);
+            }
+            else
+            {
+                dataGrid.Rows[e.RowIndex].Cells["IncreaseAmt"].Style.ForeColor = Color.FromArgb(193, 35, 40);
+                dataGrid.Rows[e.RowIndex].Cells["CurrentPrice"].Style.ForeColor = Color.FromArgb(193, 35, 40);
+            }
         }
     }
 }

@@ -60,5 +60,10 @@ namespace GetRealTimeInfo.Model
         public decimal SaleMarkPrice { get; set; }
 
         public string Monitor { get; set; }
+
+        /// <summary>
+        /// 涨幅
+        /// </summary>
+        public string IncreaseAmt { get; set; }
     }
 }

@@ -43,6 +43,7 @@
             this.StockName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Monitor = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CurrentPrice = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.IncreaseAmt = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.BuyPrice = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.BuyAmount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.BuyStrategy = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -167,6 +168,7 @@
             this.StockName,
             this.Monitor,
             this.CurrentPrice,
+            this.IncreaseAmt,
             this.BuyPrice,
             this.BuyAmount,
             this.BuyStrategy,
@@ -194,6 +196,7 @@
             this.dataGrid.RowTemplate.Height = 23;
             this.dataGrid.Size = new System.Drawing.Size(1141, 288);
             this.dataGrid.TabIndex = 18;
+            this.dataGrid.RowPrePaint += new System.Windows.Forms.DataGridViewRowPrePaintEventHandler(this.dataGrid_RowPrePaint);
             // 
             // StockCode
             // 
@@ -223,6 +226,14 @@
             this.CurrentPrice.HeaderText = "当前价格";
             this.CurrentPrice.Name = "CurrentPrice";
             this.CurrentPrice.ReadOnly = true;
+            // 
+            // IncreaseAmt
+            // 
+            this.IncreaseAmt.DataPropertyName = "IncreaseAmt";
+            this.IncreaseAmt.HeaderText = "涨幅%";
+            this.IncreaseAmt.Name = "IncreaseAmt";
+            this.IncreaseAmt.ReadOnly = true;
+            this.IncreaseAmt.Width = 80;
             // 
             // BuyPrice
             // 
@@ -480,6 +491,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn StockName;
         private System.Windows.Forms.DataGridViewTextBoxColumn Monitor;
         private System.Windows.Forms.DataGridViewTextBoxColumn CurrentPrice;
+        private System.Windows.Forms.DataGridViewTextBoxColumn IncreaseAmt;
         private System.Windows.Forms.DataGridViewTextBoxColumn BuyPrice;
         private System.Windows.Forms.DataGridViewTextBoxColumn BuyAmount;
         private System.Windows.Forms.DataGridViewTextBoxColumn BuyStrategy;
