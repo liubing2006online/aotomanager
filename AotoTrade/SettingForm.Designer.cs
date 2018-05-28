@@ -57,11 +57,15 @@
             this.txtRefresh = new System.Windows.Forms.TextBox();
             this.lblUnit = new System.Windows.Forms.Label();
             this.lblRefresh = new System.Windows.Forms.Label();
+            this.lblBuySuccessVoice = new System.Windows.Forms.Label();
+            this.txtBuySuccessVoice = new System.Windows.Forms.TextBox();
+            this.txtSaleSuccessVoice = new System.Windows.Forms.TextBox();
+            this.lblSaleSuccessVoice = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(99, 498);
+            this.btnSave.Location = new System.Drawing.Point(99, 565);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(75, 23);
             this.btnSave.TabIndex = 0;
@@ -71,7 +75,7 @@
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(214, 498);
+            this.btnCancel.Location = new System.Drawing.Point(214, 565);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 1;
@@ -302,11 +306,47 @@
             this.lblRefresh.TabIndex = 39;
             this.lblRefresh.Text = "自动刷新间隔";
             // 
+            // lblBuySuccessVoice
+            // 
+            this.lblBuySuccessVoice.AutoSize = true;
+            this.lblBuySuccessVoice.Location = new System.Drawing.Point(24, 479);
+            this.lblBuySuccessVoice.Name = "lblBuySuccessVoice";
+            this.lblBuySuccessVoice.Size = new System.Drawing.Size(101, 12);
+            this.lblBuySuccessVoice.TabIndex = 42;
+            this.lblBuySuccessVoice.Text = "买入成功语音文字";
+            // 
+            // txtBuySuccessVoice
+            // 
+            this.txtBuySuccessVoice.Location = new System.Drawing.Point(131, 476);
+            this.txtBuySuccessVoice.Name = "txtBuySuccessVoice";
+            this.txtBuySuccessVoice.Size = new System.Drawing.Size(217, 21);
+            this.txtBuySuccessVoice.TabIndex = 43;
+            // 
+            // txtSaleSuccessVoice
+            // 
+            this.txtSaleSuccessVoice.Location = new System.Drawing.Point(131, 513);
+            this.txtSaleSuccessVoice.Name = "txtSaleSuccessVoice";
+            this.txtSaleSuccessVoice.Size = new System.Drawing.Size(217, 21);
+            this.txtSaleSuccessVoice.TabIndex = 45;
+            // 
+            // lblSaleSuccessVoice
+            // 
+            this.lblSaleSuccessVoice.AutoSize = true;
+            this.lblSaleSuccessVoice.Location = new System.Drawing.Point(24, 516);
+            this.lblSaleSuccessVoice.Name = "lblSaleSuccessVoice";
+            this.lblSaleSuccessVoice.Size = new System.Drawing.Size(101, 12);
+            this.lblSaleSuccessVoice.TabIndex = 44;
+            this.lblSaleSuccessVoice.Text = "卖出成功语音文字";
+            // 
             // SettingForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(396, 540);
+            this.ClientSize = new System.Drawing.Size(396, 612);
+            this.Controls.Add(this.txtSaleSuccessVoice);
+            this.Controls.Add(this.lblSaleSuccessVoice);
+            this.Controls.Add(this.txtBuySuccessVoice);
+            this.Controls.Add(this.lblBuySuccessVoice);
             this.Controls.Add(this.txtRefresh);
             this.Controls.Add(this.lblUnit);
             this.Controls.Add(this.lblRefresh);
@@ -376,5 +416,9 @@
         private System.Windows.Forms.TextBox txtRefresh;
         private System.Windows.Forms.Label lblUnit;
         private System.Windows.Forms.Label lblRefresh;
+        private System.Windows.Forms.Label lblBuySuccessVoice;
+        private System.Windows.Forms.TextBox txtBuySuccessVoice;
+        private System.Windows.Forms.TextBox txtSaleSuccessVoice;
+        private System.Windows.Forms.Label lblSaleSuccessVoice;
     }
 }

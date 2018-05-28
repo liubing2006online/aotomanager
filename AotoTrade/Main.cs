@@ -26,7 +26,8 @@ namespace AotoTrade
     {
         string AK;
         string SK;
-        string RefreshTime;
+        //string RefreshTime;
+        ConfigModel config;
         Mac mac;
         public static bool SaveFileFlag = false;
         public static bool DelFileFlag = false;
@@ -65,8 +66,11 @@ namespace AotoTrade
         internal const string SE_SHUTDOWN_NAME = "SeShutdownPrivilege";
         internal const int EWX_SHUTDOWN = 0x00000001;
         log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        dynamic spVoice;
         public Main()
         {
+            Type type = Type.GetTypeFromProgID("SAPI.SpVoice");
+            spVoice = Activator.CreateInstance(type);
             InitializeComponent();
             LoadConfig();
             mac = new Mac(AK, SK);
@@ -84,7 +88,7 @@ namespace AotoTrade
 
         private void LoadConfig()
         {
-            ConfigModel config = Utils.GetConfig();
+            config = Utils.GetConfig();
             if (config != null)
             {
                 AK = config.AK;
@@ -92,7 +96,6 @@ namespace AotoTrade
                 Utils.bucket = config.Bucket;
                 Utils.FileNameAoto = config.FileName;
                 Utils.Path = string.Format("{0}/{1}", config.Path, config.FileName);
-                RefreshTime = config.RefreshTime;
             }
             else
             {
@@ -106,7 +109,7 @@ namespace AotoTrade
             {
                 //将sleep和无限循环放在等待异步的外面
                 ThreadFunction();
-                Thread.Sleep(string.IsNullOrEmpty(RefreshTime) ? 4800 : int.Parse(RefreshTime));
+                Thread.Sleep(string.IsNullOrEmpty(config.RefreshTime) ? 4800 : int.Parse(config.RefreshTime));
             }
         }
 
@@ -258,6 +261,11 @@ namespace AotoTrade
                         SendTradeSuccessMail(buyamount, stock, sw, TradeTypeEnum.Buy);
                     });
 
+                    Task.Factory.StartNew(() =>
+                    {
+                        spVoice.Speak(string.Format(config.BuySuccessVoice, stock.StockName));
+                    });
+
                     model.AvailableBalance = Convert.ToInt32(Math.Floor(model.AvailableBalance - (stock.CurrentPrice * stock.BuyAmount)));//计算剩余金额
                     stock.BuyAmount = 0;
                     stock.Monitor = "已停止";
@@ -294,6 +302,11 @@ namespace AotoTrade
                     Task.Factory.StartNew(() =>
                     {
                         SendTradeSuccessMail(saleamount, stock, sw, TradeTypeEnum.Sale);
+                    });
+
+                    Task.Factory.StartNew(() =>
+                    {
+                        spVoice.Speak(string.Format(config.SaleSuccessVoice, stock.StockName));
                     });
 
                     model.AvailableBalance = Convert.ToInt32(Math.Floor(model.AvailableBalance + (stock.CurrentPrice * stock.SaleAmount)));//计算剩余金额

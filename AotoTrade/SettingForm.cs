@@ -44,6 +44,8 @@ namespace AotoTrade
                 txtFileName.Text = config.FileName;
                 txtPath.Text = config.Path;
                 txtRefresh.Text = config.RefreshTime;
+                txtBuySuccessVoice.Text = config.BuySuccessVoice;
+                txtSaleSuccessVoice.Text = config.SaleSuccessVoice;
             }
             else
             {
@@ -106,6 +108,8 @@ namespace AotoTrade
             config.FileName = txtFileName.Text.Trim();
             config.Path = txtPath.Text.Trim();
             config.RefreshTime = txtRefresh.Text.Trim();
+            config.BuySuccessVoice = txtBuySuccessVoice.Text.Trim();
+            config.SaleSuccessVoice = txtSaleSuccessVoice.Text.Trim();
             return config;
         }
 

@@ -44,5 +44,8 @@ namespace GetRealTimeInfo.Model
         public string Path { get; set; }
 
         public string RefreshTime { get; set; }
+
+        public string BuySuccessVoice { get; set; }
+        public string SaleSuccessVoice { get; set; }
     }
 }
