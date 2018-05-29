@@ -19,7 +19,7 @@ using System.Configuration;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
 using System.Net.Mail;
-
+using DotNetSpeech;
 namespace AotoTrade
 {
     public partial class Main : Form
@@ -66,11 +66,11 @@ namespace AotoTrade
         internal const string SE_SHUTDOWN_NAME = "SeShutdownPrivilege";
         internal const int EWX_SHUTDOWN = 0x00000001;
         log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        dynamic spVoice;
+        DotNetSpeech.SpeechVoiceSpeakFlags SSF = DotNetSpeech.SpeechVoiceSpeakFlags.SVSFlagsAsync;
+        DotNetSpeech.SpVoice voice = new SpVoiceClass();
+
         public Main()
         {
-            Type type = Type.GetTypeFromProgID("SAPI.SpVoice");
-            spVoice = Activator.CreateInstance(type);
             InitializeComponent();
             LoadConfig();
             mac = new Mac(AK, SK);
@@ -261,10 +261,7 @@ namespace AotoTrade
                         SendTradeSuccessMail(buyamount, stock, sw, TradeTypeEnum.Buy);
                     });
 
-                    Task.Factory.StartNew(() =>
-                    {
-                        spVoice.Speak(string.Format(config.BuySuccessVoice, stock.StockName));
-                    });
+                    voice.Speak(string.Format(config.BuySuccessVoice, stock.StockName), SSF);
 
                     model.AvailableBalance = Convert.ToInt32(Math.Floor(model.AvailableBalance - (stock.CurrentPrice * stock.BuyAmount)));//计算剩余金额
                     stock.BuyAmount = 0;
@@ -304,10 +301,7 @@ namespace AotoTrade
                         SendTradeSuccessMail(saleamount, stock, sw, TradeTypeEnum.Sale);
                     });
 
-                    Task.Factory.StartNew(() =>
-                    {
-                        spVoice.Speak(string.Format(config.SaleSuccessVoice, stock.StockName));
-                    });
+                    voice.Speak(string.Format(config.SaleSuccessVoice, stock.StockName), SSF);
 
                     model.AvailableBalance = Convert.ToInt32(Math.Floor(model.AvailableBalance + (stock.CurrentPrice * stock.SaleAmount)));//计算剩余金额
                     stock.SaleAmount = 0;
