@@ -70,6 +70,7 @@ namespace AotoTrade
                 }
                 else
                 {
+                    mainForm.LoadConfig();
                     mainForm.SetMessage("交易项目保存配置成功," + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
                 }
                 this.Close();

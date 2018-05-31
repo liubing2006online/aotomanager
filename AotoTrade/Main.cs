@@ -86,7 +86,7 @@ namespace AotoTrade
 
         }
 
-        private void LoadConfig()
+        public void LoadConfig()
         {
             config = Utils.GetConfig();
             if (config != null)
@@ -261,7 +261,7 @@ namespace AotoTrade
                         SendTradeSuccessMail(buyamount, stock, sw, TradeTypeEnum.Buy);
                     });
 
-                    voice.Speak(string.Format(config.BuySuccessVoice, stock.StockName), SSF);
+                    voice.Speak(string.Format(config.BuySuccessVoice, stock.StockName, stock.CurrentPrice), SSF);
 
                     model.AvailableBalance = Convert.ToInt32(Math.Floor(model.AvailableBalance - (stock.CurrentPrice * stock.BuyAmount)));//计算剩余金额
                     stock.BuyAmount = 0;
@@ -301,7 +301,7 @@ namespace AotoTrade
                         SendTradeSuccessMail(saleamount, stock, sw, TradeTypeEnum.Sale);
                     });
 
-                    voice.Speak(string.Format(config.SaleSuccessVoice, stock.StockName), SSF);
+                    voice.Speak(string.Format(config.SaleSuccessVoice, stock.StockName, stock.CurrentPrice), SSF);
 
                     model.AvailableBalance = Convert.ToInt32(Math.Floor(model.AvailableBalance + (stock.CurrentPrice * stock.SaleAmount)));//计算剩余金额
                     stock.SaleAmount = 0;
